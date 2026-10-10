@@ -1,6 +1,28 @@
+"use client"
+
 import Image from "next/image";
+import { use, useState } from "react";
 
 export default function Home() {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+
+  /*async function handlesubmit(e: FormDataEvent) {
+    e.preventDefault();
+    if(!email || !senha){
+      throw new Error;
+      console.log("Coloque email e senha");
+      return;
+    }
+    await new Promise((r) => setTimeout(r, 1000));
+    console.log({email,senha});
+  }*/
+
+    function entrar(e: React.FormEvent) {
+      e.preventDefault();
+      alert(`Email: ${email}\nSenha: ${senha}`);
+    }
+
   return (
     <div className="bg-white p-8 w-full max-w-sm m-auto rounded-2xl">
       <h1 className="text-gray-900 mb-1 text-2xl font-bold">Entrar</h1>
@@ -8,7 +30,7 @@ export default function Home() {
         Acesse sua conta
       </p>
 
-      <form onSubmit={null} className="space-y-4">
+      <form onSubmit={entrar} className="space-y-4">
         <div>
           <label htmlFor="email" className="mb-1 block text-sm text-gray-700">
             E-mail
@@ -35,7 +57,7 @@ export default function Home() {
       </form>
 
       <p className="mt-6 text-center text-gray-500">
-        Não tem uma conta? <a href="#" className="text-blue-500">Cadastre-se</a>
+        Não tem uma conta? <a href="#" className="text-blue-500 hover:underline">Cadastre-se</a>
       </p>
     </div>
   );
