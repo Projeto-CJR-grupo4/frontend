@@ -31,11 +31,11 @@ export default function Home() {
             className="w-full rounded-lg border border-gray-500 px-3 py-2 text-gray-900 outline-none focus:border-blue-400"
           />
         </div>
-        <button type="submit" className="w-full rounded-lg bg-blue-600 py-2 font-bold">Entrar</button>
+        <button type="submit" className="w-full rounded-lg bg-blue-600 py-2 font-semibold">Entrar</button>
       </form>
 
-      <p>
-        Não tem uma conta? <a href="#">Cadastre-se</a>
+      <p className="mt-6 text-center text-gray-500">
+        Não tem uma conta? <a href="#" className="text-blue-500">Cadastre-se</a>
       </p>
     </div>
   );
