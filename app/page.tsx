@@ -9,9 +9,29 @@ export default function Home() {
       </p>
 
       <form onSubmit={null} className="space-y-4">
-        <div></div>
-        <div></div>
-        <button type="submit">Entrar</button>
+        <div>
+          <label htmlFor="email" className="mb-1 block text-sm text-gray-700">
+            E-mail
+          </label>
+          <input 
+            id="email"
+            type="email"
+            placeholder="seu@email.com"
+            className="w-full rounded-lg border border-gray-500 px-3 py-2 text-gray-900 outline-none focus:border-blue-400"
+          />
+        </div>
+        <div>
+          <label htmlFor="senha" className="mb-1 block text-sm text-gray-700">
+            Senha
+          </label>
+          <input 
+            id="senha"
+            type="password"
+            placeholder="*********"
+            className="w-full rounded-lg border border-gray-500 px-3 py-2 text-gray-900 outline-none focus:border-blue-400"
+          />
+        </div>
+        <button type="submit" className="w-full rounded-lg bg-blue-600 py-2 font-bold">Entrar</button>
       </form>
 
       <p>
