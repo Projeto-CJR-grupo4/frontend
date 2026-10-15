@@ -1,3 +1,4 @@
+//página raiz
 
 "use client"
 
@@ -25,7 +26,7 @@ export default function Home() {
     }
 
   return (
-    <div className="bg-white p-8 w-full max-w-sm m-auto rounded-2xl">
+    <div className="bg-white p-8 w-full max-w-sm m-auto rounded-2xl ">
       <h1 className="text-gray-900 mb-1 text-2xl font-bold">Entrar</h1>
       <p className="text-gray-500 mb-7 text-sm"> 
         Acesse sua conta
@@ -62,7 +63,7 @@ export default function Home() {
       </form>
 
       <p className="mt-6 text-center text-gray-500">
-        Não tem uma conta? <a href="#" className="text-blue-500 hover:underline">Cadastre-se</a>
+        Não possui uma conta? <a href="#" className="text-blue-500 hover:underline">Cadastre-se</a>
       </p>
     </div>
   );
