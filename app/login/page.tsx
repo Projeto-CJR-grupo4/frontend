@@ -73,7 +73,7 @@ export default function Home() {
         <p className="text-center">
           <a href="#" className="absolute top-108 right-62 text-[#F6F3E4] hover:underline">Esqueceu sua senha?</a>
         </p>
-        <button type="submit" className="absolute top-120 right-33 w-100 rounded-3xl bg-[#6A38F3] py-2 font-semibold">ENTRAR</button>
+        <button type="submit" className="absolute top-120 right-33 w-100 rounded-3xl bg-[#6A38F3] py-2 font-semibold hover:bg-purple-700">ENTRAR</button>
       </form>
 
       <p className="absolute top-136 right-66 text-[#F6F3E4]">
