@@ -1,10 +1,31 @@
 "use client";
 import Image from "next/image"
-import { useState } from "react";
+import { useState, type SubmitEvent } from "react";
+
 export default function Cadastro() {
 
     const [mostrarSenha, setMostrarSenha] = useState(false);
 
+    const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
+
+    const [erroSenha, setErroSenha] = useState("");
+
+    function validarCadastro(evento: SubmitEvent<HTMLFormElement>) {
+        evento.preventDefault();
+
+        const dados = new FormData(evento.currentTarget);
+
+        const senha = dados.get("password");
+        const confirmarSenha = dados.get("confirmarSenha");
+
+        if (senha !== confirmarSenha) {
+            setErroSenha ("As senhas não coincidem.");
+        }
+        else {
+            setErroSenha("");
+        }
+
+    }
     return (
         <main className="min-h-screen bg-[#F6F3E4] text-[#171918] p-4 lg:p-8 flex justify-center items-center">
 
@@ -34,7 +55,9 @@ export default function Cadastro() {
                     <h1 className="text-3xl font-bold text-white">
                         Crie sua conta
                     </h1>
-                    <form className="mt-8 flex flex-col gap-4">
+                    <form className="mt-8 flex flex-col gap-4"
+                        onSubmit={validarCadastro}
+                    >
                         <div className="flex flex-col gap-2">
                             <label htmlFor="nome" className="text-white">
                                 Nome completo
@@ -45,6 +68,7 @@ export default function Cadastro() {
                                 id="nome"
                                 name="nome"
                                 placeholder="Nome completo"
+                                required
                                 className="rounded-xl bg-[#F6F3E4] p-3 text-[#171918] focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
                             />
                         </div>
@@ -56,6 +80,7 @@ export default function Cadastro() {
                                 id="username"
                                 name="username"
                                 placeholder="Digite seu username"
+                                required
                                 className="rounded-xl bg-[#F6F3E4] p-3 text-[#171918] focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
                             />
                         </div>
@@ -67,6 +92,7 @@ export default function Cadastro() {
                                 id="email"
                                 name="email"
                                 placeholder="Digite seu email"
+                                required
                                 className="rounded-xl bg-[#F6F3E4] p-3 text-[#171918] focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
                             />
                         </div>
@@ -78,28 +104,43 @@ export default function Cadastro() {
                                 id="password"
                                 name="password"
                                 placeholder="Digite sua senha"
+                                required
                                 className="rounded-xl bg-[#F6F3E4] p-3 text-[#171918] focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
                             />
                             <button
-                                type ="button"
+                                type="button"
                                 onClick={() => setMostrarSenha(!mostrarSenha)}
                                 className="text-sm text-[#A78BFA] cursor-pointer self-end"
                             >
-                                {mostrarSenha ?"Ocultar senha" : "Mostrar senha"}
+                                {mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
                             </button>
                         </div>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="confirmarSenha" className="text-white"> Confirmar senha </label>
                             <input
-                                type="password"
+                                type={mostrarConfirmarSenha ? "text" : "password"}
                                 id="confirmarSenha"
                                 name="confirmarSenha"
                                 placeholder="Confirme sua senha"
+                                required
                                 className="rounded-xl bg-[#F6F3E4] p-3 text-[#171918] focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
                             />
+                            <button
+                                type="button"
+                                onClick={() => setMostrarConfirmarSenha(!mostrarConfirmarSenha)}
+                                className="text-sm text-[#A78BFA] cursor-pointer self-end"
+                            >
+                                {mostrarConfirmarSenha ? "Ocultar senha" : "Mostrar senha"}
+                            </button>
+
                         </div>
+                        {erroSenha && (
+                            <p className="text-sm text-red-300" role="alert">
+                                {erroSenha}
+                            </p>
+                        )}
                         <button /* Alterar para submit quando tive a integracao */
-                            type="button" 
+                            type="submit"
                             className="bg-[#6938EF] hover:bg-[#5428CF] active:bg-[#5428CF] transition-colors duration-200 text-white font-bold p-4 rounded-xl cursor-pointer"
                         >
                             CRIAR CONTA
