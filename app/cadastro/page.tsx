@@ -19,7 +19,7 @@ export default function Cadastro() {
         const confirmarSenha = dados.get("confirmarSenha");
 
         if (senha !== confirmarSenha) {
-            setErroSenha ("As senhas não coincidem.");
+            setErroSenha("As senhas não coincidem.");
         }
         else {
             setErroSenha("");
@@ -46,7 +46,7 @@ export default function Cadastro() {
                         alt="Mascote Stocklee"
                         width={994}
                         height={1598}
-                        className="w-[110px] lg:w-[250px] h-auto"
+                        className="w-27.5 lg:w-62.5 h-auto" 
                     />
 
                 </div>
@@ -99,47 +99,68 @@ export default function Cadastro() {
 
                         <div className="flex flex-col gap-2">
                             <label htmlFor="password" className="text-white"> Senha </label>
-                            <input
-                                type={mostrarSenha ? "text" : "password"}
-                                id="password"
-                                name="password"
-                                placeholder="Digite sua senha"
-                                required
-                                className="rounded-xl bg-[#F6F3E4] p-3 text-[#171918] focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setMostrarSenha(!mostrarSenha)}
-                                className="text-sm text-[#A78BFA] cursor-pointer self-end"
-                            >
-                                {mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
-                            </button>
+                            <div className="relative">
+                                <input
+                                    type={mostrarSenha ? "text" : "password"}
+                                    id="password"
+                                    name="password"
+                                    placeholder="Digite sua senha"
+                                    required
+                                    className="w-full rounded-xl bg-[#F6F3E4] p-3 pr-12 text-[#171918] focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+                                />
+
+                                <button
+                                    type="button"
+                                    onClick={() => setMostrarSenha(!mostrarSenha)}
+                                    arial-label={mostrarSenha ? "OcultarSenha" : "MostrarSenha"}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+                                >
+                                    <Image
+                                        src={mostrarSenha ? "/images/olho-fechado.svg" : "/images/olho-aberto.svg"}
+                                        alt=""
+                                        width={23}
+                                        height={17}
+                                    />
+
+                                </button>
+                            </div>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="confirmarSenha" className="text-white"> Confirmar senha </label>
-                            <input
-                                type={mostrarConfirmarSenha ? "text" : "password"}
-                                id="confirmarSenha"
-                                name="confirmarSenha"
-                                placeholder="Confirme sua senha"
-                                required
-                                className="rounded-xl bg-[#F6F3E4] p-3 text-[#171918] focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setMostrarConfirmarSenha(!mostrarConfirmarSenha)}
-                                className="text-sm text-[#A78BFA] cursor-pointer self-end"
-                            >
-                                {mostrarConfirmarSenha ? "Ocultar senha" : "Mostrar senha"}
-                            </button>
+                            <label htmlFor="confirmarSenha" className="text-white">
+                                Confirmar senha
+                            </label>
 
+                            <div className="relative">
+                                <input
+                                    type={mostrarConfirmarSenha ? "text" : "password"}
+                                    id="confirmarSenha"
+                                    name="confirmarSenha"
+                                    placeholder="Confirme sua senha"
+                                    required
+                                    className="w-full rounded-xl bg-[#F6F3E4] p-3 pr-12 text-[#171918] focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+                                />
+
+                                <button
+                                    type="button"
+                                    onClick={() => setMostrarConfirmarSenha(!mostrarConfirmarSenha)}
+                                    aria-label={mostrarConfirmarSenha ? "Ocultar senha" : "Mostrar senha"}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+                                >
+                                    <Image
+                                        src={mostrarConfirmarSenha ? "/images/olho-fechado.svg" : "/images/olho-aberto.svg"}
+                                        alt=""
+                                        width={23}
+                                        height={17}
+                                    />
+                                </button>
+                            </div>
                         </div>
                         {erroSenha && (
                             <p className="text-sm text-red-300" role="alert">
                                 {erroSenha}
                             </p>
                         )}
-                        <button /* Alterar para submit quando tive a integracao */
+                        <button
                             type="submit"
                             className="bg-[#6938EF] hover:bg-[#5428CF] active:bg-[#5428CF] transition-colors duration-200 text-white font-bold p-4 rounded-xl cursor-pointer"
                         >
