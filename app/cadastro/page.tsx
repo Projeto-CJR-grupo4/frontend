@@ -29,9 +29,9 @@ export default function Cadastro() {
     return (
         <main className="min-h-screen bg-[#F6F3E4] text-[#171918] p-4 lg:p-8 flex justify-center items-center">
 
-            <div className="flex flex-col lg:flex-row items-center gap-8 w-full max-w-6xl">
+            <div className="flex flex-col lg:flex-row items-center gap-8 w-full max-w-6xl lg:min-h-[calc(100dvh-64px)]">
 
-                <div className="w-full lg:flex-1 flex flex-col items-center gap-4 lg:gap-6 p-4 lg:p-8">
+                <div className="w-full lg:flex-1 flex flex-col items-center gap-4 lg:gap-6 p-4 lg:px-8 lg:pt-0 lg:pb-0 lg:relative lg:self-stretch">
                     <Image
                         src="/images/logo-stock.svg"
                         alt="Logo da stock.io"
@@ -46,7 +46,7 @@ export default function Cadastro() {
                         alt="Mascote Stocklee"
                         width={994}
                         height={1598}
-                        className="w-27.5 lg:w-62.5 h-auto" 
+                        className="w-27.5 lg:w-88 h-auto lg:absolute lg:-bottom-8 lg:left-1/2 lg:-translate-x-1/2"
                     />
 
                 </div>
@@ -112,7 +112,7 @@ export default function Cadastro() {
                                 <button
                                     type="button"
                                     onClick={() => setMostrarSenha(!mostrarSenha)}
-                                    arial-label={mostrarSenha ? "OcultarSenha" : "MostrarSenha"}
+                                    aria-label={mostrarSenha ? "OcultarSenha" : "MostrarSenha"}
                                     className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
                                 >
                                     <Image
