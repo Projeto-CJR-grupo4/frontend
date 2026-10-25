@@ -4,6 +4,7 @@
 
 import Image from "next/image";
 import { use, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Home() {
   const [email, setEmail] = useState("");
