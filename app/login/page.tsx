@@ -21,10 +21,21 @@ export default function Home() {
     console.log({email,senha});
   }*/
 
-    function entrar(e: React.FormEvent) {
-      e.preventDefault();
-      alert(`Email: ${email}\nSenha: ${senha}`);
-    }
+function entrar(e: React.FormEvent) {
+  e.preventDefault();
+
+  if (!email || !senha) {
+    toast.error("Preencha email e senha");
+    return;
+  }
+
+  if (senha.length < 8) {
+    toast.error("A senha deve ter pelo menos 8 caracteres");
+    return;
+  }
+
+  toast.success("Login realizado!");
+}
 
   return (
     <>
