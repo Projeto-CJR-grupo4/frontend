@@ -1,4 +1,3 @@
-
 "use client"
 
 import Image from "next/image";
@@ -28,7 +27,7 @@ function entrar(e: React.FormEvent) {
 }
 
   return (
-    <>
+    <main className="bg-[#F6F3E4]">
 
     <Image 
       src="/logo.svg"
@@ -48,7 +47,7 @@ function entrar(e: React.FormEvent) {
       className="absolute bottom-0 left-32"
     />
 
-    <div className="bg-[#171918] px-66 py-84 max-w-lg ml-auto mt-auto mr-18 rounded-t-3xl ">
+    <div className="bg-[#171918] px-66 py-84 max-w-lg ml-auto mt-32 mr-18 rounded-t-3xl ">
       <h1 className="absolute top-56 right-42 text-[#F6F3E4] text-3xl font-bold">BEM VINDO DE VOLTA!</h1>
 
       <form onSubmit={entrar} className="space-y-4">
@@ -96,6 +95,6 @@ function entrar(e: React.FormEvent) {
         Não possui uma conta? <a href="http://localhost:3000/cadastro" className="text-[#6A38F3] hover:underline">Cadastre-se</a>
       </p>
     </div>
-    </>
+    </main>
   );
 }
