@@ -12,17 +12,6 @@ export default function Login() {
 
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
-  /*async function handlesubmit(e: FormDataEvent) {
-    e.preventDefault();
-    if(!email || !senha){
-      throw new Error;
-      console.log("Coloque email e senha");
-      return;
-    }
-    await new Promise((r) => setTimeout(r, 1000));
-    console.log({email,senha});
-  }*/
-
 function entrar(e: React.FormEvent) {
   e.preventDefault();
 

@@ -2,6 +2,7 @@
 import Image from "next/image"
 import { useState, type SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function Cadastro() {
     const router = useRouter();
@@ -25,7 +26,11 @@ export default function Cadastro() {
         }
         else {
             setErroSenha("");
+            toast.success("Cadastro concluído com sucesso!", { duration: 2000 });
+
+            setTimeout(() => {
             router.push("/login");
+            }, 2000);
         }
 
     }
