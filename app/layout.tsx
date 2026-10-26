@@ -25,7 +25,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-white">{children}
-        <Toaster  position="top-right"  toastOptions={{style: { background: "#171918", color: "#F6F3E4" },}}/>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+            background: "#171918",
+            color: "#F6F3E4",
+            boxShadow: "0 8px 24px rgba(0, 0, 0, 0.4)",
+            },
+          }}
+        />
       </body>
     </html>
   );
