@@ -68,20 +68,20 @@ function entrar(e: React.FormEvent) {
           <input 
             id="email"
             type="email"
-            placeholder="  Email"
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="absolute top-76 right-33 bg-[#F6F3E4] w-100 rounded-4xl bg-bisque border border-bisque-500 px-3 py-2 text-gray-700 outline-none focus:border-blue-400"
+            className="absolute top-76 right-33 bg-[#F6F3E4] w-100 rounded-4xl bg-bisque border border-bisque-500 px-3 py-2 text-gray-700 outline-none focus:ring-2 focus:ring-[#6938EF]"
           />
         </div>
         <div>
           <input 
             id="senha"
             type={mostrarSenha ? "text" : "password"}
-            placeholder="  Senha"
+            placeholder="Senha"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
-            className="absolute top-92 right-33 bg-[#F6F3E4] w-100 rounded-3xl border border-gray-500 px-3 py-2 text-gray-700 outline-none focus:border-blue-400"
+            className="absolute top-92 right-33 bg-[#F6F3E4] w-100 rounded-3xl border border-gray-500 px-3 py-2 text-gray-700 outline-none focus:ring-2 focus:ring-[#6938EF]"
           />
             <button
                 type="button"

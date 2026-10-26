@@ -1,8 +1,10 @@
 "use client";
 import Image from "next/image"
 import { useState, type SubmitEvent } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Cadastro() {
+    const router = useRouter();
 
     const [mostrarSenha, setMostrarSenha] = useState(false);
 
@@ -23,6 +25,7 @@ export default function Cadastro() {
         }
         else {
             setErroSenha("");
+            router.push("/login");
         }
 
     }
