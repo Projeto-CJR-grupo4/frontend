@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: bisque;
   --foreground: #171717;
 }
 
@@ -14,13 +14,18 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: bisque;
     --foreground: #ededed;
   }
 }
 
 body {
-  background: var(--background);
+  background-color: beige;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes barra-tempo {
+  from { width: 100%; }
+  to { width: 0%; }
 }

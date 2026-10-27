@@ -1,8 +1,11 @@
 "use client";
 import Image from "next/image"
 import { useState, type SubmitEvent } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function Cadastro() {
+    const router = useRouter();
 
     const [mostrarSenha, setMostrarSenha] = useState(false);
 
@@ -23,6 +26,11 @@ export default function Cadastro() {
         }
         else {
             setErroSenha("");
+            toast.success("Cadastro concluído com sucesso!", { duration: 2000 });
+
+            setTimeout(() => {
+            router.push("/login");
+            }, 2000);
         }
 
     }
@@ -33,16 +41,16 @@ export default function Cadastro() {
 
                 <div className="w-full lg:flex-1 flex flex-col items-center gap-4 lg:gap-6 p-4 lg:px-8 lg:pt-0 lg:pb-0 lg:relative lg:self-stretch">
                     <Image
-                        src="/images/logo-stock.svg"
+                        src="logo.svg"
                         alt="Logo da stock.io"
                         width={300}
                         height={100}
                     />
-                    <p className="max-w-xs text-center text-base lg:text-xl font-medium text-neutral-700">
+                    <p className="absolute top-40 max-w-xs text-center text-base lg:text-xl font-medium text-neutral-700">
                         Organize seu estoque de forma simples.
                     </p>
                     <Image
-                        src="/images/stocklee.png"
+                        src="stocklee.svg"
                         alt="Mascote Stocklee"
                         width={994}
                         height={1598}
@@ -116,7 +124,7 @@ export default function Cadastro() {
                                     className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
                                 >
                                     <Image
-                                        src={mostrarSenha ? "/images/olho-fechado.svg" : "/images/olho-aberto.svg"}
+                                        src={mostrarSenha ? "olho-fechado.svg" : "olho-aberto.svg"}
                                         alt=""
                                         width={23}
                                         height={17}
@@ -147,7 +155,7 @@ export default function Cadastro() {
                                     className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
                                 >
                                     <Image
-                                        src={mostrarConfirmarSenha ? "/images/olho-fechado.svg" : "/images/olho-aberto.svg"}
+                                        src={mostrarConfirmarSenha ? "olho-fechado.svg" : "olho-aberto.svg"}
                                         alt=""
                                         width={23}
                                         height={17}
@@ -165,6 +173,7 @@ export default function Cadastro() {
                             className="bg-[#6938EF] hover:bg-[#5428CF] active:bg-[#5428CF] transition-colors duration-200 text-white font-bold p-4 rounded-xl cursor-pointer"
                         >
                             CRIAR CONTA
+                        
                         </button>
                         <p className="text-center text-white text-sm">
                             Já possui uma conta?{" "}
