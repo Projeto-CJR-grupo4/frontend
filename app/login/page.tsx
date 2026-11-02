@@ -1,8 +1,9 @@
 "use client"
 
 import Image from "next/image";
-import { use, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
+import { apiClient } from "@/lib/axios";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,20 +11,27 @@ export default function Login() {
 
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
-function entrar(e: React.FormEvent) {
+async function entrar(e: React.SubmitEvent<HTMLFormElement>) {
   e.preventDefault();
 
-  if (!email || !senha) {
-    toast.error("Preencha email e senha");
+  if (!email.trim() || !senha) {
+    toast.error("Preencha e-mail e senha");
     return;
   }
 
-  if (senha.length < 8) {
-    toast.error("A senha deve ter pelo menos 8 caracteres");
-    return;
-  }
+  try {
+    const resposta = await apiClient.post("/login", {
+      email: email.trim(),
+      password: senha,
+    });
 
-  toast.success("Login realizado!");
+    console.log("Status da resposta:", resposta.status);
+
+    toast.success("Login realizado!");
+
+  } catch {
+    toast.error("Não foi possível realizar o login.");
+  }
 }
 
   return (
