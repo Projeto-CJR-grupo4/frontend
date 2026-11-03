@@ -20,14 +20,21 @@ async function entrar(e: React.SubmitEvent<HTMLFormElement>) {
   }
 
   try {
-    const resposta = await apiClient.post("/login", {
-      email: email.trim(),
-      password: senha,
-    });
+    const resposta = await apiClient.post<{ access_token: string }>("/login", {
+  email: email.trim(),
+  password: senha,
+});
 
-    console.log("Status da resposta:", resposta.status);
+const token = resposta.data.access_token;
 
-    toast.success("Login realizado!");
+if (!token) {
+  toast.error("Não foi possível concluir a autenticação.");
+  return;
+}
+
+localStorage.setItem("token", token);
+
+toast.success("Login realizado!");
 
   } catch (error) {
   if (axios.isAxiosError(error)) {
