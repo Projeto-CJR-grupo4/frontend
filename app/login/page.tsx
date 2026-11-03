@@ -4,8 +4,10 @@ import Image from "next/image";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { apiClient } from "@/lib/axios";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
@@ -35,6 +37,8 @@ if (!token) {
 localStorage.setItem("token", token);
 
 toast.success("Login realizado!");
+
+router.replace("/");
 
   } catch (error) {
   if (axios.isAxiosError(error)) {
