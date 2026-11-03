@@ -1,5 +1,5 @@
 "use client"
-
+import axios from "axios";
 import Image from "next/image";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -29,9 +29,19 @@ async function entrar(e: React.SubmitEvent<HTMLFormElement>) {
 
     toast.success("Login realizado!");
 
-  } catch {
-    toast.error("Não foi possível realizar o login.");
+  } catch (error) {
+  if (axios.isAxiosError(error)) {
+    if (error.response?.status === 401) {
+      toast.error("E-mail ou senha inválidos.");
+    } else if (!error.response) {
+      toast.error("Não foi possível conectar ao servidor.");
+    } else {
+      toast.error("Ocorreu um erro. Tente novamente.");
+    }
+  } else {
+    toast.error("Erro inesperado. Tente novamente.");
   }
+}
 }
 
   return (
