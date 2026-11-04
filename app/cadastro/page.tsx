@@ -1,8 +1,10 @@
 "use client";
 import Image from "next/image"
+import axios from "axios";
 import { useState, type SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { apiClient } from "@/lib/axios";
 
 export default function Cadastro() {
     const router = useRouter();
@@ -13,8 +15,12 @@ export default function Cadastro() {
 
     const [erroSenha, setErroSenha] = useState("");
 
-    function validarCadastro(evento: SubmitEvent<HTMLFormElement>) {
+    const [enviando, setEnviando] = useState(false);
+
+    async function validarCadastro(evento: SubmitEvent<HTMLFormElement>) {
         evento.preventDefault();
+
+        if (enviando) return;
 
         const dados = new FormData(evento.currentTarget);
 
@@ -23,14 +29,41 @@ export default function Cadastro() {
 
         if (senha !== confirmarSenha) {
             setErroSenha("As senhas não coincidem.");
+            return;
         }
-        else {
-            setErroSenha("");
+
+        setErroSenha("");
+        setEnviando(true);
+
+        try {
+            await apiClient.post("/user", {
+                name: dados.get("nome"),
+                username: dados.get("username"),
+                email: dados.get("email"),
+                password: senha,
+            });
+
             toast.success("Cadastro concluído com sucesso!", { duration: 2000 });
 
             setTimeout(() => {
-            router.push("/login");
+                router.push("/login");
             }, 2000);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (!error.response) {
+                    toast.error("Não foi possível conectar ao servidor.");
+                } else if (error.response.status === 400) { 
+                    const mensagem = error.response.data.message;
+                    toast.error(Array.isArray(mensagem) ? mensagem[0] : mensagem ?? "Dados inválidos.");
+                } else if (error.response.status === 409) {
+                    toast.error("Email ou username já cadastrado.");
+                } else {
+                    toast.error("Ocorreu um erro. Tente novamente");
+                }
+            } else {
+                toast.error("Erro inesperado. Tente novamente");
+            }
+            setEnviando(false);
         }
 
     }
@@ -170,10 +203,10 @@ export default function Cadastro() {
                         )}
                         <button
                             type="submit"
-                            className="bg-[#6938EF] hover:bg-[#5428CF] active:bg-[#5428CF] transition-colors duration-200 text-white font-bold p-4 rounded-xl cursor-pointer"
+                            disabled={enviando}
+                            className="bg-[#6938EF] hover:bg-[#5428CF] active:bg-[#5428CF] transition-colors duration-200 text-white font-bold p-4 rounded-xl cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                         >
-                            CRIAR CONTA
-                        
+                            {enviando ? "Criando conta..." : "CRIAR CONTA"}
                         </button>
                         <p className="text-center text-white text-sm">
                             Já possui uma conta?{" "}
