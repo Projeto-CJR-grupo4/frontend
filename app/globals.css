@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: bisque;
+  --background: #F6F3E4;
   --foreground: #171717;
 }
 
@@ -14,13 +14,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: bisque;
+    --background: #171717;
     --foreground: #ededed;
   }
 }
 
 body {
-  background-color: beige;
+  background-color: #F6F3E4;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
