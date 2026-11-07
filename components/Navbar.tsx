@@ -1,10 +1,12 @@
 "use client";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 type NavbarProps = {
     rotaSacola?: string;
     rotaLoja?: string;
+    rotaPerfil?: string;
     isLoggedIn?: boolean;
 };
 type IconeNavbarProps = {
@@ -48,8 +50,19 @@ function IconeNavbar({
 export default function Navbar({
     rotaSacola,
     rotaLoja,
-    isLoggedIn = false
+    rotaPerfil,
+    isLoggedIn
 }: NavbarProps) {
+
+    const [temToken, setTemToken] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        setTemToken(Boolean(token));
+    }, []);
+
+    const usuarioLogado = isLoggedIn ?? temToken;
     const pathname = usePathname();
 
     const sacolaAtiva = rotaSacola
@@ -57,6 +70,9 @@ export default function Navbar({
         : false;
     const lojaAtiva = rotaLoja
         ? pathname === rotaLoja
+        : false;
+    const perfilAtivo = rotaPerfil
+        ? pathname === rotaPerfil
         : false;
     return (
         <nav className="w-full h-23 bg-black">
@@ -82,12 +98,12 @@ export default function Navbar({
                         descricao="Ver lojas"
                         ativo={lojaAtiva}
                     />
-                    {isLoggedIn ? (
+                    {usuarioLogado ? (
                         <>
                             <IconeNavbar
                                 icone="/profile-icon.svg"
                                 descricao="Ver perfil"
-                                ativo={false}
+                                ativo={perfilAtivo}
                             />
 
                             <IconeNavbar
