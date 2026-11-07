@@ -5,14 +5,21 @@ import { usePathname } from "next/navigation";
 type NavbarProps = {
     rotaSacola?: string;
     rotaLoja?: string;
+    isLoggedIn?: boolean;
 };
 type IconeNavbarProps = {
     icone: string;
     descricao: string;
     ativo: boolean;
+    corHover?: "verde" | "vermelho";
 };
 
-function IconeNavbar({ icone, descricao, ativo }: IconeNavbarProps) {
+function IconeNavbar({
+    icone,
+    descricao,
+    ativo,
+    corHover = "verde"
+}: IconeNavbarProps) {
     return (
         <button
             type="button"
@@ -23,7 +30,9 @@ function IconeNavbar({ icone, descricao, ativo }: IconeNavbarProps) {
                 aria-hidden="true"
                 className={`block h-6.5 w-6.5 transition-colors duration-200 ${ativo
                     ? "bg-[#C6E700]"
-                    : "bg-white group-hover:bg-[#C6E700]"
+                    : corHover === "vermelho"
+                        ? "bg-white group-hover:bg-[#AF052A]"
+                        : "bg-white group-hover:bg-[#C6E700]"
                     }`}
                 style={{
                     maskImage: `url('${icone}')`,
@@ -36,7 +45,11 @@ function IconeNavbar({ icone, descricao, ativo }: IconeNavbarProps) {
     );
 }
 
-export default function Navbar({ rotaSacola, rotaLoja }: NavbarProps) {
+export default function Navbar({
+    rotaSacola,
+    rotaLoja,
+    isLoggedIn = false
+}: NavbarProps) {
     const pathname = usePathname();
 
     const sacolaAtiva = rotaSacola
@@ -69,18 +82,38 @@ export default function Navbar({ rotaSacola, rotaLoja }: NavbarProps) {
                         descricao="Ver lojas"
                         ativo={lojaAtiva}
                     />
-                    <Link
-                        href="/login"
-                        className="text-sm font-medium text-white hover:text-[#6A38F3] transition-colors duration-200"
-                    >
-                        LOGIN
-                    </Link>
-                    <Link
-                        href="/cadastro"
-                        className="inline-flex h-7 items-center justify-center rounded-full bg-[#6A38F3] px-6 text-xs font-semibold text-white hover:bg-white hover:text-[#6A38F3] transition-colors duration-200"
-                    >
-                        CADASTRE-SE
-                    </Link>
+                    {isLoggedIn ? (
+                        <>
+                            <IconeNavbar
+                                icone="/profile-icon.svg"
+                                descricao="Ver perfil"
+                                ativo={false}
+                            />
+
+                            <IconeNavbar
+                                icone="/logout-icon.svg"
+                                descricao="Sair"
+                                ativo={false}
+                                corHover="vermelho"
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <Link
+                                href="/login"
+                                className="text-sm font-medium text-white hover:text-[#6A38F3] transition-colors duration-200"
+                            >
+                                LOGIN
+                            </Link>
+
+                            <Link
+                                href="/cadastro"
+                                className="inline-flex h-7 items-center justify-center rounded-full bg-[#6A38F3] px-6 text-xs font-semibold text-white hover:bg-white hover:text-[#6A38F3] transition-colors duration-200"
+                            >
+                                CADASTRE-SE
+                            </Link>
+                        </>
+                    )}
                 </div>
 
             </div>
