@@ -60,9 +60,18 @@ export default function Navbar({
     const [temToken, setTemToken] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        const verificarToken = () => {
+            const token = localStorage.getItem("token");
+            setTemToken(Boolean(token));
+        };
 
-        setTemToken(Boolean(token));
+        verificarToken();
+
+        window.addEventListener("auth-changed", verificarToken);
+
+        return () => {
+            window.removeEventListener("auth-changed", verificarToken);
+        };
     }, []);
 
     const usuarioLogado = isLoggedIn ?? temToken;
@@ -80,7 +89,7 @@ export default function Navbar({
         : false;
     const fazerLogout = () => {
         localStorage.removeItem("token");
-        setTemToken(false);
+        window.dispatchEvent(new Event("auth-changed"));
         router.replace("/");
     };
     return (
