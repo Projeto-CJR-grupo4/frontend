@@ -93,10 +93,10 @@ export default function Navbar({
         router.replace("/");
     };
     return (
-        <nav className="w-full h-23 bg-black">
-            <div className="mx-auto flex h-full max-w-360 items-center justify-between px-6 lg:px-18">
+        <nav className="w-full min-h-23 bg-black">
+            <div className="mx-auto flex min-h-23 max-w-360 flex-col items-center justify-center gap-3 px-4 py-3 sm:flex-row sm:justify-between sm:gap-0 sm:px-6 sm:py-0 lg:px-18">
 
-                <Link href="/">
+                <Link href="/" className="hidden sm:block">
                     <Image
                         src="/logo-navbar.svg"
                         alt="Stock.io"
@@ -105,7 +105,8 @@ export default function Navbar({
                     />
                 </Link>
 
-                <div className="flex items-center gap-8">
+                <div className={`flex items-center ${usuarioLogado ? "gap-6" : "gap-2"
+                    } sm:gap-8`}>
                     <IconeNavbar
                         icone="/bag-icon.svg"
                         descricao="Ver produtos"
