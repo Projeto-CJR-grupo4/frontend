@@ -52,8 +52,8 @@ function IconeNavbar({
 
 export default function Navbar({
     rotaSacola,
-    rotaLoja,
-    rotaPerfil,
+    rotaLoja = "/lojas",
+    rotaPerfil = "/perfil",
     isLoggedIn
 }: NavbarProps) {
 
@@ -116,6 +116,7 @@ export default function Navbar({
                         icone="/store-icon.svg"
                         descricao="Ver lojas"
                         ativo={lojaAtiva}
+                        aoClicar={() => router.push(rotaLoja)}
                     />
                     {usuarioLogado ? (
                         <>
@@ -123,6 +124,7 @@ export default function Navbar({
                                 icone="/profile-icon.svg"
                                 descricao="Ver perfil"
                                 ativo={perfilAtivo}
+                                aoClicar={() => router.push(rotaPerfil)}
                             />
 
                             <IconeNavbar
