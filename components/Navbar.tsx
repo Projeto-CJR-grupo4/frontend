@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 type NavbarProps = {
     rotaSacola?: string;
     rotaLoja?: string;
@@ -14,18 +14,21 @@ type IconeNavbarProps = {
     descricao: string;
     ativo: boolean;
     corHover?: "verde" | "vermelho";
+    aoClicar?: () => void;
 };
 
 function IconeNavbar({
     icone,
     descricao,
     ativo,
-    corHover = "verde"
+    corHover = "verde",
+    aoClicar
 }: IconeNavbarProps) {
     return (
         <button
             type="button"
             aria-label={descricao}
+            onClick={aoClicar}
             className="group cursor-pointer"
         >
             <span
@@ -64,6 +67,7 @@ export default function Navbar({
 
     const usuarioLogado = isLoggedIn ?? temToken;
     const pathname = usePathname();
+    const router = useRouter();
 
     const sacolaAtiva = rotaSacola
         ? pathname === rotaSacola
@@ -74,6 +78,11 @@ export default function Navbar({
     const perfilAtivo = rotaPerfil
         ? pathname === rotaPerfil
         : false;
+    const fazerLogout = () => {
+        localStorage.removeItem("token");
+        setTemToken(false);
+        router.replace("/");
+    };
     return (
         <nav className="w-full h-23 bg-black">
             <div className="mx-auto flex h-full max-w-360 items-center justify-between px-6 lg:px-18">
@@ -111,6 +120,7 @@ export default function Navbar({
                                 descricao="Sair"
                                 ativo={false}
                                 corHover="vermelho"
+                                aoClicar={fazerLogout}
                             />
                         </>
                     ) : (
