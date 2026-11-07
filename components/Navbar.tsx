@@ -6,6 +6,35 @@ type NavbarProps = {
     rotaSacola?: string;
     rotaLoja?: string;
 };
+type IconeNavbarProps = {
+    icone: string;
+    descricao: string;
+    ativo: boolean;
+};
+
+function IconeNavbar({ icone, descricao, ativo }: IconeNavbarProps) {
+    return (
+        <button
+            type="button"
+            aria-label={descricao}
+            className="group cursor-pointer"
+        >
+            <span
+                aria-hidden="true"
+                className={`block h-6.5 w-6.5 transition-colors duration-200 ${ativo
+                    ? "bg-[#C6E700]"
+                    : "bg-white group-hover:bg-[#C6E700]"
+                    }`}
+                style={{
+                    maskImage: `url('${icone}')`,
+                    maskSize: "contain",
+                    maskRepeat: "no-repeat",
+                    maskPosition: "center",
+                }}
+            />
+        </button>
+    );
+}
 
 export default function Navbar({ rotaSacola, rotaLoja }: NavbarProps) {
     const pathname = usePathname();
@@ -30,44 +59,16 @@ export default function Navbar({ rotaSacola, rotaLoja }: NavbarProps) {
                 </Link>
 
                 <div className="flex items-center gap-8">
-                    <button
-                        type="button"
-                        aria-label="Ver produtos"
-                        className="group cursor-pointer"
-                    >
-                        <span
-                            aria-hidden="true"
-                            className={`block h-6.5 w-6.5 transition-colors duration-200 ${sacolaAtiva
-                                ? "bg-[#C6E700]"
-                                : "bg-white group-hover:bg-[#C6E700]"
-                                }`}
-                            style={{
-                                maskImage: "url('/bag-icon.svg')",
-                                maskSize: "contain",
-                                maskRepeat: "no-repeat",
-                                maskPosition: "center",
-                            }}
-                        />
-                    </button>
-                    <button
-                        type="button"
-                        aria-label="Ver lojas"
-                        className="group cursor-pointer"
-                    >
-                        <span
-                            aria-hidden="true"
-                            className={`block h-6.5 w-6.5 transition-colors duration-200 ${lojaAtiva
-                                    ? "bg-[#C6E700]"
-                                    : "bg-white group-hover:bg-[#C6E700]"
-                                }`}
-                            style={{
-                                maskImage: "url('/store-icon.svg')",
-                                maskSize: "contain",
-                                maskRepeat: "no-repeat",
-                                maskPosition: "center",
-                            }}
-                        />
-                    </button>
+                    <IconeNavbar
+                        icone="/bag-icon.svg"
+                        descricao="Ver produtos"
+                        ativo={sacolaAtiva}
+                    />
+                    <IconeNavbar
+                        icone="/store-icon.svg"
+                        descricao="Ver lojas"
+                        ativo={lojaAtiva}
+                    />
                     <Link
                         href="/login"
                         className="text-sm font-medium text-white hover:text-[#6A38F3] transition-colors duration-200"
