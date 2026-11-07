@@ -1,7 +1,18 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+type NavbarProps = {
+    rotaSacola?: string;
+};
 
-export default function Navbar() {
+export default function Navbar({ rotaSacola }: NavbarProps) {
+    const pathname = usePathname();
+
+    const sacolaAtiva = rotaSacola
+        ? pathname === rotaSacola
+        : false;
+
     return (
         <nav className="w-full h-23 bg-black">
             <div className="mx-auto flex h-full max-w-360 items-center justify-between px-6 lg:px-18">
@@ -16,12 +27,25 @@ export default function Navbar() {
                 </Link>
 
                 <div className="flex items-center gap-8">
-                    <Image
-                        src="/bag-icon.svg"
-                        alt="Sacola"
-                        width={26}
-                        height={26}
-                    />
+                    <button
+                        type="button"
+                        aria-label="Ver produtos"
+                        className="group cursor-pointer"
+                    >
+                        <span
+                            aria-hidden="true"
+                            className={`block h-6.5 w-6.5 transition-colors duration-200 ${sacolaAtiva
+                                    ? "bg-[#C6E700]"
+                                    : "bg-white group-hover:bg-[#C6E700]"
+                                }`}
+                            style={{
+                                maskImage: "url('/bag-icon.svg')",
+                                maskSize: "contain",
+                                maskRepeat: "no-repeat",
+                                maskPosition: "center",
+                            }}
+                        />
+                    </button>
                     <Image
                         src="/store-icon.svg"
                         alt="Loja"
@@ -30,7 +54,7 @@ export default function Navbar() {
                     />
                     <Link
                         href="/login"
-                        className="text-sm font-medium text-white"
+                        className="text-sm font-medium text-white hover:text-[#6A38F3] transition-colors duration-200"
                     >
                         LOGIN
                     </Link>
