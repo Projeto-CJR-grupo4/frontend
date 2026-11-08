@@ -1,46 +1,91 @@
 import Image from "next/image";
+import ProdutoCard from "@/components/ProdutoCard";
 import CategoriaCard from "@/components/CategoriaCard";
 const categorias = [
-    {
-        id: 1,
-        nome: "Mercado",
-        icone: "/categorias/mercado.svg"
-    },
-    {
-        id: 2,
-        nome: "Farmácia",
-        icone: "/categorias/farmacia.svg"
-    },
-    {
-        id: 3,
-        nome: "Beleza",
-        icone: "/categorias/beleza.svg"
-    },
-    {
-        id: 4,
-        nome: "Moda",
-        icone: "/categorias/moda.svg"
-    },
-    {
-        id: 5,
-        nome: "Eletrônicos",
-        icone: "/categorias/eletronicos.svg"
-    },
-    {
-        id: 6,
-        nome: "Jogos",
-        icone: "/categorias/jogos.svg"
-    },
-    {
-        id: 7,
-        nome: "Brinquedos",
-        icone: "/categorias/brinquedos.svg"
-    },
-    {
-        id: 8,
-        nome: "Casa",
-        icone: "/categorias/casa.svg"
-    }
+  {
+    id: 1,
+    nome: "Mercado",
+    icone: "/categorias/mercado.svg"
+  },
+  {
+    id: 2,
+    nome: "Farmácia",
+    icone: "/categorias/farmacia.svg"
+  },
+  {
+    id: 3,
+    nome: "Beleza",
+    icone: "/categorias/beleza.svg"
+  },
+  {
+    id: 4,
+    nome: "Moda",
+    icone: "/categorias/moda.svg"
+  },
+  {
+    id: 5,
+    nome: "Eletrônicos",
+    icone: "/categorias/eletronicos.svg"
+  },
+  {
+    id: 6,
+    nome: "Jogos",
+    icone: "/categorias/jogos.svg"
+  },
+  {
+    id: 7,
+    nome: "Brinquedos",
+    icone: "/categorias/brinquedos.svg"
+  },
+  {
+    id: 8,
+    nome: "Casa",
+    icone: "/categorias/casa.svg"
+  }
+];
+const produtosMercado = [
+  {
+    id: 1,
+    nome: "Brownie Meio A.",
+    imagem: "/produtos/brownie-meio-amargo.png",
+    logo: "/lojas/cjr.svg",
+    preco: "R$4,70",
+    disponivel: true
+  },
+  {
+    id: 2,
+    nome: "Brownie Trad.",
+    imagem: "/produtos/brownie-tradicional.png",
+    logo: "/lojas/cjr.svg",
+    preco: "R$3,80",
+    disponivel: false
+  },
+  {
+    id: 4,
+    nome: "Banana",
+    imagem: "/produtos/banana.png",
+    logo: "/lojas/maumar.svg",
+    preco: "R$3,99",
+    disponivel: true,
+    porKg: true
+  },
+  {
+    id: 5,
+    nome: "Limão Siciliano",
+    imagem: "/produtos/limao-siciliano.png",
+    logo: "/lojas/maumar.svg",
+    preco: "R$17,99",
+    disponivel: false,
+    porKg: true
+  },
+  {
+    id: 6,
+    nome: "Redbull",
+    imagem: "/produtos/redbull.png",
+    logo: "/lojas/cjr.svg",
+    preco: "R$5,41",
+    disponivel: true
+  }
 ];
 export default function Home() {
   return (
@@ -100,6 +145,45 @@ export default function Home() {
           ))}
         </div>
       </section>
+      <section className="mx-auto max-w-360 px-6 pt-16 lg:px-18">
+
+        <div className="flex items-center justify-between">
+
+  <h2 className="flex items-baseline gap-1">
+    <span className="text-3xl font-semibold text-black lg:text-4xl">
+      Produtos
+    </span>
+
+    <span className="text-sm text-black">
+      em
+    </span>
+
+    <span className="text-sm font-medium text-[#6A38F3]">
+      Mercado
+    </span>
+  </h2>
+
+  <span className="text-sm font-medium text-[#6A38F3]">
+    ver mais
+  </span>
+
+</div>
+        <div className="mt-10 flex w-full max-w-330 gap-14 overflow-x-auto">
+          {produtosMercado.map((produto) => (
+            <ProdutoCard
+              key={produto.id}
+              nome={produto.nome}
+              imagem={produto.imagem}
+              logo={produto.logo}
+              preco={produto.preco}
+              disponivel={produto.disponivel}
+              porKg={produto.porKg}
+            />
+          ))}
+        </div>
+
+      </section>
+
 
     </main>
   );
