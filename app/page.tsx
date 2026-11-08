@@ -1,4 +1,47 @@
 import Image from "next/image";
+import CategoriaCard from "@/components/CategoriaCard";
+const categorias = [
+    {
+        id: 1,
+        nome: "Mercado",
+        icone: "/categorias/mercado.svg"
+    },
+    {
+        id: 2,
+        nome: "Farmácia",
+        icone: "/categorias/farmacia.svg"
+    },
+    {
+        id: 3,
+        nome: "Beleza",
+        icone: "/categorias/beleza.svg"
+    },
+    {
+        id: 4,
+        nome: "Moda",
+        icone: "/categorias/moda.svg"
+    },
+    {
+        id: 5,
+        nome: "Eletrônicos",
+        icone: "/categorias/eletronicos.svg"
+    },
+    {
+        id: 6,
+        nome: "Jogos",
+        icone: "/categorias/jogos.svg"
+    },
+    {
+        id: 7,
+        nome: "Brinquedos",
+        icone: "/categorias/brinquedos.svg"
+    },
+    {
+        id: 8,
+        nome: "Casa",
+        icone: "/categorias/casa.svg"
+    }
+];
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#F6F3E4]">
@@ -42,6 +85,20 @@ export default function Home() {
           </div>
         </div>
 
+      </section>
+      <section className="mx-auto max-w-360 px-6 pt-4 lg:px-18">
+        <h2 className="text-3xl font-semibold text-black lg:text-4xl">
+          Categoria
+        </h2>
+        <div className="mt-10 flex w-full max-w-330 gap-16 overflow-x-auto">
+          {categorias.map((categoria) => (
+            <CategoriaCard
+              key={categoria.id}
+              nome={categoria.nome}
+              icone={categoria.icone}
+            />
+          ))}
+        </div>
       </section>
 
     </main>
