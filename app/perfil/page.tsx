@@ -7,8 +7,8 @@ const produtos = [
     { nome: "Iluminador", preco: 249.99, disponivel: true, img: "/images/iluminador.svg" },
     { nome: "Mini Blush", preco: 99.99, disponivel: false, img: "/images/mini_blush.svg" },
     { nome: "Lapis Labial", preco: 139.90, disponivel: true, img: "/images/lapis_labial.svg" },
-    { nome: "Primer", preco: 259.90, disponivel: true, img: "/images/primer.svg" }
-]
+    { nome: "Primer", preco: 259.90, disponivel: true, img: "/images/primer.svg" },
+];
 
 export default function Perfil() {
     return(
@@ -35,8 +35,38 @@ export default function Perfil() {
                         </a>
                     </div>
 
-                    <div className="flex gap-6 overflow-x-auto snp-x snp-mandatory pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    <div className="flex gap-6 ml-25 overflow-x-auto snp-x snp-mandatory pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                            {produtos.map((p) =>(
+                                <article 
+                                    key={p.nome}
+                                    className="relative w-[182px] shrink-0 snap-start rounded-[2rem] bg-white p-4 pt-3"
+                                >
+                                    <div className="flex h-[160px] items-center justify-center">
+                                        <img src={p.img} alt={p.nome} className="h-full  object-contain scale-110" />
+                                    </div>
+                                    <div className="absolute right-2 top-3 flex h-14 w-14 items-center justify-center rounded-full bg-[#FDF1EC]">
+                                        <Image
+                                            src="/images/selo_rare.png"
+                                            alt="Rare Beauty"
+                                            width={64}
+                                            height={64}
+                                            className="h-full w-full object-contain scale-125"
+                                        />
+                                    </div>
 
+                                    <h3 className="mt-6 text-xl text-[#000000] font-semibold">{p.nome}</h3>
+                                    <p className="text-xl text-[#000000] font-semibold">
+                                        {p.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                                    </p>
+                                    <span
+                                        className={`text-xs font-semibold uppercase ${
+                                            p.disponivel? "text-lime-500" : "text-red-500"
+                                        }`}
+                                    >
+                                        {p.disponivel ? "Disponível" : "Indisponível"}
+                                    </span>
+                                </article>
+                                ))}
                     </div>
 
                 </section>
