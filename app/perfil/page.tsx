@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { Plus } from "lucide-react"
 
 const produtos = [
     { nome: "Bronzer", preco: 254.99, disponivel: true, img: "/images/bronzer.svg" },
@@ -8,6 +9,10 @@ const produtos = [
     { nome: "Mini Blush", preco: 99.99, disponivel: false, img: "/images/mini_blush.svg" },
     { nome: "Lapis Labial", preco: 139.90, disponivel: true, img: "/images/lapis_labial.svg" },
     { nome: "Primer", preco: 259.90, disponivel: true, img: "/images/primer.svg" },
+];
+
+const lojas = [
+    { nome: "Rare Beauty", categoria:"beleza", logo: "/images/selo_rare.svg" }
 ];
 
 export default function Perfil() {
@@ -46,7 +51,7 @@ export default function Perfil() {
                                     </div>
                                     <div className="absolute right-2 top-3 flex h-14 w-14 items-center justify-center rounded-full bg-[#FDF1EC]">
                                         <Image
-                                            src="/images/selo_rare.png"
+                                            src="/images/selo_rare.svg"
                                             alt="Rare Beauty"
                                             width={64}
                                             height={64}
@@ -68,8 +73,44 @@ export default function Perfil() {
                                 </article>
                                 ))}
                     </div>
-
                 </section>
+
+                <section className="px-5 mt-[-140px]">
+                    <div className=" mb-100 flex items-center justify-between">
+                        <h2 className="ml-24 text-[#000000] text-3xl font-semibold">Lojas</h2>
+                        <button 
+                            type="button"
+                            aria-label="Adicionar loja"
+                            className="mr-30 flex h-10 w-10 items-center justify-center rounded-full bg-[#6C3CF5] text-white transition hover:brightness-110 active:scale-95"
+                        >
+                            <Plus size={30} strokeWidth={2.5} />
+
+                            </button>
+                    </div>
+
+                    <div className="mt-[-370px] ml-24 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                        {lojas.map((loja) => (
+                            <article
+                                key={loja.nome}
+                                className="flex w-[400px] shrink-0 snap-start items-center justify-between rounded-3xl bg-white p-6"
+                            >
+                                <div> 
+                                    <h3 className="text-3xl text-[#000000] font-light leading-tight">{loja.nome}</h3>
+                                    <p className="text-2xl text-[#6C3BFF] font-semibold">{loja.categoria}</p>
+                                </div>
+
+                                <Image
+                                    src={loja.logo}
+                                    alt={loja.nome}
+                                    width={76}
+                                    height={76}
+                                    className="h-[76px] w-[76px] shrink-0 rounded-full object-contain scale-125"
+                                />
+                            </article>
+                        ))}
+                    </div>
+                </section>
+
         </main>
     )
 }
