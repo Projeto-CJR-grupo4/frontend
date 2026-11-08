@@ -1,6 +1,7 @@
 import Image from "next/image";
 import SecaoProdutos from "@/components/SecaoProdutos";
 import CategoriaCard from "@/components/CategoriaCard";
+import LojaCard from "@/components/LojaCard";
 const categorias = [
   {
     id: 1,
@@ -171,6 +172,56 @@ const produtosModa = [
     disponivel: false
   }
 ];
+const lojas = [
+  {
+    id: 1,
+    nome: "CJR",
+    logo: "/lojas/cjr.svg",
+    categoria: "Mercado"
+  },
+  {
+    id: 2,
+    nome: "Rare Beauty",
+    logo: "/lojas/rare-beauty.svg",
+    categoria: "Beleza"
+  },
+  {
+    id: 3,
+    nome: "Creamy",
+    logo: "/lojas/creamy.svg",
+    categoria: "Beleza"
+  },
+  {
+    id: 4,
+    nome: "Maumar",
+    logo: "/lojas/maumar.svg",
+    categoria: "Mercado"
+  },
+  {
+    id: 5,
+    nome: "Melina",
+    logo: "/lojas/melina.svg",
+    categoria: "Moda"
+  },
+  {
+    id: 6,
+    nome: "Footshop",
+    logo: "/lojas/footshop.svg",
+    categoria: "Moda"
+  },
+  {
+    id: 7,
+    nome: "Roots",
+    logo: "/lojas/roots.svg",
+    categoria: "Beleza"
+  },
+  {
+    id: 8,
+    nome: "d'carts & baskets",
+    logo: "/lojas/dcarts-baskets.svg",
+    categoria: "Mercado"
+  }
+];
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#F6F3E4]">
@@ -241,7 +292,24 @@ export default function Home() {
         categoria="Moda"
         produtos={produtosModa}
       />
+     <section className="mx-auto max-w-360 px-6 pt-16 pb-24 lg:px-18">
 
+        <h2 className="text-3xl font-semibold text-black lg:text-4xl">
+          Lojas
+        </h2>
+
+        <div className="mt-10 flex w-full gap-10 overflow-x-auto">
+          {lojas.map((loja) => (
+            <LojaCard
+              key={loja.id}
+              nome={loja.nome}
+              logo={loja.logo}
+              categoria={loja.categoria}
+            />
+          ))}
+        </div>
+
+      </section>
 
     </main>
   );
