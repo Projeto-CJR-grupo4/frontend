@@ -15,11 +15,22 @@ const lojas = [
     { nome: "Rare Beauty", categoria:"beleza", logo: "/images/selo_rare.svg" }
 ];
 
+const avaliacao = [
+    { nome: "Selena Gomez", foto: "/images/selena.svg", }
+]
+
 export default function Perfil() {
     return(
         <main className="bg-[#F6F3E4]">
                 <div className="bg-[#000000] h-[357.25px] mt-[79.88px]"></div>
-                <div className="h-[230px] w-[230px] bg-white mt-[-150px] ml-[180px] rounded-full"></div>
+                <div className="h-[230px] w-[230px] bg-white mt-[-150px] ml-[180px] rounded-full">
+                    <Image
+                        src="/images/selena.svg"
+                        alt="foto de perfil"
+                        width={230}
+                        height={230}
+                    />
+                </div>
                 <h1 className="text-[#000000] text-5xl ml-[180px] mt-4 font-bold">Selena Gomez</h1>
                 <h2 className="text-gray-400 text-2xl ml-[180px] mt-3" >@ selenagomez</h2>
                 <h3 className="text-gray-400 text-2xl ml-[180px] mt-3">selenamariegomez@rare.com</h3> 
@@ -111,6 +122,11 @@ export default function Perfil() {
                     </div>
                 </section>
 
+                <section className="px-5 mt-10">
+                    <div className="flex items-center justify-between">
+                        <h2 className=" ml-24 text-[#000000] text-3xl font-semibold">Avaliações</h2>
+                    </div>
+                </section>
         </main>
     )
 }
