@@ -129,6 +129,48 @@ const produtosBeleza = [
     disponivel: false
   }
 ];
+const produtosModa = [
+  {
+    id: 1,
+    nome: "Saia",
+    imagem: "/produtos/saia.png",
+    logo: "/lojas/melina.svg",
+    preco: "R$75,99",
+    disponivel: true
+  },
+  {
+    id: 2,
+    nome: "New Balance",
+    imagem: "/produtos/newbalance.png",
+    logo: "/lojas/footshop.svg",
+    preco: "R$399,99",
+    disponivel: false
+  },
+  {
+    id: 3,
+    nome: "Bota",
+    imagem: "/produtos/bota.png",
+    logo: "/lojas/footshop.svg",
+    preco: "R$115,90",
+    disponivel: true
+  },
+  {
+    id: 4,
+    nome: "Bolsa",
+    imagem: "/produtos/bolsa.png",
+    logo: "/lojas/melina.svg",
+    preco: "R$349,90",
+    disponivel: true
+  },
+  {
+    id: 5,
+    nome: "Calça Jeans",
+    imagem: "/produtos/calca-jeans.png",
+    logo: "/lojas/melina.svg",
+    preco: "R$159,99",
+    disponivel: false
+  }
+];
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#F6F3E4]">
@@ -194,6 +236,10 @@ export default function Home() {
       <SecaoProdutos
         categoria="Beleza"
         produtos={produtosBeleza}
+      />
+      <SecaoProdutos
+        categoria="Moda"
+        produtos={produtosModa}
       />
 
 
