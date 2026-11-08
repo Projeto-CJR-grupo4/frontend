@@ -87,6 +87,48 @@ const produtosMercado = [
     disponivel: true
   }
 ];
+const produtosBeleza = [
+  {
+    id: 1,
+    nome: "Limpador Facial",
+    imagem: "/produtos/limpador-facial.png",
+    logo: "/lojas/creamy.svg",
+    preco: "R$74,99",
+    disponivel: true
+  },
+  {
+    id: 2,
+    nome: "Blush",
+    imagem: "/produtos/blush.png",
+    logo: "/lojas/rare-beauty.svg",
+    preco: "R$199,99",
+    disponivel: false
+  },
+  {
+    id: 3,
+    nome: "Sérum Facial",
+    imagem: "/produtos/serum-facial.png",
+    logo: "/lojas/creamy.svg",
+    preco: "R$99,90",
+    disponivel: true
+  },
+  {
+    id: 4,
+    nome: "Iluminador",
+    imagem: "/produtos/iluminador.png",
+    logo: "/lojas/rare-beauty.svg",
+    preco: "R$249,90",
+    disponivel: true
+  },
+  {
+    id: 5,
+    nome: "Body Splash",
+    imagem: "/produtos/body-splash.png",
+    logo: "/lojas/roots.svg",
+    preco: "R$179,99",
+    disponivel: false
+  }
+];
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#F6F3E4]">
@@ -148,6 +190,10 @@ export default function Home() {
       <SecaoProdutos
         categoria="Mercado"
         produtos={produtosMercado}
+      />
+      <SecaoProdutos
+        categoria="Beleza"
+        produtos={produtosBeleza}
       />
 
 
