@@ -37,7 +37,8 @@ export default function Login() {
       }
 
       localStorage.setItem("token", token);
-
+      window.dispatchEvent(new Event("auth-changed"));
+        
       toast.success("Login realizado!");
 
       router.replace("/");
