@@ -1,85 +1,304 @@
-//página raiz
-
-"use client"
-
 import Image from "next/image";
-import { use, useState } from "react";
-
+import SecaoProdutos from "@/components/SecaoProdutos";
+import CategoriaCard from "@/components/CategoriaCard";
+import Navbar from "@/components/Navbar";
+import SecaoLojas from "@/components/SecaoLojas";
+const categorias = [
+  {
+    id: 1,
+    nome: "Mercado",
+    icone: "/categorias/mercado.svg"
+  },
+  {
+    id: 2,
+    nome: "Farmácia",
+    icone: "/categorias/farmacia.svg"
+  },
+  {
+    id: 3,
+    nome: "Beleza",
+    icone: "/categorias/beleza.svg"
+  },
+  {
+    id: 4,
+    nome: "Moda",
+    icone: "/categorias/moda.svg"
+  },
+  {
+    id: 5,
+    nome: "Eletrônicos",
+    icone: "/categorias/eletronicos.svg"
+  },
+  {
+    id: 6,
+    nome: "Jogos",
+    icone: "/categorias/jogos.svg"
+  },
+  {
+    id: 7,
+    nome: "Brinquedos",
+    icone: "/categorias/brinquedos.svg"
+  },
+  {
+    id: 8,
+    nome: "Casa",
+    icone: "/categorias/casa.svg"
+  }
+];
+const produtosMercado = [
+  {
+    id: 1,
+    nome: "Brownie Meio A.",
+    imagem: "/produtos/brownie-meio-amargo.png",
+    logo: "/lojas/cjr.svg",
+    preco: "R$4,70",
+    disponivel: true
+  },
+  {
+    id: 2,
+    nome: "Brownie Trad.",
+    imagem: "/produtos/brownie-tradicional.png",
+    logo: "/lojas/cjr.svg",
+    preco: "R$3,80",
+    disponivel: false
+  },
+  {
+    id: 4,
+    nome: "Banana",
+    imagem: "/produtos/banana.png",
+    logo: "/lojas/maumar.svg",
+    preco: "R$3,99",
+    disponivel: true,
+    porKg: true
+  },
+  {
+    id: 5,
+    nome: "Limão Siciliano",
+    imagem: "/produtos/limao-siciliano.png",
+    logo: "/lojas/maumar.svg",
+    preco: "R$17,99",
+    disponivel: false,
+    porKg: true
+  },
+  {
+    id: 6,
+    nome: "Redbull",
+    imagem: "/produtos/redbull.png",
+    logo: "/lojas/cjr.svg",
+    preco: "R$5,41",
+    disponivel: true
+  }
+];
+const produtosBeleza = [
+  {
+    id: 1,
+    nome: "Limpador Facial",
+    imagem: "/produtos/limpador-facial.png",
+    logo: "/lojas/creamy.svg",
+    preco: "R$74,99",
+    disponivel: true
+  },
+  {
+    id: 2,
+    nome: "Blush",
+    imagem: "/produtos/blush.png",
+    logo: "/lojas/rare-beauty.svg",
+    preco: "R$199,99",
+    disponivel: false
+  },
+  {
+    id: 3,
+    nome: "Sérum Facial",
+    imagem: "/produtos/serum-facial.png",
+    logo: "/lojas/creamy.svg",
+    preco: "R$99,90",
+    disponivel: true
+  },
+  {
+    id: 4,
+    nome: "Iluminador",
+    imagem: "/produtos/iluminador.png",
+    logo: "/lojas/rare-beauty.svg",
+    preco: "R$249,90",
+    disponivel: true
+  },
+  {
+    id: 5,
+    nome: "Body Splash",
+    imagem: "/produtos/body-splash.png",
+    logo: "/lojas/roots.svg",
+    preco: "R$179,99",
+    disponivel: false
+  }
+];
+const produtosModa = [
+  {
+    id: 1,
+    nome: "Saia",
+    imagem: "/produtos/saia.png",
+    logo: "/lojas/melina.svg",
+    preco: "R$75,99",
+    disponivel: true
+  },
+  {
+    id: 2,
+    nome: "New Balance",
+    imagem: "/produtos/newbalance.png",
+    logo: "/lojas/footshop.svg",
+    preco: "R$399,99",
+    disponivel: false
+  },
+  {
+    id: 3,
+    nome: "Bota",
+    imagem: "/produtos/bota.png",
+    logo: "/lojas/footshop.svg",
+    preco: "R$115,90",
+    disponivel: true
+  },
+  {
+    id: 4,
+    nome: "Bolsa",
+    imagem: "/produtos/bolsa.png",
+    logo: "/lojas/melina.svg",
+    preco: "R$349,90",
+    disponivel: true
+  },
+  {
+    id: 5,
+    nome: "Calça Jeans",
+    imagem: "/produtos/calca-jeans.png",
+    logo: "/lojas/melina.svg",
+    preco: "R$159,99",
+    disponivel: false
+  }
+];
+const lojas = [
+  {
+    id: 1,
+    nome: "CJR",
+    logo: "/lojas/cjr.svg",
+    categoria: "Mercado"
+  },
+  {
+    id: 2,
+    nome: "Rare Beauty",
+    logo: "/lojas/rare-beauty.svg",
+    categoria: "Beleza"
+  },
+  {
+    id: 3,
+    nome: "Creamy",
+    logo: "/lojas/creamy.svg",
+    categoria: "Beleza"
+  },
+  {
+    id: 4,
+    nome: "Maumar",
+    logo: "/lojas/maumar.svg",
+    categoria: "Mercado"
+  },
+  {
+    id: 5,
+    nome: "Melina",
+    logo: "/lojas/melina.svg",
+    categoria: "Moda"
+  },
+  {
+    id: 6,
+    nome: "Footshop",
+    logo: "/lojas/footshop.svg",
+    categoria: "Moda"
+  },
+  {
+    id: 7,
+    nome: "Roots",
+    logo: "/lojas/roots.svg",
+    categoria: "Beleza"
+  },
+  {
+    id: 8,
+    nome: "d'carts & baskets",
+    logo: "/lojas/dcarts-baskets.svg",
+    categoria: "Mercado"
+  }
+];
 export default function Home() {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-
-  /*async function handlesubmit(e: FormDataEvent) {
-    e.preventDefault();
-    if(!email || !senha){
-      throw new Error;
-      console.log("Coloque email e senha");
-      return;
-    }
-    await new Promise((r) => setTimeout(r, 1000));
-    console.log({email,senha});
-  }*/
-
-    function entrar(e: React.FormEvent) {
-      e.preventDefault();
-      alert(`Email: ${email}\nSenha: ${senha}`);
-    }
-
   return (
-    <>
+    <main className="min-h-screen bg-[#F6F3E4]">
+      <Navbar />
 
-    <Image 
-      src="/logo.svg"
-      alt="Stock.io"
-      width={360}
-      height={60}
-      priority
-      className="absolute left-24 top-8"
-    />
+      <section className="bg-black lg:h-125 lg:overflow-hidden">
+        <div className="mx-auto flex max-w-360 flex-col items-center justify-between gap-8 px-6 py-10 lg:h-full lg:flex-row lg:px-18 lg:py-0">
+          <h1 className="max-w-2xl text-center text-4xl font-bold leading-tight text-white lg:text-5xl">
+            Do CAOS à organização,
+            <br />
+            em alguns cliques
+          </h1>
 
-    <Image
-      src="/mascote1.svg"
-      alt="Entregador segurando um caixa"
-      width={380}
-      height={520}
-      priority
-      className="absolute bottom-0 left-32"
-    />
-
-    <div className="bg-[#171918] px-66 py-84 max-w-lg ml-auto mt-auto mr-18 rounded-t-3xl ">
-      <h1 className="absolute top-56 right-42 text-[#F6F3E4] text-3xl font-bold">BEM VINDO DE VOLTA!</h1>
-
-      <form onSubmit={entrar} className="space-y-4">
-        <div>
-          <input 
-            id="email"
-            type="email"
-            placeholder="  Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="absolute top-76 right-33 bg-[#F6F3E4] w-100 rounded-4xl bg-bisque border border-bisque-500 px-3 py-2 text-gray-700 outline-none focus:border-blue-400"
+          <Image
+            src="/stocklee-banner.svg"
+            alt="Personagem StockLee com caixas"
+            width={550}
+            height={500}
+            className="h-auto w-full max-w-70 lg:max-w-137.5 lg:self-start"
           />
-        </div>
-        <div>
-          <input 
-            id="senha"
-            type="password"
-            placeholder="  Senha"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            className="absolute top-92 right-33 bg-[#F6F3E4] w-100 rounded-3xl border border-gray-500 px-3 py-2 text-gray-700 outline-none focus:border-blue-400"
-          />
-        </div>
-        <p className="text-center">
-          <a href="#" className="absolute top-108 right-62 text-[#F6F3E4] hover:underline">Esqueceu sua senha?</a>
-        </p>
-        <button type="submit" className="absolute top-120 right-33 w-100 rounded-3xl bg-[#6A38F3] py-2 font-semibold">ENTRAR</button>
-      </form>
 
-      <p className="absolute top-136 right-66 text-[#F6F3E4]">
-        Não possui uma conta? <a href="#" className="text-[#6A38F3] hover:underline">Cadastre-se</a>
-      </p>
-    </div>
-    </>
+        </div>
+      </section>
+      <section className="mx-auto max-w-360 px-6 pt-8 lg:px-18">
+
+        <div className="flex justify-end">
+          <div className="relative w-full max-w-150">
+            <input
+              type="search"
+              placeholder="Procurar por..."
+              aria-label="Pesquisar produtos"
+              className="w-full rounded-full bg-white px-6 py-3 pr-14 text-black placeholder:text-[#B496FF] outline-none focus:ring-2 focus:ring-[#6A38F3]"
+            />
+
+            <Image
+              src="/search-icon.svg"
+              alt=""
+              width={24}
+              height={24}
+              className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2"
+            />
+          </div>
+        </div>
+
+      </section>
+      <section className="mx-auto max-w-360 px-6 pt-4 lg:px-18">
+        <h2 className="text-3xl font-semibold text-black lg:text-4xl">
+          Categoria
+        </h2>
+        <div className="mt-10 flex w-full max-w-330 gap-16 overflow-x-auto">
+          {categorias.map((categoria) => (
+            <CategoriaCard
+              key={categoria.id}
+              nome={categoria.nome}
+              icone={categoria.icone}
+            />
+          ))}
+        </div>
+      </section>
+      <SecaoProdutos
+        categoria="Mercado"
+        produtos={produtosMercado}
+      />
+      <SecaoProdutos
+        categoria="Beleza"
+        produtos={produtosBeleza}
+      />
+      <SecaoProdutos
+        categoria="Moda"
+        produtos={produtosModa}
+      />
+      <SecaoLojas
+        lojas={lojas}
+        categorias={categorias}
+      />
+
+    </main>
   );
 }
