@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { ChevronLeft, Plus, Star } from "lucide-react"
+import Navbar from "@/components/Navbar";
 
 const produtos = [
     { nome: "Bronzer", preco: 254.99, disponivel: true, img: "/images/bronzer.svg" },
@@ -19,14 +20,11 @@ const lojas = [
 export default function Perfil() {
     return(
         <main className="bg-[#F6F3E4]">
-                <div className="relative bg-[#000000] h-[357.25px] mt-[79.88px]">
-                    <button
-                        type="button"
-                        aria-label="Voltar"
-                        className="absolute left-20 top-[235px] cursor-pointer text-white transition hover:opacity-70 active:scale-95"
-                    >
+            <Navbar />
+                <div className="relative bg-[#000000] h-[310px]">
+                    <a href="/" className="absolute left-20 top-[185px] cursor-pointer text-white transition hover:opacity-70 active:scale-95">
                         <ChevronLeft size={100}/>
-                    </button>
+                    </a>
                 </div>
                 <div className="relative z-10 h-[230px] w-[230px] bg-white mt-[-170px] ml-[180px] rounded-full">
                     <Image
