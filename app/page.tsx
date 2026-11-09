@@ -241,7 +241,7 @@ export default function Home() {
             alt="Personagem StockLee com caixas"
             width={550}
             height={500}
-            className="h-auto w-full max-w-137.5 lg:self-start"
+            className="h-auto w-full max-w-70 lg:max-w-137.5 lg:self-start"
           />
 
         </div>
