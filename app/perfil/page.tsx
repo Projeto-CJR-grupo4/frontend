@@ -37,9 +37,14 @@ export default function Perfil() {
                     />
                 </div>
                 <h1 className="text-[#000000] text-5xl ml-[180px] mt-4 font-bold">Selena Gomez</h1>
-                <h2 className="text-gray-400 text-2xl ml-[180px] mt-3" >@ selenagomez</h2>
-                <h3 className="text-gray-400 text-2xl ml-[180px] mt-3">selenamariegomez@rare.com</h3> 
                 
+                <h2 className="text-gray-400 text-2xl ml-[180px] mt-3" >@ selenagomez</h2>
+
+                <div className="ml-[180px] mt-3 flex items-center gap-2">
+                  <Image src="/images/email-icon.svg" alt="" width={24} height={24} />
+                  <h3 className="text-2xl text-gray-400">selenamariegomez@rare.com</h3>
+                </div>
+
                 <div className="mt-[-190px] flex justify-end px-30">
                     <button 
                     type="submit"
