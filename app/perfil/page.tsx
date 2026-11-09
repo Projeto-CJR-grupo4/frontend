@@ -155,11 +155,9 @@ export default function Perfil() {
                                     <Star key={i} className="h-8 w-8 fill-yellow-300 text-yellow-300"/>
                                 ))}
                             </div>
-                            <button 
-                                type="button"
-                                className="mt-5 mr-3 text-[#6A38F3] cursor-pointer hover:underline">
+                            <a href="#" className="mt-5 mr-3 text-[#6A38F3] cursor-pointer hover:underline">
                                 ver mais
-                            </button>
+                            </a>
                         </div>
                             
                     </div>
