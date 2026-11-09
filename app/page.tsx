@@ -1,6 +1,7 @@
 import Image from "next/image";
 import SecaoProdutos from "@/components/SecaoProdutos";
 import CategoriaCard from "@/components/CategoriaCard";
+import Navbar from "@/components/Navbar";
 import SecaoLojas from "@/components/SecaoLojas";
 const categorias = [
   {
@@ -225,6 +226,7 @@ const lojas = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#F6F3E4]">
+      <Navbar />
 
       <section className="bg-black lg:h-125 lg:overflow-hidden">
         <div className="mx-auto flex max-w-360 flex-col items-center justify-between gap-8 px-6 py-10 lg:h-full lg:flex-row lg:px-18 lg:py-0">
