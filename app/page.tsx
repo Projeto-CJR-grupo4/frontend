@@ -1,8 +1,7 @@
 import Image from "next/image";
 import SecaoProdutos from "@/components/SecaoProdutos";
 import CategoriaCard from "@/components/CategoriaCard";
-import LojaCard from "@/components/LojaCard";
-import FiltroLojas from "@/components/FiltroLojas";
+import SecaoLojas from "@/components/SecaoLojas";
 const categorias = [
   {
     id: 1,
@@ -293,40 +292,10 @@ export default function Home() {
         categoria="Moda"
         produtos={produtosModa}
       />
-      <section className="mx-auto max-w-360 px-6 pt-16 pb-24 lg:px-18">
-
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-
-          <h2 className="text-3xl font-semibold text-black lg:text-4xl">
-            Lojas
-          </h2>
-
-          <div className="flex w-full items-center gap-3 lg:w-auto">
-
-            <div className="min-w-0 flex-1 lg:w-110 lg:flex-none">
-              <FiltroLojas categorias={categorias} />
-            </div>
-
-            <span className="shrink-0 text-sm font-medium text-[#6A38F3]">
-              ver mais
-            </span>
-
-          </div>
-
-        </div>
-
-        <div className="mt-10 flex w-full gap-10 overflow-x-auto">
-          {lojas.map((loja) => (
-            <LojaCard
-              key={loja.id}
-              nome={loja.nome}
-              logo={loja.logo}
-              categoria={loja.categoria}
-            />
-          ))}
-        </div>
-
-      </section>
+      <SecaoLojas
+        lojas={lojas}
+        categorias={categorias}
+      />
 
     </main>
   );

@@ -10,10 +10,29 @@ type Categoria = {
 
 type FiltroLojasProps = {
     categorias: Categoria[];
+    onSelecionadasChange?: (categorias: string[]) => void;
 };
 
-export default function FiltroLojas({ categorias }: FiltroLojasProps) {
+export default function FiltroLojas({
+    categorias,
+    onSelecionadasChange
+}: FiltroLojasProps) {
     const [aberto, setAberto] = useState(false);
+    const [selecionadas, setSelecionadas] = useState<string[]>([]);
+    function alternarCategoria(nome: string) {
+    let atualizadas: string[];
+
+    if (selecionadas.includes(nome)) {
+        atualizadas = selecionadas.filter(
+            (categoria) => categoria !== nome
+        );
+    } else {
+        atualizadas = [...selecionadas, nome];
+    }
+
+    setSelecionadas(atualizadas);
+    onSelecionadasChange?.(atualizadas);
+}
 
     return (
         <div className="relative w-full">
@@ -51,8 +70,8 @@ export default function FiltroLojas({ categorias }: FiltroLojasProps) {
                 aria-hidden={!aberto}
                 inert={!aberto}
                 className={`absolute right-0 top-full z-20 mt-2 w-full origin-top rounded-3xl bg-white p-6 shadow-md transition-all duration-300 ease-in-out ${aberto
-                        ? "translate-y-0 scale-100 opacity-100 pointer-events-auto"
-                        : "-translate-y-2 scale-95 opacity-0 pointer-events-none"
+                    ? "translate-y-0 scale-100 opacity-100 pointer-events-auto"
+                    : "-translate-y-2 scale-95 opacity-0 pointer-events-none"
                     }`}
             >
                 <div className="flex flex-col gap-3">
@@ -65,6 +84,8 @@ export default function FiltroLojas({ categorias }: FiltroLojasProps) {
                             <input
                                 type="checkbox"
                                 value={categoria.nome}
+                                checked={selecionadas.includes(categoria.nome)}
+                                onChange={() => alternarCategoria(categoria.nome)}
                                 className="h-6 w-6 shrink-0 cursor-pointer accent-[#6A38F3]"
                             />
 
