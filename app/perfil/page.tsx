@@ -59,7 +59,7 @@ export default function Perfil() {
                         </a>
                     </div>
 
-                    <div className="flex gap-6 ml-25 overflow-x-auto snp-x snp-mandatory pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    <div className="flex gap-6 ml-25 overflow-x-auto snap-x snap-mandatory pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                             {produtos.map((p) =>(
                                 <article 
                                     key={p.nome}
