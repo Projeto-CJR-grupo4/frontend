@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Plus } from "lucide-react"
+import { Plus, Star } from "lucide-react"
 
 const produtos = [
     { nome: "Bronzer", preco: 254.99, disponivel: true, img: "/images/bronzer.svg" },
@@ -15,9 +15,6 @@ const lojas = [
     { nome: "Rare Beauty", categoria:"beleza", logo: "/images/selo_rare.svg" }
 ];
 
-const avaliacao = [
-    { nome: "Selena Gomez", foto: "/images/selena.svg", }
-]
 
 export default function Perfil() {
     return(
@@ -38,7 +35,7 @@ export default function Perfil() {
                 <div className="mt-[-200px] flex justify-end px-30">
                     <button 
                     type="submit"
-                    className="bg-[#6A38F3] h-[46px] w-[324px] rounded-4xl shadow-md shadow-gray-500 hover:bg-purple-700">
+                    className="bg-[#6A38F3] h-[46px] w-[324px] rounded-4xl shadow-md shadow-gray-500 hover:bg-purple-700 cursor-pointer">
                         <p className="text-white text-xl">Editar Perfil</p>
                     </button>
                 </div>
@@ -92,7 +89,7 @@ export default function Perfil() {
                         <button 
                             type="button"
                             aria-label="Adicionar loja"
-                            className="mr-30 flex h-10 w-10 items-center justify-center rounded-full bg-[#6C3CF5] text-white transition hover:brightness-110 active:scale-95"
+                            className="mr-30 flex h-10 w-10 items-center justify-center cursor-pointer rounded-full bg-[#6C3CF5] text-white transition hover:brightness-110 active:scale-95"
                         >
                             <Plus size={30} strokeWidth={2.5} />
 
@@ -103,19 +100,19 @@ export default function Perfil() {
                         {lojas.map((loja) => (
                             <article
                                 key={loja.nome}
-                                className="flex w-[400px] shrink-0 snap-start items-center justify-between rounded-3xl bg-white p-6"
+                                className="flex w-[480px] h-38 shrink-0 snap-start items-center justify-between rounded-3xl bg-white p-6"
                             >
                                 <div> 
-                                    <h3 className="text-3xl text-[#000000] font-light leading-tight">{loja.nome}</h3>
-                                    <p className="text-2xl text-[#6C3BFF] font-semibold">{loja.categoria}</p>
+                                    <h3 className="ml-3 font-sans text-4xl text-[#000000] font-light leading-tight">{loja.nome}</h3>
+                                    <p className="ml-3 font-sans text-3xl text-[#6C3BFF] font-semibold">{loja.categoria}</p>
                                 </div>
 
                                 <Image
                                     src={loja.logo}
                                     alt={loja.nome}
-                                    width={76}
-                                    height={76}
-                                    className="h-[76px] w-[76px] shrink-0 rounded-full object-contain scale-125"
+                                    width={90}
+                                    height={90}
+                                    className="h-[90px] w-[90px] mr-5 shrink-0 rounded-full object-contain scale-125"
                                 />
                             </article>
                         ))}
@@ -123,8 +120,35 @@ export default function Perfil() {
                 </section>
 
                 <section className="px-5 mt-10">
-                    <div className="flex items-center justify-between">
+                    <div className=" mb-5 flex items-center justify-between">
                         <h2 className=" ml-24 text-[#000000] text-3xl font-semibold">Avaliações</h2>
+                    </div>
+                    <div className="flex items-center ml-24 mb-20 bg-white w-220 h-50 rounded-3xl">
+                        <div className=" flex items-center ml-8 w-40">
+                            <Image
+                                src="/images/selena.svg"
+                                alt="foto de perfil"
+                                width={230}
+                                height={230}
+                            />
+                        </div>
+                        <div className="ml-5 mb-18 flex flex-col justify-start">
+                            <h1 className="font-sans text-[#000000] text-xl font-medium">Selena Gomez</h1>
+                            <p className="font-sans mt-2 text-lg text-gray-600">Não é por nada não, mas essa garota arrasa</p>
+                        </div>
+                        <div className="flex shrink-0 flex-col items-end justify-between">
+                            <div className="flex gap-1 ml-25 mb-18 mt-3">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                    <Star key={i} className="h-8 w-8 fill-yellow-300 text-yellow-300"/>
+                                ))}
+                            </div>
+                            <button 
+                                type="button"
+                                className="mt-5 mr-3 text-[#6A38F3] cursor-pointer hover:underline">
+                                ver mais
+                            </button>
+                        </div>
+                            
                     </div>
                 </section>
         </main>
