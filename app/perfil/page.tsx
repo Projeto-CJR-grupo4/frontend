@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Plus, Star } from "lucide-react"
+import { ChevronLeft, Plus, Star } from "lucide-react"
 
 const produtos = [
     { nome: "Bronzer", preco: 254.99, disponivel: true, img: "/images/bronzer.svg" },
@@ -19,8 +19,16 @@ const lojas = [
 export default function Perfil() {
     return(
         <main className="bg-[#F6F3E4]">
-                <div className="bg-[#000000] h-[357.25px] mt-[79.88px]"></div>
-                <div className="h-[230px] w-[230px] bg-white mt-[-150px] ml-[180px] rounded-full">
+                <div className="relative bg-[#000000] h-[357.25px] mt-[79.88px]">
+                    <button
+                        type="button"
+                        aria-label="Voltar"
+                        className="absolute left-20 top-[235px] cursor-pointer text-white transition hover:opacity-70 active:scale-95"
+                    >
+                        <ChevronLeft size={100}/>
+                    </button>
+                </div>
+                <div className="relative z-10 h-[230px] w-[230px] bg-white mt-[-170px] ml-[180px] rounded-full">
                     <Image
                         src="/images/selena.svg"
                         alt="foto de perfil"
@@ -32,7 +40,7 @@ export default function Perfil() {
                 <h2 className="text-gray-400 text-2xl ml-[180px] mt-3" >@ selenagomez</h2>
                 <h3 className="text-gray-400 text-2xl ml-[180px] mt-3">selenamariegomez@rare.com</h3> 
                 
-                <div className="mt-[-200px] flex justify-end px-30">
+                <div className="mt-[-190px] flex justify-end px-30">
                     <button 
                     type="submit"
                     className="bg-[#6A38F3] h-[46px] w-[324px] rounded-4xl shadow-md shadow-gray-500 hover:bg-purple-700 cursor-pointer">
@@ -40,7 +48,7 @@ export default function Perfil() {
                     </button>
                 </div>
 
-                <section className="px-5 py-51">
+                <section className="px-5 py-48">
                     <div className="mb-8 flex items-center justify-between">
                         <h2 className="ml-24 text-[#000000] text-3xl font-semibold">Produtos</h2>
                         <a href="#" className="mr-30 text-sm font-bold text-[#6A38F3] hover:underline">
@@ -83,7 +91,7 @@ export default function Perfil() {
                     </div>
                 </section>
 
-                <section className="px-5 mt-[-140px]">
+                <section className="px-5 mt-[-145px]">
                     <div className=" mb-100 flex items-center justify-between">
                         <h2 className="ml-24 text-[#000000] text-3xl font-semibold">Lojas</h2>
                         <button 
