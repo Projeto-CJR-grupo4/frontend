@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image"
 import { ChevronLeft, Plus, Star } from "lucide-react"
 import Navbar from "@/components/Navbar";
+import { getStores, Store } from "@/lib/profile";
 
 type Profile = {
     id: number;
@@ -25,14 +26,10 @@ const produtos = [
     { nome: "Primer", preco: 259.90, disponivel: true, img: "/images/primer.svg" },
 ];
 
-const lojas = [
-    { nome: "Rare Beauty", categoria:"beleza", logo: "/images/selo_rare.svg" }
-];
-
-
 export default function Perfil() {
     const [profile, setProfile] = useState<Profile | null>(null);
     const [error, setError] = useState('');
+    const [stores, setStores] = useState<Store[]>([]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -41,12 +38,24 @@ export default function Perfil() {
             headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
-            if(!res.ok) throw new Error('Erro ${res.status}');
+            if(!res.ok) throw new Error(`Erro ${res.status}`);
             return res.json();
         })
         .then(setProfile)
         .catch((e) => setError(e.message));
     }, []);
+
+    useEffect(() => {
+        if(!profile) return;
+
+        Promise.all([
+            getStores(profile.id),
+        ])
+            .then(([s]) => {
+                setStores(s);
+            })
+            .catch((e) => console.error(e));
+    }, [profile] );
 
     if(error) return <p>{error}</p>;
     if(!profile) return <p>Carregando...</p>;
@@ -144,23 +153,25 @@ export default function Perfil() {
                     </div>
 
                     <div className="mt-[-370px] ml-24 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                        {lojas.map((loja) => (
+                        {stores.map((loja) => (
                             <article
-                                key={loja.nome}
+                                key={loja.id}
                                 className="flex w-[480px] h-38 shrink-0 snap-start items-center justify-between rounded-3xl bg-white p-6"
                             >
                                 <div> 
-                                    <h3 className="ml-3 font-sans text-4xl text-[#000000] font-light leading-tight">{loja.nome}</h3>
-                                    <p className="ml-3 font-sans text-3xl text-[#6C3BFF] font-semibold">{loja.categoria}</p>
+                                    <h3 className="ml-3 font-sans text-4xl text-[#000000] font-light leading-tight">{loja.name}</h3>
+                                    <p className="ml-3 font-sans text-3xl text-[#6C3BFF] font-semibold">{loja.category.name}</p>
                                 </div>
 
-                                <Image
-                                    src={loja.logo}
-                                    alt={loja.nome}
+                            {loja.logo_url && (
+                                <img
+                                    src={loja.logo_url}
+                                    alt={loja.name}
                                     width={90}
                                     height={90}
                                     className="h-[90px] w-[90px] mr-5 shrink-0 rounded-full object-contain scale-125"
                                 />
+                            )}        
                             </article>
                         ))}
                     </div>
