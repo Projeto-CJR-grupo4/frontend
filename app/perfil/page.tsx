@@ -37,11 +37,11 @@ export default function Perfil() {
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/me`, {
             headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
-            if(!res.ok) throw new Error('Não autorizado');
+            if(!res.ok) throw new Error('Erro ${res.status}');
             return res.json();
         })
         .then(setProfile)
@@ -50,6 +50,10 @@ export default function Perfil() {
 
     if(error) return <p>{error}</p>;
     if(!profile) return <p>Carregando...</p>;
+
+    const avatar = profile.profile_picture_url?.startsWith('http')
+    ? profile.profile_picture_url
+    : '/default-avatar.png';
 
     return(
         <main className="bg-[#F6F3E4]">
@@ -60,20 +64,20 @@ export default function Perfil() {
                     </a>
                 </div>
                 <div className="relative z-10 h-[230px] w-[230px] bg-white mt-[-170px] ml-[180px] rounded-full">
-                    <Image
-                        src={profile.profile_picture_url ?? '/default-avatar.png'}
+                    <img
+                        src={avatar}
                         alt="foto de perfil"
                         width={230}
                         height={230}
                     />
                 </div>
-                <h1 className="text-[#000000] text-5xl ml-[180px] mt-4 font-bold">Selena Gomez</h1>
+                <h1 className="text-[#000000] text-5xl ml-[180px] mt-4 font-bold">{profile.name}</h1>
                 
-                <h2 className="text-gray-400 text-2xl ml-[180px] mt-3" >@ selenagomez</h2>
+                <h2 className="text-gray-400 text-2xl ml-[180px] mt-3" >@ {profile.username}</h2>
 
                 <div className="ml-[180px] mt-3 flex items-center gap-2">
                   <Image src="/images/email-icon.svg" alt="" width={24} height={24} />
-                  <h3 className="text-2xl text-gray-400">selenamariegomez@rare.com</h3>
+                  <h3 className="text-2xl text-gray-400">{profile.email}</h3>
                 </div>
 
                 <div className="mt-[-190px] flex justify-end px-30">
