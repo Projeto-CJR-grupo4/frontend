@@ -1,6 +1,19 @@
+'use client';
+
+import { useEffect, useState } from "react";
 import Image from "next/image"
 import { ChevronLeft, Plus, Star } from "lucide-react"
 import Navbar from "@/components/Navbar";
+
+type Profile = {
+    id: number;
+    name: string;
+    username: string;
+    email: string;
+    profile_picture_url: string | null;
+    createdAt: string;
+    updatedAt: string;
+};
 
 const produtos = [
     { nome: "Bronzer", preco: 254.99, disponivel: true, img: "/images/bronzer.svg" },
