@@ -31,6 +31,26 @@ const lojas = [
 
 
 export default function Perfil() {
+    const [profile, setProfile] = useState<Profile | null>(null);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+            if(!res.ok) throw new Error('Não autorizado');
+            return res.json();
+        })
+        .then(setProfile)
+        .catch((e) => setError(e.message));
+    }, []);
+
+    if(error) return <p>{error}</p>;
+    if(!profile) return <p>Carregando...</p>;
+
     return(
         <main className="bg-[#F6F3E4]">
             <Navbar />
@@ -41,7 +61,7 @@ export default function Perfil() {
                 </div>
                 <div className="relative z-10 h-[230px] w-[230px] bg-white mt-[-170px] ml-[180px] rounded-full">
                     <Image
-                        src="/images/selena.svg"
+                        src={profile.profile_picture_url ?? '/default-avatar.png'}
                         alt="foto de perfil"
                         width={230}
                         height={230}
