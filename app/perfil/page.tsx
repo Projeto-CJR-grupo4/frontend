@@ -67,8 +67,7 @@ export default function Perfil() {
                     <img
                         src={avatar}
                         alt="foto de perfil"
-                        width={230}
-                        height={230}
+                        className="h-full w-full rounded-full object-cover"
                     />
                 </div>
                 <h1 className="text-[#000000] text-5xl ml-[180px] mt-4 font-bold">{profile.name}</h1>
