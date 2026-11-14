@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image"
 import { ChevronLeft, Plus, Star } from "lucide-react"
 import Navbar from "@/components/Navbar";
-import { getStores, Store } from "@/lib/profile";
+import { getProducts, getStores, Store, Product } from "@/lib/profile";
 
 type Profile = {
     id: number;
@@ -16,20 +16,12 @@ type Profile = {
     updatedAt: string;
 };
 
-const produtos = [
-    { nome: "Bronzer", preco: 254.99, disponivel: true, img: "/images/bronzer.svg" },
-    { nome: "Blush", preco: 199.99, disponivel: false, img: "/images/blush.svg" },
-    { nome: "Perfume Rare", preco: 599.90, disponivel: true, img: "/images/perfume_rare.svg" },
-    { nome: "Iluminador", preco: 249.99, disponivel: true, img: "/images/iluminador.svg" },
-    { nome: "Mini Blush", preco: 99.99, disponivel: false, img: "/images/mini_blush.svg" },
-    { nome: "Lapis Labial", preco: 139.90, disponivel: true, img: "/images/lapis_labial.svg" },
-    { nome: "Primer", preco: 259.90, disponivel: true, img: "/images/primer.svg" },
-];
 
 export default function Perfil() {
     const [profile, setProfile] = useState<Profile | null>(null);
     const [error, setError] = useState('');
     const [stores, setStores] = useState<Store[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -50,9 +42,11 @@ export default function Perfil() {
 
         Promise.all([
             getStores(profile.id),
+            getProducts(profile.id),
         ])
-            .then(([s]) => {
+            .then(([s, p]) => {
                 setStores(s);
+                setProducts(p);
             })
             .catch((e) => console.error(e));
     }, [profile] );
@@ -105,37 +99,47 @@ export default function Perfil() {
                     </div>
 
                     <div className="flex gap-6 ml-25 overflow-x-auto snap-x snap-mandatory pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                            {produtos.map((p) =>(
+                            {products.length === 0 && (
+                                <p className="ml-24 text-gray-600">Nenhum produto cadastrado.</p>
+                            )}
+                            {products.map((p) => {
+                                const disponivel = p.stock > 0;
+                                return (
                                 <article 
-                                    key={p.nome}
+                                    key={p.id}
                                     className="relative w-[182px] shrink-0 snap-start rounded-[2rem] bg-white p-4 pt-3"
                                 >
-                                    <div className="flex h-[160px] items-center justify-center">
-                                        <img src={p.img} alt={p.nome} className="h-full  object-contain scale-110" />
+                                    <div className="flex h-[160px] items-center justify-center">    
+                                        <img 
+                                        src={p.images[0]?.image_url ?? "/images/placeholder.svg"} 
+                                        alt={p.name} 
+                                        className="h-full w-full object-contain scale-110" />
                                     </div>
-                                    <div className="absolute right-2 top-3 flex h-14 w-14 items-center justify-center rounded-full bg-[#FDF1EC]">
-                                        <Image
-                                            src="/images/selo_rare.svg"
-                                            alt="Rare Beauty"
-                                            width={64}
-                                            height={64}
+
+                                    {p.store.logo_url && (
+                                    <div className="absolute right-2 top-3 flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-[#FDF1EC]">
+                                        <img
+                                            src={p.store.logo_url}
+                                            alt={p.store.name}
                                             className="h-full w-full object-contain scale-125"
                                         />
                                     </div>
+                                    )}
 
-                                    <h3 className="mt-6 text-xl text-[#000000] font-semibold">{p.nome}</h3>
+                                    <h3 className="mt-6 text-xl text-[#000000] font-semibold">{p.name}</h3>
                                     <p className="text-xl text-[#000000] font-semibold">
-                                        {p.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                                        {Number(p.price).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                                     </p>
                                     <span
                                         className={`text-xs font-semibold uppercase ${
-                                            p.disponivel? "text-lime-500" : "text-red-500"
+                                            disponivel ? "text-lime-500" : "text-red-500"
                                         }`}
                                     >
-                                        {p.disponivel ? "Disponível" : "Indisponível"}
+                                        {disponivel ? "Disponível" : "Indisponível"}
                                     </span>
                                 </article>
-                                ))}
+                                );
+                            })}
                     </div>
                 </section>
 
