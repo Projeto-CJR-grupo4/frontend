@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image"
 import { ChevronLeft, Plus, Star } from "lucide-react"
 import Navbar from "@/components/Navbar";
-import { getProducts, getStores, Store, Product } from "@/lib/profile";
+import { getProducts, getStores, getStoreReviews, getProductReviews, Store, Product, StoreReview, ProductReview } from "@/lib/profile";
+import ReviewsCarousel from "@/components/ReviewCarousel";
 
 type Profile = {
     id: number;
@@ -22,6 +23,8 @@ export default function Perfil() {
     const [error, setError] = useState('');
     const [stores, setStores] = useState<Store[]>([]);
     const [products, setProducts] = useState<Product[]>([]);
+    const [storeReviews, setStoreReviews] = useState<StoreReview[]>([]);
+    const [productReviews, setProductReviews] = useState<ProductReview[]>([]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -40,15 +43,18 @@ export default function Perfil() {
     useEffect(() => {
         if(!profile) return;
 
-        Promise.all([
+        Promise.allSettled([
             getStores(profile.id),
             getProducts(profile.id),
+            getStoreReviews(profile.id),
+            getProductReviews(profile.id),
         ])
-            .then(([s, p]) => {
-                setStores(s);
-                setProducts(p);
-            })
-            .catch((e) => console.error(e));
+            .then(([s, p, sr, pr]) => {
+                if(s.status === 'fulfilled') setStores(s.value); else console.error(s.reason);
+                if(p.status === 'fulfilled') setProducts(p.value); else console.error(p.reason);
+                if(sr.status === 'fulfilled') setStoreReviews(sr.value); else console.error(sr.reason);
+                if(pr.status === 'fulfilled') setProductReviews(pr.value); else console.error(pr.reason);
+            });
     }, [profile] );
 
     if(error) return <p>{error}</p>;
