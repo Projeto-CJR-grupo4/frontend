@@ -16,6 +16,14 @@ export type Product = {
     store: { id: number; name: string; logo_url: string | null };
 };
 
+export type StoreReview = {
+    id: number;
+    rating: number;
+    comment: string | null;
+    createdAt: string;
+    store: { id: number; name: string }
+};
+
 async function get<T>(path: string): Promise <T> {
     const token = localStorage.getItem('token');
     const res = await fetch(`${API}${path}`, {
@@ -27,3 +35,4 @@ async function get<T>(path: string): Promise <T> {
 
 export const getStores = (userId: number) => get<Store[]>(`/lojas?userId=${userId}`);
 export const getProducts = (userId: number) => get<Product[]>(`/produtos?userId=${userId}`);
+export const getStoreReviews = (userId: number) => get<StoreReview[]>(`/store-rating?userId=${userId}`);
