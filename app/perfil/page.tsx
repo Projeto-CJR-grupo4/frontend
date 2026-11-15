@@ -217,6 +217,7 @@ export default function Perfil() {
                             rating: r.rating,
                             comment: r.comment,
                             targetName: r.product.name,
+                            subtitle: `da ${r.product.store.name}`,
                         }))}
                     />
                 </div>

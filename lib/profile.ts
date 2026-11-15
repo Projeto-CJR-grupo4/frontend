@@ -29,7 +29,7 @@ export type ProductReview = {
     rating: number;
     comment: string | null;
     createdAt: string;
-    product: { id: number; name: string };
+    product: { id: number; name: string; store: { id: number; name: string } };
 };
 
 async function get<T>(path: string): Promise <T> {

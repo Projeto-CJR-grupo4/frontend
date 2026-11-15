@@ -5,6 +5,7 @@ export type ReviewItem = {
     rating: number;
     comment: string | null;
     targetName: string;
+    subtitle?: string;
 };
 
 type Propriedades = {
@@ -48,6 +49,9 @@ export default function ReviewsCarousel({ title, avatar, userName, prefix, empty
                                 <h3 className="truncate font-sans text-lg font-medium text-[#000000]">
                                     {r.targetName}
                                 </h3>
+                                {r.subtitle && (
+                                    <p className="truncate text-sm text-gray-500">{r.subtitle}</p>
+                                )}
                             </div>
                         </div>
 
