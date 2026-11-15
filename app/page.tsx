@@ -1,8 +1,8 @@
 import Image from "next/image";
 import SecaoProdutos from "@/components/SecaoProdutos";
-import CategoriaCard from "@/components/CategoriaCard";
 import Navbar from "@/components/Navbar";
 import SecaoLojas from "@/components/SecaoLojas";
+import CategoriasFeed from "@/components/CategoriasFeed";
 const categorias = [
   {
     id: 1,
@@ -273,13 +273,7 @@ export default function Home() {
           Categoria
         </h2>
         <div className="mt-10 flex w-full max-w-330 gap-16 overflow-x-auto">
-          {categorias.map((categoria) => (
-            <CategoriaCard
-              key={categoria.id}
-              nome={categoria.nome}
-              icone={categoria.icone}
-            />
-          ))}
+          <CategoriasFeed />
         </div>
       </section>
       <SecaoProdutos
