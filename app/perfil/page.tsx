@@ -106,7 +106,7 @@ export default function Perfil() {
 
                     <div className="flex gap-6 ml-25 overflow-x-auto snap-x snap-mandatory pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                             {products.length === 0 && (
-                                <p className="ml-24 text-gray-600">Nenhum produto cadastrado.</p>
+                                <p className="text-gray-600">Nenhum produto cadastrado.</p>
                             )}
                             {products.map((p) => {
                                 const disponivel = p.stock > 0;
@@ -163,6 +163,9 @@ export default function Perfil() {
                     </div>
 
                     <div className="mt-[-370px] ml-24 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                        {stores.length === 0 && (
+                                <p className="text-gray-600">Nenhuma loja cadastrada.</p>
+                            )}
                         {stores.map((loja) => (
                             <article
                                 key={loja.id}
