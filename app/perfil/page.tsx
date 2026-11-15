@@ -187,36 +187,35 @@ export default function Perfil() {
                     </div>
                 </section>
 
-                <section className="px-5 mt-10">
-                    <div className=" mb-5 flex items-center justify-between">
-                        <h2 className=" ml-24 text-[#000000] text-3xl font-semibold">Avaliações</h2>
-                    </div>
-                    <div className="flex items-center ml-24 mb-20 bg-white w-220 h-50 rounded-3xl">
-                        <div className=" flex items-center ml-8 w-40">
-                            <Image
-                                src="/images/selena.svg"
-                                alt="foto de perfil"
-                                width={230}
-                                height={230}
-                            />
-                        </div>
-                        <div className="ml-5 mb-18 flex flex-col justify-start">
-                            <h1 className="font-sans text-[#000000] text-xl font-medium">Selena Gomez</h1>
-                            <p className="font-sans mt-2 text-lg text-gray-600">Não é por nada não, mas essa garota arrasa</p>
-                        </div>
-                        <div className="flex shrink-0 flex-col items-end justify-between">
-                            <div className="flex gap-1 ml-25 mb-18 mt-3">
-                                {Array.from({ length: 5 }).map((_, i) => (
-                                    <Star key={i} className="h-8 w-8 fill-yellow-300 text-yellow-300"/>
-                                ))}
-                            </div>
-                            <a href="#" className="mt-5 mr-3 text-[#6A38F3] cursor-pointer hover:underline">
-                                ver mais
-                            </a>
-                        </div>
-                            
-                    </div>
-                </section>
+                <div className="pb-20">
+                    <ReviewsCarousel
+                        title="Avaliações de lojas"
+                        avatar={avatar}
+                        userName={profile.name}
+                        prefix="avaliou a loja"
+                        emptyText="Ainda não há avaliações de lojas."
+                        items={storeReviews.map((r) => ({
+                            id: r.id,
+                            rating: r.rating,
+                            comment: r.comment,
+                            targetName: r.store.name,
+                        }))}
+                    />
+
+                    <ReviewsCarousel
+                        title="Avaliações de produtos"
+                        avatar={avatar}
+                        userName={profile.name}
+                        prefix="avaliou o produto"
+                        emptyText="Ainda não há avaliações de produtos."
+                        items={productReviews.map((r) => ({
+                            id: r.id,
+                            rating: r.rating,
+                            comment: r.comment,
+                            targetName: r.product.name,
+                        }))}
+                    />
+                </div>
         </main>
     )
 }

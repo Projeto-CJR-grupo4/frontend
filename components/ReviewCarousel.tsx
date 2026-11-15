@@ -27,12 +27,11 @@ export default function ReviewsCarousel({ title, avatar, userName, prefix, empty
                 {items.length === 0 && (
                     <p className="text-gray-600">{emptyText}</p>
                 )}
-            </div>
 
             {items.map((r) =>(
                 <article
                     key={r.id}
-                    className="flex min-h-[180px] w-[420px] shrink-0 snap-start flex-col rounded-3xl bg-white p6"
+                    className="flex min-h-[180px] w-[480px] shrink-0 snap-start flex-col rounded-3xl bg-white p-6"
                 >
                     <div className="flex items-center justify-between gap-4">
                         <div className="flex min-w-0 items-center gap-4">
@@ -74,6 +73,7 @@ export default function ReviewsCarousel({ title, avatar, userName, prefix, empty
 
                 </article>
             ))}
+            </div>
         </section>
     );
 }
