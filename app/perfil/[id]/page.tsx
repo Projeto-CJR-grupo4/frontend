@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image"
+import { useParams } from "next/navigation";
 import { ChevronLeft, Plus, Star } from "lucide-react"
 import Navbar from "@/components/Navbar";
+import { userViewer } from "@/hooks/userViewer";
 import { getProducts, getStores, getStoreReviews, getProductReviews, Store, Product, StoreReview, ProductReview } from "@/lib/profile";
 import ReviewsCarousel from "@/components/ReviewCarousel";
 
@@ -19,6 +21,9 @@ type Profile = {
 
 
 export default function Perfil() {
+    const { id } = useParams<{ id: string }>();
+    const { viewer } = userViewer();
+
     const [profile, setProfile] = useState<Profile | null>(null);
     const [error, setError] = useState('');
     const [stores, setStores] = useState<Store[]>([]);
@@ -27,18 +32,15 @@ export default function Perfil() {
     const [productReviews, setProductReviews] = useState<ProductReview[]>([]);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
 
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/me`, {
-            headers: { Authorization: `Bearer ${token}` },
-        })
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${id}/public`)
         .then((res) => {
             if(!res.ok) throw new Error(`Erro ${res.status}`);
             return res.json();
         })
         .then(setProfile)
         .catch((e) => setError(e.message));
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         if(!profile) return;
@@ -59,6 +61,8 @@ export default function Perfil() {
 
     if(error) return <p>{error}</p>;
     if(!profile) return <p>Carregando...</p>;
+
+    const ehDono = viewer !== null && viewer.id === profile.id;
 
     const url = profile.profile_picture_url;
     const avatar = url && (url.startsWith('http') || url.startsWith('/')) 
@@ -89,12 +93,14 @@ export default function Perfil() {
                   <h3 className="text-2xl text-gray-400">{profile.email}</h3>
                 </div>
 
-                <div className="mt-[-190px] flex justify-end px-30">
+                <div className="mt-[-190px] flex h-[46px] justify-end px-30">
+                    {ehDono && (
                     <button 
                     type="submit"
                     className="bg-[#6A38F3] h-[46px] w-[324px] rounded-4xl shadow-md shadow-gray-500 hover:bg-purple-700 cursor-pointer">
                         <p className="text-white text-xl">Editar Perfil</p>
                     </button>
+                    )}
                 </div>
 
                 <section className="px-5 py-48">
@@ -151,8 +157,10 @@ export default function Perfil() {
                 </section>
 
                 <section className="px-5 mt-[-145px]">
-                    <div className=" mb-100 flex items-center justify-between">
+                    <div className=" mb-100 flex min-h-10 items-center justify-between">
                         <h2 className="ml-24 text-[#000000] text-3xl font-semibold">Lojas</h2>
+
+                    {ehDono && (
                         <button 
                             type="button"
                             aria-label="Adicionar loja"
@@ -160,7 +168,8 @@ export default function Perfil() {
                         >
                             <Plus size={30} strokeWidth={2.5} />
 
-                            </button>
+                        </button>
+                    )}
                     </div>
 
                     <div className="mt-[-370px] ml-24 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
