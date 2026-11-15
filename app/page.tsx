@@ -1,7 +1,7 @@
 import Image from "next/image";
-import SecaoProdutos from "@/components/SecaoProdutos";
 import Navbar from "@/components/Navbar";
 import SecaoLojas from "@/components/SecaoLojas";
+import ProdutosFeed from "@/components/ProdutosFeed";
 import CategoriasFeed from "@/components/CategoriasFeed";
 const categorias = [
   {
@@ -43,134 +43,6 @@ const categorias = [
     id: 8,
     nome: "Casa",
     icone: "/categorias/casa.svg"
-  }
-];
-const produtosMercado = [
-  {
-    id: 1,
-    nome: "Brownie Meio A.",
-    imagem: "/produtos/brownie-meio-amargo.png",
-    logo: "/lojas/cjr.svg",
-    preco: "R$4,70",
-    disponivel: true
-  },
-  {
-    id: 2,
-    nome: "Brownie Trad.",
-    imagem: "/produtos/brownie-tradicional.png",
-    logo: "/lojas/cjr.svg",
-    preco: "R$3,80",
-    disponivel: false
-  },
-  {
-    id: 4,
-    nome: "Banana",
-    imagem: "/produtos/banana.png",
-    logo: "/lojas/maumar.svg",
-    preco: "R$3,99",
-    disponivel: true,
-    porKg: true
-  },
-  {
-    id: 5,
-    nome: "Limão Siciliano",
-    imagem: "/produtos/limao-siciliano.png",
-    logo: "/lojas/maumar.svg",
-    preco: "R$17,99",
-    disponivel: false,
-    porKg: true
-  },
-  {
-    id: 6,
-    nome: "Redbull",
-    imagem: "/produtos/redbull.png",
-    logo: "/lojas/cjr.svg",
-    preco: "R$5,41",
-    disponivel: true
-  }
-];
-const produtosBeleza = [
-  {
-    id: 1,
-    nome: "Limpador Facial",
-    imagem: "/produtos/limpador-facial.png",
-    logo: "/lojas/creamy.svg",
-    preco: "R$74,99",
-    disponivel: true
-  },
-  {
-    id: 2,
-    nome: "Blush",
-    imagem: "/produtos/blush.png",
-    logo: "/lojas/rare-beauty.svg",
-    preco: "R$199,99",
-    disponivel: false
-  },
-  {
-    id: 3,
-    nome: "Sérum Facial",
-    imagem: "/produtos/serum-facial.png",
-    logo: "/lojas/creamy.svg",
-    preco: "R$99,90",
-    disponivel: true
-  },
-  {
-    id: 4,
-    nome: "Iluminador",
-    imagem: "/produtos/iluminador.png",
-    logo: "/lojas/rare-beauty.svg",
-    preco: "R$249,90",
-    disponivel: true
-  },
-  {
-    id: 5,
-    nome: "Body Splash",
-    imagem: "/produtos/body-splash.png",
-    logo: "/lojas/roots.svg",
-    preco: "R$179,99",
-    disponivel: false
-  }
-];
-const produtosModa = [
-  {
-    id: 1,
-    nome: "Saia",
-    imagem: "/produtos/saia.png",
-    logo: "/lojas/melina.svg",
-    preco: "R$75,99",
-    disponivel: true
-  },
-  {
-    id: 2,
-    nome: "New Balance",
-    imagem: "/produtos/newbalance.png",
-    logo: "/lojas/footshop.svg",
-    preco: "R$399,99",
-    disponivel: false
-  },
-  {
-    id: 3,
-    nome: "Bota",
-    imagem: "/produtos/bota.png",
-    logo: "/lojas/footshop.svg",
-    preco: "R$115,90",
-    disponivel: true
-  },
-  {
-    id: 4,
-    nome: "Bolsa",
-    imagem: "/produtos/bolsa.png",
-    logo: "/lojas/melina.svg",
-    preco: "R$349,90",
-    disponivel: true
-  },
-  {
-    id: 5,
-    nome: "Calça Jeans",
-    imagem: "/produtos/calca-jeans.png",
-    logo: "/lojas/melina.svg",
-    preco: "R$159,99",
-    disponivel: false
   }
 ];
 const lojas = [
@@ -276,18 +148,8 @@ export default function Home() {
           <CategoriasFeed />
         </div>
       </section>
-      <SecaoProdutos
-        categoria="Mercado"
-        produtos={produtosMercado}
-      />
-      <SecaoProdutos
-        categoria="Beleza"
-        produtos={produtosBeleza}
-      />
-      <SecaoProdutos
-        categoria="Moda"
-        produtos={produtosModa}
-      />
+      <ProdutosFeed />
+
       <SecaoLojas
         lojas={lojas}
         categorias={categorias}
