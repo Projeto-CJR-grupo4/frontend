@@ -60,8 +60,9 @@ export default function Perfil() {
     if(error) return <p>{error}</p>;
     if(!profile) return <p>Carregando...</p>;
 
-    const avatar = profile.profile_picture_url?.startsWith('http')
-    ? profile.profile_picture_url
+    const url = profile.profile_picture_url;
+    const avatar = url && (url.startsWith('http') || url.startsWith('/')) 
+    ? url
     : '/default-avatar.png';
 
     return(
