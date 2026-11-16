@@ -1,100 +1,9 @@
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
-import SecaoLojas from "@/components/SecaoLojas";
 import ProdutosFeed from "@/components/ProdutosFeed";
+import LojasFeed from "@/components/LojasFeed";
 import CategoriasFeed from "@/components/CategoriasFeed";
-const categorias = [
-  {
-    id: 1,
-    nome: "Mercado",
-    icone: "/categorias/mercado.svg"
-  },
-  {
-    id: 2,
-    nome: "Farmácia",
-    icone: "/categorias/farmacia.svg"
-  },
-  {
-    id: 3,
-    nome: "Beleza",
-    icone: "/categorias/beleza.svg"
-  },
-  {
-    id: 4,
-    nome: "Moda",
-    icone: "/categorias/moda.svg"
-  },
-  {
-    id: 5,
-    nome: "Eletrônicos",
-    icone: "/categorias/eletronicos.svg"
-  },
-  {
-    id: 6,
-    nome: "Jogos",
-    icone: "/categorias/jogos.svg"
-  },
-  {
-    id: 7,
-    nome: "Brinquedos",
-    icone: "/categorias/brinquedos.svg"
-  },
-  {
-    id: 8,
-    nome: "Casa",
-    icone: "/categorias/casa.svg"
-  }
-];
-const lojas = [
-  {
-    id: 1,
-    nome: "CJR",
-    logo: "/lojas/cjr.svg",
-    categoria: "Mercado"
-  },
-  {
-    id: 2,
-    nome: "Rare Beauty",
-    logo: "/lojas/rare-beauty.svg",
-    categoria: "Beleza"
-  },
-  {
-    id: 3,
-    nome: "Creamy",
-    logo: "/lojas/creamy.svg",
-    categoria: "Beleza"
-  },
-  {
-    id: 4,
-    nome: "Maumar",
-    logo: "/lojas/maumar.svg",
-    categoria: "Mercado"
-  },
-  {
-    id: 5,
-    nome: "Melina",
-    logo: "/lojas/melina.svg",
-    categoria: "Moda"
-  },
-  {
-    id: 6,
-    nome: "Footshop",
-    logo: "/lojas/footshop.svg",
-    categoria: "Moda"
-  },
-  {
-    id: 7,
-    nome: "Roots",
-    logo: "/lojas/roots.svg",
-    categoria: "Beleza"
-  },
-  {
-    id: 8,
-    nome: "d'carts & baskets",
-    logo: "/lojas/dcarts-baskets.svg",
-    categoria: "Mercado"
-  }
-];
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#F6F3E4]">
@@ -149,11 +58,8 @@ export default function Home() {
         </div>
       </section>
       <ProdutosFeed />
-
-      <SecaoLojas
-        lojas={lojas}
-        categorias={categorias}
-      />
+      
+      <LojasFeed />
 
     </main>
   );

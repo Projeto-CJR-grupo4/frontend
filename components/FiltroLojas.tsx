@@ -4,8 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 type Categoria = {
     id: number;
-    nome: string;
-    icone: string;
+    name: string;
+    icon_url: string | null;
 };
 
 type FiltroLojasProps = {
@@ -20,19 +20,19 @@ export default function FiltroLojas({
     const [aberto, setAberto] = useState(false);
     const [selecionadas, setSelecionadas] = useState<string[]>([]);
     function alternarCategoria(nome: string) {
-    let atualizadas: string[];
+        let atualizadas: string[];
 
-    if (selecionadas.includes(nome)) {
-        atualizadas = selecionadas.filter(
-            (categoria) => categoria !== nome
-        );
-    } else {
-        atualizadas = [...selecionadas, nome];
+        if (selecionadas.includes(nome)) {
+            atualizadas = selecionadas.filter(
+                (categoria) => categoria !== nome
+            );
+        } else {
+            atualizadas = [...selecionadas, nome];
+        }
+
+        setSelecionadas(atualizadas);
+        onSelecionadasChange?.(atualizadas);
     }
-
-    setSelecionadas(atualizadas);
-    onSelecionadasChange?.(atualizadas);
-}
 
     return (
         <div className="relative w-full">
@@ -83,22 +83,24 @@ export default function FiltroLojas({
                         >
                             <input
                                 type="checkbox"
-                                value={categoria.nome}
-                                checked={selecionadas.includes(categoria.nome)}
-                                onChange={() => alternarCategoria(categoria.nome)}
+                                value={categoria.name}
+                                checked={selecionadas.includes(categoria.name)}
+                                onChange={() => alternarCategoria(categoria.name)}
                                 className="h-6 w-6 shrink-0 cursor-pointer accent-[#6A38F3]"
                             />
 
                             <span className="text-base">
-                                {categoria.nome}
+                                {categoria.name}
                             </span>
 
-                            <Image
-                                src={categoria.icone}
-                                alt=""
-                                width={18}
-                                height={18}
-                            />
+                            {categoria.icon_url && (
+                                <Image
+                                    src={categoria.icon_url}
+                                    alt=""
+                                    width={18}
+                                    height={18}
+                                />
+                            )}
                         </label>
                     ))}
 
