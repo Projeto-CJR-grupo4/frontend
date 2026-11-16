@@ -73,3 +73,12 @@ async function send<T>(method:'PATCH' | 'DELETE', path: string, body?: unknown):
     }
     return data as T;
 }
+
+export const updateMe = (data: {
+    name?: string;
+    username?: string;
+    email?: string;
+    profilePictureUrl?: string;
+}) => send<User>('PATCH', '/user/me', data);
+
+export const deleteMe = () => send<unknown>('DELETE', '/user/me');
