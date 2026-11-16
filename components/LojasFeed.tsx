@@ -17,8 +17,11 @@ type Categoria = {
     name: string;
     icon_url: string | null;
 };
+type LojasFeedProps = {
+    pesquisa: string;
+};
 
-export default function LojasFeed() {
+export default function LojasFeed({ pesquisa }: LojasFeedProps) {
     const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [lojas, setLojas] = useState<Loja[]>([]);
 
@@ -43,11 +46,13 @@ export default function LojasFeed() {
         buscarLojas();
         buscarCategorias();
     }, []);
-    
-   return (
-    <SecaoLojas
-        lojas={lojas}
-        categorias={categorias}
-    />
-);
+    const lojasFiltradas = lojas.filter((loja) =>
+        loja.name.toLowerCase().includes(pesquisa.trim().toLowerCase())
+    );
+    return (
+        <SecaoLojas
+            lojas={lojasFiltradas}
+            categorias={categorias}
+        />
+    );
 }

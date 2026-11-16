@@ -79,7 +79,7 @@ export default function SecaoLojas({
 
             {lojasFiltradas.length === 0 && (
                 <p className="mt-6 text-black">
-                    Nenhuma loja encontrada para as categorias selecionadas.
+                    Nenhuma loja encontrada.
                 </p>
             )}
 

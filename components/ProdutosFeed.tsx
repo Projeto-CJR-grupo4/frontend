@@ -24,7 +24,10 @@ type Produto = {
         name: string;
     };
 };
-export default function ProdutosFeed() {
+type ProdutosFeedProps = {
+    pesquisa: string;
+};
+export default function ProdutosFeed({ pesquisa }: ProdutosFeedProps) {
     const [produtos, setProdutos] = useState<Produto[]>([]);
 
     useEffect(() => {
@@ -40,13 +43,22 @@ export default function ProdutosFeed() {
 
         buscarProdutos();
     }, []);
+    const produtosFiltrados = produtos.filter((produto) =>
+        produto.name.toLowerCase().includes(pesquisa.trim().toLowerCase())
+    );
     const idsCategorias = [
-        ...new Set(produtos.map((produto) => produto.category.id))
+        ...new Set(produtosFiltrados.map((produto) => produto.category.id))
     ];
     return (
         <>
+            {pesquisa.trim() !== "" && produtosFiltrados.length === 0 && (
+                <p className="mx-auto max-w-360 px-6 pt-16 text-black lg:px-18">
+                    Nenhum produto encontrado.
+                </p>
+            )}
+
             {idsCategorias.map((idCategoria) => {
-                const produtosDaCategoria = produtos.filter(
+                const produtosDaCategoria = produtosFiltrados.filter(
                     (produto) => produto.category.id === idCategoria
                 );
 

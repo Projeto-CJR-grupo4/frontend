@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import ProdutosFeed from "@/components/ProdutosFeed";
@@ -5,6 +8,8 @@ import LojasFeed from "@/components/LojasFeed";
 import CategoriasFeed from "@/components/CategoriasFeed";
 
 export default function Home() {
+  const [pesquisa, setPesquisa] = useState("");
+
   return (
     <main className="min-h-screen bg-[#F6F3E4]">
       <Navbar />
@@ -34,7 +39,9 @@ export default function Home() {
             <input
               type="search"
               placeholder="Procurar por..."
-              aria-label="Pesquisar produtos"
+              aria-label="Pesquisar produtos e lojas"
+              value={pesquisa}
+              onChange={(e) => setPesquisa(e.target.value)}
               className="w-full rounded-full bg-white px-6 py-3 pr-14 text-black placeholder:text-[#B496FF] outline-none focus:ring-2 focus:ring-[#6A38F3]"
             />
 
@@ -57,9 +64,9 @@ export default function Home() {
           <CategoriasFeed />
         </div>
       </section>
-      <ProdutosFeed />
-      
-      <LojasFeed />
+      <ProdutosFeed pesquisa={pesquisa} />
+
+      <LojasFeed pesquisa={pesquisa} />
 
     </main>
   );
