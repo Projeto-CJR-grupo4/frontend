@@ -2,11 +2,11 @@ import ProdutoCard from "./ProdutoCard";
 
 type Produto = {
     id: number;
-    nome: string;
-    imagem: string;
-    logo: string;
-    preco: string;
-    disponivel: boolean;
+    name: string;
+    image_url: string | null;
+    logo_url: string | null;
+    price: string;
+    stock: number;
     porKg?: boolean;
 };
 
@@ -48,11 +48,11 @@ export default function SecaoProdutos({
                 {produtos.map((produto) => (
                     <ProdutoCard
                         key={produto.id}
-                        nome={produto.nome}
-                        imagem={produto.imagem}
-                        logo={produto.logo}
-                        preco={produto.preco}
-                        disponivel={produto.disponivel}
+                        name={produto.name}
+                        image_url={produto.image_url}
+                        logo_url={produto.logo_url}
+                        price={produto.price}
+                        stock={produto.stock}
                         porKg={produto.porKg}
                     />
                 ))}

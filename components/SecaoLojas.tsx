@@ -6,15 +6,18 @@ import LojaCard from "./LojaCard";
 
 type Loja = {
     id: number;
-    nome: string;
-    logo: string;
-    categoria: string;
+    name: string;
+    logo_url: string | null;
+    category: {
+        id: number;
+        name: string;
+    };
 };
 
 type Categoria = {
     id: number;
-    nome: string;
-    icone: string;
+    name: string;
+    icon_url: string | null;
 };
 
 type SecaoLojasProps = {
@@ -32,7 +35,7 @@ export default function SecaoLojas({
 
     const lojasFiltradas = lojas.filter((loja) =>
         categoriasSelecionadas.length === 0 ||
-        categoriasSelecionadas.includes(loja.categoria)
+        categoriasSelecionadas.includes(loja.category.name)
     );
 
     return (
@@ -66,9 +69,9 @@ export default function SecaoLojas({
                 {lojasFiltradas.map((loja) => (
                     <LojaCard
                         key={loja.id}
-                        nome={loja.nome}
-                        logo={loja.logo}
-                        categoria={loja.categoria}
+                        name={loja.name}
+                        logo_url={loja.logo_url}
+                        category={loja.category}
                     />
                 ))}
 
@@ -76,7 +79,7 @@ export default function SecaoLojas({
 
             {lojasFiltradas.length === 0 && (
                 <p className="mt-6 text-black">
-                    Nenhuma loja encontrada para as categorias selecionadas.
+                    Nenhuma loja encontrada.
                 </p>
             )}
 
