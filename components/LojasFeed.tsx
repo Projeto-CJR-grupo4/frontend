@@ -24,31 +24,47 @@ type LojasFeedProps = {
 export default function LojasFeed({ pesquisa }: LojasFeedProps) {
     const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [lojas, setLojas] = useState<Loja[]>([]);
-
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState(false);
     useEffect(() => {
-        async function buscarLojas() {
+        async function buscarDados() {
             try {
-                const resposta = await apiClient.get<Loja[]>("/lojas");
-                setLojas(resposta.data);
+                const [respostaLojas, respostaCategorias] = await Promise.all([
+                    apiClient.get<Loja[]>("/lojas"),
+                    apiClient.get<Categoria[]>("/categorias")
+                ]);
+
+                setLojas(respostaLojas.data);
+                setCategorias(respostaCategorias.data);
+
             } catch (erro) {
-                console.error("Erro ao buscar lojas:", erro);
-            }
-        }
-        async function buscarCategorias() {
-            try {
-                const resposta = await apiClient.get<Categoria[]>("/categorias");
-                setCategorias(resposta.data);
-            } catch (erro) {
-                console.error("Erro ao buscar categorias:", erro);
+                console.error("Erro ao buscar lojas e categorias:", erro);
+                setErro(true);
+            } finally {
+                setCarregando(false);
             }
         }
 
-        buscarLojas();
-        buscarCategorias();
+        buscarDados();
     }, []);
     const lojasFiltradas = lojas.filter((loja) =>
         loja.name.toLowerCase().includes(pesquisa.trim().toLowerCase())
     );
+    if (carregando) {
+        return (
+            <p className="mx-auto max-w-360 px-6 pt-16 text-black lg:px-18">
+                Carregando lojas...
+            </p>
+        );
+    }
+
+    if (erro) {
+        return (
+            <p className="mx-auto max-w-360 px-6 pt-16 text-red-600 lg:px-18">
+                Não foi possível carregar as lojas.
+            </p>
+        );
+    }
     return (
         <SecaoLojas
             lojas={lojasFiltradas}

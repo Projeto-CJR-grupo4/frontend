@@ -13,22 +13,31 @@ type Categoria = {
 
 export default function CategoriasFeed() {
     const [categorias, setCategorias] = useState<Categoria[]>([]);
-
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState(false);
     useEffect(() => {
         async function buscarCategorias() {
             try {
                 const resposta = await apiClient.get<Categoria[]>("/categorias");
 
                 setCategorias(resposta.data);
-
             } catch (erro) {
                 console.error("Erro ao buscar categorias:", erro);
+                setErro(true);
+            } finally {
+                setCarregando(false);
             }
         }
 
         buscarCategorias();
     }, []);
+    if (carregando) {
+        return <p className="text-black">Carregando categorias...</p>;
+    }
 
+    if (erro) {
+        return <p className="text-red-600">Não foi possível carregar as categorias.</p>;
+    }
     return (
         <>
             {categorias.map((categoria) => (

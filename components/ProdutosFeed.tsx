@@ -29,7 +29,8 @@ type ProdutosFeedProps = {
 };
 export default function ProdutosFeed({ pesquisa }: ProdutosFeedProps) {
     const [produtos, setProdutos] = useState<Produto[]>([]);
-
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState(false);
     useEffect(() => {
         async function buscarProdutos() {
             try {
@@ -38,6 +39,9 @@ export default function ProdutosFeed({ pesquisa }: ProdutosFeedProps) {
                 setProdutos(resposta.data);
             } catch (erro) {
                 console.error("Erro ao buscar produtos:", erro);
+                setErro(true);
+            } finally {
+                setCarregando(false);
             }
         }
 
@@ -49,6 +53,21 @@ export default function ProdutosFeed({ pesquisa }: ProdutosFeedProps) {
     const idsCategorias = [
         ...new Set(produtosFiltrados.map((produto) => produto.category.id))
     ];
+    if (carregando) {
+        return (
+            <p className="mx-auto max-w-360 px-6 pt-16 text-black lg:px-18">
+                Carregando produtos...
+            </p>
+        );
+    }
+
+    if (erro) {
+        return (
+            <p className="mx-auto max-w-360 px-6 pt-16 text-red-600 lg:px-18">
+                Não foi possível carregar os produtos.
+            </p>
+        );
+    }
     return (
         <>
             {pesquisa.trim() !== "" && produtosFiltrados.length === 0 && (
@@ -72,7 +91,6 @@ export default function ProdutosFeed({ pesquisa }: ProdutosFeedProps) {
                     price: produto.price,
                     stock: produto.stock
                 }));
-
                 return (
                     <SecaoProdutos
                         key={idCategoria}
