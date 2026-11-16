@@ -20,7 +20,7 @@ export default function CategoriasFeed() {
                 const resposta = await apiClient.get<Categoria[]>("/categorias");
 
                 setCategorias(resposta.data);
-                
+
             } catch (erro) {
                 console.error("Erro ao buscar categorias:", erro);
             }
@@ -34,8 +34,8 @@ export default function CategoriasFeed() {
             {categorias.map((categoria) => (
                 <CategoriaCard
                     key={categoria.id}
-                    nome={categoria.name}
-                    icone={categoria.icon_url ?? "/categorias/mercado.svg"}
+                    name={categoria.name}
+                    icon_url={categoria.icon_url}
                 />
             ))}
         </>
