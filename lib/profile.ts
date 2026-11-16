@@ -45,3 +45,31 @@ export const getStores = (userId: number) => get<Store[]>(`/lojas?userId=${userI
 export const getProducts = (userId: number) => get<Product[]>(`/produtos?userId=${userId}`);
 export const getStoreReviews = (userId: number) => get<StoreReview[]>(`/store-ratings?userId=${userId}`);
 export const getProductReviews = (userId: number) => get<ProductReview[]>(`/product-ratings?userId=${userId}`);
+
+export type User = {
+    id: number;
+    name: string;
+    username: string;
+    email: string;
+    profile_picture_url: string | null
+};
+
+async function send<T>(method:'PATCH' | 'DELETE', path: string, body?: unknown): Promise<T> {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${API}${path}`, {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` }: {}),
+        },
+        body: body ? JSON.stringify(body) : undefined,
+    });
+
+    const data = await res.json().catch(()=> null);
+
+    if(!res.ok) {
+        const msg = Array.isArray(data?.message) ? data.message.join(', ') : data?.message;
+        throw new Error(msg || `Erro ${res.status} em ${path}`);
+    }
+    return data as T;
+}
