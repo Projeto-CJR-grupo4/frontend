@@ -9,6 +9,7 @@ import { userViewer } from "@/hooks/userViewer";
 import { getProducts, getStores, getStoreReviews, getProductReviews, Store, Product, StoreReview, ProductReview, User } from "@/lib/profile";
 import ReviewsCarousel from "@/components/ReviewCarousel";
 import ModalEditarPerfil from "@/components/ModalEditarPerfil";
+import ModalConfirmarDelete from "@/components/ModalConfirmarDelete";
 
 
 export default function Perfil() {
@@ -234,6 +235,13 @@ export default function Perfil() {
                         onSaved={(atualizado) => setProfile((p) => (p ? { ...p, ...atualizado } : p))}
                         onOpenPassword={() => setModal('senha')}
                         onOpenDelete={() => setModal('deletar')}
+                    />
+                )}
+
+                {ehDono && modal === 'deletar' && (
+                    <ModalConfirmarDelete
+                        onBack={() => setModal('editar')}
+                        onClose={() => setModal('nenhum')}
                     />
                 )}
         </main>
