@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
+import CampoUpload from "./CampoUpload";
 type Categoria = {
     id: number;
     name: string;
@@ -14,6 +14,9 @@ type FormularioLojaProps = {
 export default function FormularioLoja({ categorias }: FormularioLojaProps) {
     const [name, setName] = useState("");
     const [category_id, setCategoryId] = useState("");
+    const [fotoPerfil, setFotoPerfil] = useState<File | null>(null);
+    const [logo, setLogo] = useState<File | null>(null);
+    const [banner, setBanner] = useState<File | null>(null);
 
     return (
         <form className="flex flex-col gap-4">
@@ -53,6 +56,29 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
                     ))}
                 </select>
             </div>
+            <CampoUpload
+                titulo="Foto de perfil da loja"
+                descricao="Clique para selecionar uma imagem"
+                accept="image/png,image/jpeg,image/webp"
+                arquivo={fotoPerfil}
+                aoSelecionar={setFotoPerfil}
+            />
+
+            <CampoUpload
+                titulo="Logo da loja"
+                descricao="Clique para selecionar um arquivo SVG"
+                accept=".svg,image/svg+xml"
+                arquivo={logo}
+                aoSelecionar={setLogo}
+            />
+
+            <CampoUpload
+                titulo="Banner da loja"
+                descricao="Clique para selecionar uma imagem"
+                accept="image/png,image/jpeg,image/webp"
+                arquivo={banner}
+                aoSelecionar={setBanner}
+            />
 
         </form>
     );
