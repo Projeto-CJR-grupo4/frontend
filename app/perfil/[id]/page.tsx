@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import { userViewer } from "@/hooks/userViewer";
 import { getProducts, getStores, getStoreReviews, getProductReviews, Store, Product, StoreReview, ProductReview, User } from "@/lib/profile";
 import ReviewsCarousel from "@/components/ReviewCarousel";
+import ModalEditarPerfil from "@/components/ModalEditarPerfil";
 
 
 export default function Perfil() {
@@ -20,6 +21,9 @@ export default function Perfil() {
     const [products, setProducts] = useState<Product[]>([]);
     const [storeReviews, setStoreReviews] = useState<StoreReview[]>([]);
     const [productReviews, setProductReviews] = useState<ProductReview[]>([]);
+    
+    type ModalAberto = 'nenhum' | 'editar' | 'senha' | 'deletar';
+    const [modal, setModal] = useState<ModalAberto>('nenhum');
 
     useEffect(() => {
 
@@ -87,6 +91,7 @@ export default function Perfil() {
                     {ehDono && (
                     <button 
                     type="submit"
+                    onClick={() => setModal('editar')} 
                     className="bg-[#6A38F3] h-[46px] w-[324px] rounded-4xl shadow-md shadow-gray-500 hover:bg-purple-700 cursor-pointer">
                         <p className="text-white text-xl">Editar Perfil</p>
                     </button>
@@ -220,6 +225,17 @@ export default function Perfil() {
                         }))}
                     />
                 </div>
+
+                {ehDono && modal === 'editar' && (
+                    <ModalEditarPerfil
+                        profile={profile}
+                        avatar={avatar}
+                        onClose={() => setModal('nenhum')}
+                        onSaved={(atualizado) => setProfile((p) => (p ? { ...p, ...atualizado } : p))}
+                        onOpenPassword={() => setModal('senha')}
+                        onOpenDelete={() => setModal('deletar')}
+                    />
+                )}
         </main>
     )
 }
