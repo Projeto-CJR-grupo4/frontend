@@ -6,30 +6,25 @@ import { useParams } from "next/navigation";
 import { ChevronLeft, Plus, Star } from "lucide-react"
 import Navbar from "@/components/Navbar";
 import { userViewer } from "@/hooks/userViewer";
-import { getProducts, getStores, getStoreReviews, getProductReviews, Store, Product, StoreReview, ProductReview } from "@/lib/profile";
+import { getProducts, getStores, getStoreReviews, getProductReviews, Store, Product, StoreReview, ProductReview, User } from "@/lib/profile";
 import ReviewsCarousel from "@/components/ReviewCarousel";
-
-type Profile = {
-    id: number;
-    name: string;
-    username: string;
-    email: string;
-    profile_picture_url: string | null;
-    createdAt: string;
-    updatedAt: string;
-};
+import ModalEditarPerfil from "@/components/ModalEditarPerfil";
+import ModalConfirmarDelete from "@/components/ModalConfirmarDelete";
 
 
 export default function Perfil() {
     const { id } = useParams<{ id: string }>();
     const { viewer } = userViewer();
 
-    const [profile, setProfile] = useState<Profile | null>(null);
+    const [profile, setProfile] = useState<User | null>(null);
     const [error, setError] = useState('');
     const [stores, setStores] = useState<Store[]>([]);
     const [products, setProducts] = useState<Product[]>([]);
     const [storeReviews, setStoreReviews] = useState<StoreReview[]>([]);
     const [productReviews, setProductReviews] = useState<ProductReview[]>([]);
+    
+    type ModalAberto = 'nenhum' | 'editar' | 'senha' | 'deletar';
+    const [modal, setModal] = useState<ModalAberto>('nenhum');
 
     useEffect(() => {
 
@@ -97,6 +92,7 @@ export default function Perfil() {
                     {ehDono && (
                     <button 
                     type="submit"
+                    onClick={() => setModal('editar')} 
                     className="bg-[#6A38F3] h-[46px] w-[324px] rounded-4xl shadow-md shadow-gray-500 hover:bg-purple-700 cursor-pointer">
                         <p className="text-white text-xl">Editar Perfil</p>
                     </button>
@@ -230,6 +226,24 @@ export default function Perfil() {
                         }))}
                     />
                 </div>
+
+                {ehDono && modal === 'editar' && (
+                    <ModalEditarPerfil
+                        profile={profile}
+                        avatar={avatar}
+                        onClose={() => setModal('nenhum')}
+                        onSaved={(atualizado) => setProfile((p) => (p ? { ...p, ...atualizado } : p))}
+                        onOpenPassword={() => setModal('senha')}
+                        onOpenDelete={() => setModal('deletar')}
+                    />
+                )}
+
+                {ehDono && modal === 'deletar' && (
+                    <ModalConfirmarDelete
+                        onBack={() => setModal('editar')}
+                        onClose={() => setModal('nenhum')}
+                    />
+                )}
         </main>
     )
 }
