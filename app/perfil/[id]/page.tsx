@@ -6,25 +6,15 @@ import { useParams } from "next/navigation";
 import { ChevronLeft, Plus, Star } from "lucide-react"
 import Navbar from "@/components/Navbar";
 import { userViewer } from "@/hooks/userViewer";
-import { getProducts, getStores, getStoreReviews, getProductReviews, Store, Product, StoreReview, ProductReview } from "@/lib/profile";
+import { getProducts, getStores, getStoreReviews, getProductReviews, Store, Product, StoreReview, ProductReview, User } from "@/lib/profile";
 import ReviewsCarousel from "@/components/ReviewCarousel";
-
-type Profile = {
-    id: number;
-    name: string;
-    username: string;
-    email: string;
-    profile_picture_url: string | null;
-    createdAt: string;
-    updatedAt: string;
-};
 
 
 export default function Perfil() {
     const { id } = useParams<{ id: string }>();
     const { viewer } = userViewer();
 
-    const [profile, setProfile] = useState<Profile | null>(null);
+    const [profile, setProfile] = useState<User | null>(null);
     const [error, setError] = useState('');
     const [stores, setStores] = useState<Store[]>([]);
     const [products, setProducts] = useState<Product[]>([]);

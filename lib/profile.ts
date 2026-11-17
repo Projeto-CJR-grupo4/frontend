@@ -52,6 +52,8 @@ export type User = {
     username: string;
     email: string;
     profile_picture_url: string | null
+    createdAt: string;
+    updatedAt: string;
 };
 
 async function send<T>(method:'PATCH' | 'DELETE', path: string, body?: unknown): Promise<T> {
@@ -81,5 +83,11 @@ export const updateMe = (data: {
     email?: string;
     profilePictureUrl?: string;
 }) => send<User>('PATCH', '/user/me', data);
+
+export const uploadAvatr = (file: File) => {
+    const form = new FormData();
+    form.append('file', file);
+    return send<User>('PATCH', '/user/me/avatr', form);
+};
 
 export const deleteMe = () => send<unknown>('DELETE', '/user/me');
