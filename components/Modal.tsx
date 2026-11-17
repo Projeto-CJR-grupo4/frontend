@@ -36,7 +36,7 @@ export default function Modal({ label, onClose, onBack, children }: Props) {
                 aria-modal="true"
                 aria-label={label}
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-[420px] rounded-3xl bg-[#EDEDED] px-8 pb-10 pt-8 shadow-xl"
+                className="relative w-full max-w-[500px] h-[570px] rounded-3xl bg-[#EDEDED] px-8 pb-10 pt-11 shadow-xl"
             >
                 {onBack && (
                     <button
@@ -54,7 +54,7 @@ export default function Modal({ label, onClose, onBack, children }: Props) {
                     aria-label="Fechar"
                     className="absolute right-6 top-6 cursor-pointer text-black transition hover:opacity-60"
                 >
-                    <X size={28} />
+                    <X size={35} />
                 </button>
 
                 {children}
