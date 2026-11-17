@@ -87,7 +87,7 @@ export const updateMe = (data: {
 export const uploadAvatar = (file: File) => {
     const form = new FormData();
     form.append('file', file);
-    return send<User>('PATCH', '/user/me/avatr', form);
+    return send<User>('PATCH', '/user/me/avatar', form);
 };
 
 export const deleteMe = () => send<unknown>('DELETE', '/user/me');
