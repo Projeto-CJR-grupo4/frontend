@@ -45,7 +45,7 @@ export default function Modal({ label, onClose, onBack, children }: Props) {
                         aria-label="Voltar"
                         className="absolute left-6 top-6 cursor-pointer text-black transition hover:opacity-60"
                     >
-                        <ChevronLeft size={28} />
+                        <ChevronLeft size={35} />
                     </button>
                 )}
                 <button
