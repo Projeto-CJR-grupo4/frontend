@@ -10,6 +10,7 @@ import { getProducts, getStores, getStoreReviews, getProductReviews, Store, Prod
 import ReviewsCarousel from "@/components/ReviewCarousel";
 import ModalEditarPerfil from "@/components/ModalEditarPerfil";
 import ModalConfirmarDelete from "@/components/ModalConfirmarDelete";
+import ModalAlterarSenha from "@/components/ModalAlterarSenha";
 
 
 export default function Perfil() {
@@ -235,6 +236,13 @@ export default function Perfil() {
                         onSaved={(atualizado) => setProfile((p) => (p ? { ...p, ...atualizado } : p))}
                         onOpenPassword={() => setModal('senha')}
                         onOpenDelete={() => setModal('deletar')}
+                    />
+                )}
+
+                {ehDono && modal === 'senha' && (
+                    <ModalAlterarSenha
+                        onBack={() => setModal('editar')}
+                        onClose={() => setModal('nenhum')}
                     />
                 )}
 
