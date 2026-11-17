@@ -84,7 +84,7 @@ export const updateMe = (data: {
     profilePictureUrl?: string;
 }) => send<User>('PATCH', '/user/me', data);
 
-export const uploadAvatr = (file: File) => {
+export const uploadAvatar = (file: File) => {
     const form = new FormData();
     form.append('file', file);
     return send<User>('PATCH', '/user/me/avatr', form);
