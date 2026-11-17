@@ -5,5 +5,5 @@ export type Loja = {
     description: string | null;
     banner_url: string | null;
     category: { name: string };
-    user: { name: string };
+    user: { id: number; name: string };
 };    
