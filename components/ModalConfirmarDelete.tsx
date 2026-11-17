@@ -1,7 +1,7 @@
 'use client';
 
 import { deleteMe } from "@/lib/profile";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Modal from "./Modal";
 import { Trash2 } from "lucide-react";
@@ -20,7 +20,10 @@ export default function ModalConfirmarDelete({ onBack, onClose }: Props){
         setDeleting(true);
         setError('')
         try {
-            await deleteMe
+            await deleteMe();
+            localStorage.removeItem('token');
+            window.dispatchEvent(new Event('auth-changed'));
+            router.replace('/');
         } catch (e) {
             setError(e instanceof Error ? e.message : 'Não foi possível deletar a conta.');
             setDeleting(false);
@@ -30,10 +33,10 @@ export default function ModalConfirmarDelete({ onBack, onClose }: Props){
     return (
         <Modal label="Deletar conta" onClose={onClose} onBack={onBack}>
             <div className="flex flex-col items-center">
-                <Trash2 size={64} strokeWidth={2} className="text[#AF052A]"/>
+                <Trash2 size={64} strokeWidth={2} className="mt-10 text-[#000000]"/>
 
-                <h2 className="mt-6 text-xl font-semibold text-black">Deletar conta?</h2>
-                <p className="mt-2 max-w-[280px] text-center text-sm text-gray-600">
+                <h2 className="mt-6 text-3xl font-semibold text-black">Deletar conta?</h2>
+                <p className="mt-2 max-w-[300px] text-center text-lg text-gray-600">
                     Sua conta, lojas, produtos e avaliações serão apagados. Essa ação não pode ser desfeita.
                 </p>
 
@@ -48,7 +51,7 @@ export default function ModalConfirmarDelete({ onBack, onClose }: Props){
                         type="button"
                         onClick={deletar}
                         disabled={deleting}
-                        className="h-9 cursosr-pointer rounded-full bg-[#AF052A] text-sm text-white shadow transition hover-brightness-110 disabled: cursor-not-allowed disable:opacity-60"
+                        className="h-10 cursor-pointer rounded-full bg-[#AF052A] text-lg text-white shadow-lg transition hover-brightness-110 disabled: cursor-not-allowd disable:opacity-60"
                     >
                         {deleting ? 'Deletando...' : 'Sim, deletar minha conta'}
                     </button>
@@ -56,7 +59,7 @@ export default function ModalConfirmarDelete({ onBack, onClose }: Props){
                         type="button"
                         onClick={onBack}
                         disabled={deleting}
-                        className="h-9 cursor-pointer rounded-full border border-[#6A38F3] transition hover:bg-[#6A38F3] hover:text-whte"
+                        className="h-10 cursor-pointer rounded-full border border-[#6A38F3] text-lg text-[#6A38F3] transition hover:bg-[#6A38F3] hover:text-white shadow-lg"
                     >
                         Cancelar
                     </button>
