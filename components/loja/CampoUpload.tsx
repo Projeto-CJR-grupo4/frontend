@@ -1,5 +1,5 @@
 "use client";
-
+import { FileUp } from "lucide-react";
 type CampoUploadProps = {
     titulo: string;
     descricao: string;
@@ -16,20 +16,22 @@ export default function CampoUpload({
     aoSelecionar
 }: CampoUploadProps) {
     return (
-        <div className="flex flex-col gap-2">
-            <span className="text-black">
-                {titulo}
-            </span>
+        <div>
+            <label className="flex min-h-28 cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-[#6A38F3] bg-transparent px-4 py-3 text-center">
 
-            <label className="flex min-h-24 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#6A38F3] bg-white px-4 py-3 text-center focus-within:ring-2 focus-within:ring-[#6A38F3]">
+                <FileUp
+                    size={38}
+                    className="text-[#6A38F3]"
+                />
 
-                <span className="break-all text-sm text-[#6A38F3]">
+                <span className="break-all text-sm text-black">
                     {arquivo ? arquivo.name : descricao}
                 </span>
 
                 <input
                     type="file"
                     accept={accept}
+                    aria-label={titulo}
                     onChange={(e) => aoSelecionar(e.target.files?.[0] ?? null)}
                     className="sr-only"
                 />

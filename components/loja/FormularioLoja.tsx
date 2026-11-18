@@ -22,7 +22,7 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
         <form className="flex flex-col gap-4">
 
             <div>
-                <label htmlFor="nome-loja" className="text-black">
+                <label htmlFor="nome-loja" className="sr-only">
                     Nome da loja
                 </label>
 
@@ -37,7 +37,7 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
             </div>
 
             <div>
-                <label htmlFor="categoria-loja" className="text-black">
+                <label htmlFor="categoria-loja" className="sr-only">
                     Categoria
                 </label>
 
@@ -47,7 +47,7 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
                     onChange={(e) => setCategoryId(e.target.value)}
                     className="w-full rounded-full bg-white px-4 py-3 text-black"
                 >
-                    <option value="">Selecione uma categoria</option>
+                    <option value="">Categoria</option>
 
                     {categorias.map((categoria) => (
                         <option key={categoria.id} value={categoria.id}>
@@ -58,7 +58,7 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
             </div>
             <CampoUpload
                 titulo="Foto de perfil da loja"
-                descricao="Clique para selecionar uma imagem"
+                descricao="Anexe a foto de perfil de sua loja"
                 accept="image/png,image/jpeg,image/webp"
                 arquivo={fotoPerfil}
                 aoSelecionar={setFotoPerfil}
@@ -66,7 +66,7 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
 
             <CampoUpload
                 titulo="Logo da loja"
-                descricao="Clique para selecionar um arquivo SVG"
+                descricao="Anexe a logo em SVG de sua loja"
                 accept=".svg,image/svg+xml"
                 arquivo={logo}
                 aoSelecionar={setLogo}
@@ -74,7 +74,7 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
 
             <CampoUpload
                 titulo="Banner da loja"
-                descricao="Clique para selecionar uma imagem"
+                descricao="Anexe o banner de sua loja"
                 accept="image/png,image/jpeg,image/webp"
                 arquivo={banner}
                 aoSelecionar={setBanner}
