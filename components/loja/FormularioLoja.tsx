@@ -13,7 +13,7 @@ type FormularioLojaProps = {
     onSaved?: () => void;
     loja?: DadosLoja;
 };
-type DadosLoja = {
+export type DadosLoja = {
     id: number;
     name: string;
     category_id: number;
