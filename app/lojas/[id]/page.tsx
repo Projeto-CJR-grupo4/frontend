@@ -34,14 +34,14 @@ function ContentStore() {
         return () => { cancelado = true; };
     }, [id]);
     useEffect(() => {
-    if (!modalEditarAberto) return;
+        if (!modalEditarAberto) return;
 
-    apiClient
-        .get<Categoria[]>("/categorias")
-        .then((res) => setCategorias(res.data))
-        .catch((error) => console.error("Erro ao buscar categorias:", error));
+        apiClient
+            .get<Categoria[]>("/categorias")
+            .then((res) => setCategorias(res.data))
+            .catch((error) => console.error("Erro ao buscar categorias:", error));
 
-}, [modalEditarAberto]);
+    }, [modalEditarAberto]);
 
     if (state.status === "carregando") {
         return <div className="h-80 bg-[#2a1f3d] md:h-[630px]" />;
@@ -57,29 +57,43 @@ function ContentStore() {
 
     const loja = state.loja;
     const ehDono = viewer?.id === loja.user_id;
+    async function atualizarLojaAposSalvar() {
+        setModalEditarAberto(false);
 
-   return (
-    <>
-        <BannerLoja
-            loja={loja}
-            ehDono={ehDono}
-            onEditar={() => setModalEditarAberto(true)}
-        />
+        try {
+            const resposta = await apiClient.get<Loja>(`/lojas/${id}`);
 
-        <ReviewsStore lojaId={loja.id} />
+            setState({
+                status: "ok",
+                loja: resposta.data,
+            });
+        } catch (error) {
+            console.error("Erro ao atualizar dados da loja:", error);
+        }
+    }
 
-        <ProductsStore lojaId={loja.id} nomeLoja={loja.name} />
-
-        {ehDono && modalEditarAberto && (
-            <ModalLoja
+    return (
+        <>
+            <BannerLoja
                 loja={loja}
-                categorias={categorias}
-                onClose={() => setModalEditarAberto(false)}
-                onSaved={() => setModalEditarAberto(false)}
+                ehDono={ehDono}
+                onEditar={() => setModalEditarAberto(true)}
             />
-        )}
-    </>
-);
+
+            <ReviewsStore lojaId={loja.id} />
+
+            <ProductsStore lojaId={loja.id} nomeLoja={loja.name} />
+
+            {ehDono && modalEditarAberto && (
+                <ModalLoja
+                    loja={loja}
+                    categorias={categorias}
+                    onClose={() => setModalEditarAberto(false)}
+                    onSaved={atualizarLojaAposSalvar}
+                />
+            )}
+        </>
+    );
 }
 
 export default function LojaPage() {
