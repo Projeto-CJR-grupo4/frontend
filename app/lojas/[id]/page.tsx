@@ -9,15 +9,21 @@ import { userViewer } from "@/hooks/userViewer";
 import { apiClient } from "@/lib/axios";
 import type { Loja } from "@/types/loja"
 
-type State = 
+type Categoria = {
+    id: number;
+    name: string;
+};
+type State =
     | { status: "carregando" }
     | { status: "erro" }
     | { status: "ok"; loja: Loja };
 
 function ContentStore() {
+    const [categorias, setCategorias] = useState<Categoria[]>([]);
     const { id } = useParams<{ id: string }>();
     const { viewer } = userViewer();
     const [state, setState] = useState<State>({ status: "carregando" });
+    const [modalEditarAberto, setModalEditarAberto] = useState(false);
 
     useEffect(() => {
         let cancelado = false;
@@ -27,6 +33,15 @@ function ContentStore() {
             .catch(() => { if (!cancelado) setState({ status: "erro" }); })
         return () => { cancelado = true; };
     }, [id]);
+    useEffect(() => {
+    if (!modalEditarAberto) return;
+
+    apiClient
+        .get<Categoria[]>("/categorias")
+        .then((res) => setCategorias(res.data))
+        .catch((error) => console.error("Erro ao buscar categorias:", error));
+
+}, [modalEditarAberto]);
 
     if (state.status === "carregando") {
         return <div className="h-80 bg-[#2a1f3d] md:h-[630px]" />;
@@ -45,7 +60,11 @@ function ContentStore() {
 
     return (
         <>
-            <BannerLoja loja={loja} ehDono={ehDono} />
+            <BannerLoja
+                loja={loja}
+                ehDono={ehDono}
+                onEditar={() => setModalEditarAberto(true)}
+            />
             <ReviewsStore lojaId={loja.id} />
             <ProductsStore lojaId={loja.id} nomeLoja={loja.name} />
         </>
@@ -54,7 +73,7 @@ function ContentStore() {
 
 export default function LojaPage() {
     return (
-      <div className="min-h-screen bg-black">
+        <div className="min-h-screen bg-black">
             <Suspense fallback={<div className="min-h-23 bg-black" />}>
                 <Navbar />
             </Suspense>
@@ -63,6 +82,6 @@ export default function LojaPage() {
                     <ContentStore />
                 </Suspense>
             </main>
-        </div>  
+        </div>
     );
 }
