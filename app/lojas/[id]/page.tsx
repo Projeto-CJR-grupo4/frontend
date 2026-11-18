@@ -8,7 +8,7 @@ import ProductsStore from "@/components/loja/ProdutosLoja"
 import { userViewer } from "@/hooks/userViewer";
 import { apiClient } from "@/lib/axios";
 import type { Loja } from "@/types/loja"
-
+import ModalLoja from "@/components/loja/ModalLoja";
 type Categoria = {
     id: number;
     name: string;
@@ -58,17 +58,28 @@ function ContentStore() {
     const loja = state.loja;
     const ehDono = viewer?.id === loja.user_id;
 
-    return (
-        <>
-            <BannerLoja
+   return (
+    <>
+        <BannerLoja
+            loja={loja}
+            ehDono={ehDono}
+            onEditar={() => setModalEditarAberto(true)}
+        />
+
+        <ReviewsStore lojaId={loja.id} />
+
+        <ProductsStore lojaId={loja.id} nomeLoja={loja.name} />
+
+        {ehDono && modalEditarAberto && (
+            <ModalLoja
                 loja={loja}
-                ehDono={ehDono}
-                onEditar={() => setModalEditarAberto(true)}
+                categorias={categorias}
+                onClose={() => setModalEditarAberto(false)}
+                onSaved={() => setModalEditarAberto(false)}
             />
-            <ReviewsStore lojaId={loja.id} />
-            <ProductsStore lojaId={loja.id} nomeLoja={loja.name} />
-        </>
-    );
+        )}
+    </>
+);
 }
 
 export default function LojaPage() {
