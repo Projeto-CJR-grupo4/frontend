@@ -18,6 +18,23 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
     const [fotoPerfil, setFotoPerfil] = useState<File | null>(null);
     const [logo, setLogo] = useState<File | null>(null);
     const [banner, setBanner] = useState<File | null>(null);
+    async function enviarImagem(arquivo: File): Promise<string> {
+        const formData = new FormData();
+
+        formData.append("file", arquivo);
+
+        const resposta = await apiClient.post<{ url: string }>(
+            "/lojas/upload",
+            formData,
+            {
+                headers: {
+                    "Content-Type": undefined,
+                },
+            }
+        );
+
+        return resposta.data.url;
+    }
     async function adicionarLoja(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
@@ -25,15 +42,30 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
             alert("Preencha o nome e a categoria da loja.");
             return;
         }
+        if (logo) {
+            alert("O upload de logo SVG ainda não está disponível.");
+            return;
+        }
 
         try {
+            const logo_url = fotoPerfil
+                ? await enviarImagem(fotoPerfil)
+                : undefined;
+
+            const banner_url = banner
+                ? await enviarImagem(banner)
+                : undefined;
+
             const resposta = await apiClient.post("/lojas", {
                 name: name.trim(),
                 category_id: Number(category_id),
+                logo_url,
+                banner_url,
             });
 
             console.log("Loja cadastrada:", resposta.data);
-        } catch (error) {
+        }
+        catch (error) {
             console.error("Erro ao cadastrar loja:", error);
         }
     }
