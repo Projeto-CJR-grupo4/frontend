@@ -19,7 +19,7 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
     const [banner, setBanner] = useState<File | null>(null);
 
     return (
-        <form className="flex flex-col gap-4">
+        <form className="flex min-h-full flex-col gap-4">
 
             <div>
                 <label htmlFor="nome-loja" className="sr-only">
@@ -32,7 +32,8 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Nome da loja"
-                    className="w-full rounded-full bg-white px-4 py-3 text-black"
+                    className="w-full rounded-full border-2 border-transparent bg-white px-4 py-3
+                     text-black outline-none transition-colors duration-200 hover:border-[#6A38F3]/30 focus:border-[#6A38F3]"
                 />
             </div>
 
@@ -45,7 +46,7 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
                     id="categoria-loja"
                     value={category_id}
                     onChange={(e) => setCategoryId(e.target.value)}
-                    className="w-full rounded-full bg-white px-4 py-3 text-black"
+                    className="w-full rounded-full bg-white px-4 py-3 text-black outline-none transition-all duration-200 hover:ring-2 hover:ring-[#6A38F3]/30 focus:ring-2 focus:ring-[#6A38F3]"
                 >
                     <option value="">Categoria</option>
 
@@ -79,6 +80,14 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
                 arquivo={banner}
                 aoSelecionar={setBanner}
             />
+            <div className="mt-2 flex justify-center pt-6">
+                <button
+                    type="button"
+                    className="w-64 cursor-pointer rounded-full bg-[#6A38F3] py-2 text-white shadow-md transition hover:bg-purple-700"
+                >
+                    Adicionar
+                </button>
+            </div>
 
         </form>
     );

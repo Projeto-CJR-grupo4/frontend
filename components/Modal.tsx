@@ -44,7 +44,7 @@ export default function Modal({
                 aria-label={label}
                 onClick={(e) => e.stopPropagation()}
                 className={`relative w-full rounded-3xl bg-[#EDEDED] px-8 pb-10 pt-11 shadow-xl ${tamanho === "loja"
-                        ? "max-w-[750px] h-[850px] max-h-[calc(100dvh-2rem)]"
+                        ? "max-w-[750px] h-[750px] max-h-[calc(100dvh-2rem)]"
                         : "max-w-[500px] h-[570px]"
                     }`}
             >
