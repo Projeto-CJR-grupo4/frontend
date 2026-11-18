@@ -11,14 +11,27 @@ type Categoria = {
 type FormularioLojaProps = {
     categorias: Categoria[];
     onSaved?: () => void;
+    loja?: DadosLoja;
 };
+type DadosLoja = {
+    id: number;
+    name: string;
+    category_id: number;
+    sticker_url?: string | null;
+    logo_url?: string | null;
+    banner_url?: string | null;
+};
+
 
 export default function FormularioLoja({
     categorias,
-    onSaved
+    onSaved,
+    loja
 }: FormularioLojaProps) {
-    const [name, setName] = useState("");
-    const [category_id, setCategoryId] = useState("");
+    const [name, setName] = useState(loja?.name ?? "");
+    const [category_id, setCategoryId] = useState(
+        loja?.category_id?.toString() ?? ""
+    );
     const [fotoPerfil, setFotoPerfil] = useState<File | null>(null);
     const [logo, setLogo] = useState<File | null>(null);
     const [banner, setBanner] = useState<File | null>(null);
@@ -41,7 +54,7 @@ export default function FormularioLoja({
 
         return resposta.data.url;
     }
-    async function adicionarLoja(e: React.FormEvent<HTMLFormElement>) {
+    async function salvarLoja(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         setErro("");
@@ -68,19 +81,30 @@ export default function FormularioLoja({
                 ? await enviarImagem(banner)
                 : undefined;
 
-            const resposta = await apiClient.post("/lojas", {
+            const dadosLoja = {
                 name: name.trim(),
                 category_id: Number(category_id),
                 sticker_url,
                 logo_url,
                 banner_url,
-            });
-            console.log("Loja cadastrada:", resposta.data);
+            };
+
+            if (loja) {
+                await apiClient.patch(`/lojas/${loja.id}`, dadosLoja);
+            } else {
+                await apiClient.post("/lojas", dadosLoja);
+            }
+
             onSaved?.();
         }
         catch (error) {
-            console.error("Erro ao cadastrar loja:", error);
-            setErro("Não foi possível cadastrar a loja. Tente novamente.");
+            console.error("Erro ao salvar loja:", error);
+
+            setErro(
+                loja
+                    ? "Não foi possível atualizar a loja. Tente novamente."
+                    : "Não foi possível cadastrar a loja. Tente novamente."
+            );
         }
         finally {
             setEnviando(false);
@@ -90,7 +114,7 @@ export default function FormularioLoja({
 
     return (
         <form
-            onSubmit={adicionarLoja}
+            onSubmit={salvarLoja}
             className="flex min-h-full flex-col gap-4"
         >
 
@@ -140,8 +164,8 @@ export default function FormularioLoja({
 
             <CampoUpload
                 titulo="Logo da loja"
-                descricao="Anexe a logo em SVG de sua loja"
-                accept=".svg,image/svg+xml"
+                descricao="Anexe a logo em SVG ou PNG de sua loja"
+                accept=".svg,image/svg+xml,image/png"
                 arquivo={logo}
                 aoSelecionar={setLogo}
             />
@@ -164,7 +188,9 @@ export default function FormularioLoja({
                     disabled={enviando}
                     className="w-64 cursor-pointer rounded-full bg-[#6A38F3] py-2 text-white shadow-md transition hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                    {enviando ? "Adicionando..." : "Adicionar"}
+                    {enviando
+                        ? (loja ? "Salvando..." : "Adicionando...")
+                        : (loja ? "Salvar" : "Adicionar")}
                 </button>
             </div>
 
