@@ -62,6 +62,7 @@ function ContentStore() {
     async function atualizarLojaAposSalvar() {
         setModalEditarAberto(false);
 
+        toast.success("Loja atualizada com sucesso!");
         try {
             const resposta = await apiClient.get<Loja>(`/lojas/${id}`);
 
