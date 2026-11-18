@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import CampoUpload from "./CampoUpload";
+import { apiClient } from "@/lib/axios";
 type Categoria = {
     id: number;
     name: string;
@@ -17,9 +18,31 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
     const [fotoPerfil, setFotoPerfil] = useState<File | null>(null);
     const [logo, setLogo] = useState<File | null>(null);
     const [banner, setBanner] = useState<File | null>(null);
+    async function adicionarLoja(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+
+        if (!name.trim() || !category_id) {
+            alert("Preencha o nome e a categoria da loja.");
+            return;
+        }
+
+        try {
+            const resposta = await apiClient.post("/lojas", {
+                name: name.trim(),
+                category_id: Number(category_id),
+            });
+
+            console.log("Loja cadastrada:", resposta.data);
+        } catch (error) {
+            console.error("Erro ao cadastrar loja:", error);
+        }
+    }
 
     return (
-        <form className="flex min-h-full flex-col gap-4">
+        <form
+            onSubmit={adicionarLoja}
+            className="flex min-h-full flex-col gap-4"
+        >
 
             <div>
                 <label htmlFor="nome-loja" className="sr-only">
@@ -82,7 +105,7 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
             />
             <div className="mt-2 flex justify-center pt-6">
                 <button
-                    type="button"
+                    type="submit"
                     className="w-64 cursor-pointer rounded-full bg-[#6A38F3] py-2 text-white shadow-md transition hover:bg-purple-700"
                 >
                     Adicionar
