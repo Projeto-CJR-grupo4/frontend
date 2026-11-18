@@ -13,7 +13,6 @@ import ModalConfirmarDelete from "@/components/ModalConfirmarDelete";
 import ModalLoja from "@/components/loja/ModalLoja";
 import { apiClient } from "@/lib/axios";
 
-
 type Categoria = {
     id: number;
     name: string;
@@ -71,6 +70,17 @@ export default function Perfil() {
     if (!profile) return <p>Carregando...</p>;
 
     const ehDono = viewer !== null && viewer.id === profile.id;
+    const profileId = profile.id;
+    async function aoSalvarLoja() {
+        setModal('nenhum');
+
+        try {
+            const lojasAtualizadas = await getStores(profileId);
+            setStores(lojasAtualizadas);
+        } catch (error) {
+            console.error("Erro ao atualizar lojas:", error);
+        }
+    }
 
     const url = profile.profile_picture_url;
     const avatar = url && (url.startsWith('http') || url.startsWith('/'))
@@ -260,6 +270,7 @@ export default function Perfil() {
             {ehDono && modal === 'loja' && (
                 <ModalLoja
                     onClose={() => setModal('nenhum')}
+                    onSaved={aoSalvarLoja}
                     categorias={categorias}
                 />
             )}

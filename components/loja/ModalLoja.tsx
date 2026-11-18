@@ -10,11 +10,13 @@ type Categoria = {
 
 type ModalLojaProps = {
     onClose: () => void;
+    onSaved: () => void;
     categorias: Categoria[];
 };
 
 export default function ModalLoja({
     onClose,
+    onSaved,
     categorias
 }: ModalLojaProps) {
     return (
@@ -29,7 +31,10 @@ export default function ModalLoja({
                 </h2>
 
                 <div className="min-h-0 flex-1 overflow-y-auto pr-2">
-                    <FormularioLoja categorias={categorias} />
+                    <FormularioLoja
+                        categorias={categorias}
+                        onSaved={onSaved}
+                    />
                 </div>
             </div>
         </Modal>

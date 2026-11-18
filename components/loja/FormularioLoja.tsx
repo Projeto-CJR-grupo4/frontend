@@ -10,14 +10,19 @@ type Categoria = {
 
 type FormularioLojaProps = {
     categorias: Categoria[];
+    onSaved?: () => void;
 };
 
-export default function FormularioLoja({ categorias }: FormularioLojaProps) {
+export default function FormularioLoja({
+    categorias,
+    onSaved
+}: FormularioLojaProps) {
     const [name, setName] = useState("");
     const [category_id, setCategoryId] = useState("");
     const [fotoPerfil, setFotoPerfil] = useState<File | null>(null);
     const [logo, setLogo] = useState<File | null>(null);
     const [banner, setBanner] = useState<File | null>(null);
+    const [enviando, setEnviando] = useState(false);
     async function enviarImagem(arquivo: File): Promise<string> {
         const formData = new FormData();
 
@@ -47,6 +52,10 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
             return;
         }
 
+        if (enviando) return;
+
+        setEnviando(true);
+
         try {
             const logo_url = fotoPerfil
                 ? await enviarImagem(fotoPerfil)
@@ -64,9 +73,13 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
             });
 
             console.log("Loja cadastrada:", resposta.data);
+            onSaved?.();
         }
         catch (error) {
             console.error("Erro ao cadastrar loja:", error);
+        }
+        finally {
+            setEnviando(false);
         }
     }
 
@@ -138,9 +151,10 @@ export default function FormularioLoja({ categorias }: FormularioLojaProps) {
             <div className="mt-2 flex justify-center pt-6">
                 <button
                     type="submit"
-                    className="w-64 cursor-pointer rounded-full bg-[#6A38F3] py-2 text-white shadow-md transition hover:bg-purple-700"
+                    disabled={enviando}
+                    className="w-64 cursor-pointer rounded-full bg-[#6A38F3] py-2 text-white shadow-md transition hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                    Adicionar
+                    {enviando ? "Adicionando..." : "Adicionar"}
                 </button>
             </div>
 
