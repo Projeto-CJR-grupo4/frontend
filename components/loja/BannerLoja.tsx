@@ -17,7 +17,14 @@ export default function BannerLoja({
   return (
     <section className="relative flex h-80 items-center justify-center overflow-hidden bg-[#2a1f3d] md:h-[630px]">
       {loja.banner_url && (
-        <Image src={loja.banner_url} alt="" fill priority className="object-cover" />
+        <Image
+          src={loja.banner_url}
+          alt=""
+          fill
+          priority
+          unoptimized
+          className="object-cover"
+        />
       )}
       <div className="absolute inset-0 bg-linear-to-b from-black via-black/40 to-black/40" />
 
