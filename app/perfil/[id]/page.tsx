@@ -13,6 +13,7 @@ import ModalConfirmarDelete from "@/components/ModalConfirmarDelete";
 import ModalLoja from "@/components/loja/ModalLoja";
 import { apiClient } from "@/lib/axios";
 import toast from "react-hot-toast";
+import ModalAlterarSenha from "@/components/ModalAlterarSenha";
 
 type Categoria = {
     id: number;
@@ -278,6 +279,13 @@ export default function Perfil() {
                     categorias={categorias}
                 />
             )}
+        {ehDono && modal === 'senha' && (
+    <ModalAlterarSenha
+        onBack={() => setModal('editar')}
+        onClose={() => setModal('nenhum')}
+    />
+)}
+        
         </main>
     )
 }

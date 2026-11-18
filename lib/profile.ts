@@ -90,4 +90,7 @@ export const uploadAvatar = (file: File) => {
     return send<User>('PATCH', '/user/me/avatar', form);
 };
 
+export const changePassword = (data: { oldPassword: string; newPassword: string }) => 
+    send<{ message: string }>('PATCH', '/user/me/password', data);
+
 export const deleteMe = () => send<unknown>('DELETE', '/user/me');
