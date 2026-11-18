@@ -51,20 +51,19 @@ export default function FormularioLoja({
             return;
         }
 
-        if (logo) {
-            setErro("O upload de logo SVG ainda não está disponível.");
-            return;
-        }
-
         if (enviando) return;
 
         setEnviando(true);
 
         try {
-            const logo_url = fotoPerfil
+            const sticker_url = fotoPerfil
                 ? await enviarImagem(fotoPerfil)
                 : undefined;
 
+
+            const logo_url = logo
+                ? await enviarImagem(logo)
+                : undefined;
             const banner_url = banner
                 ? await enviarImagem(banner)
                 : undefined;
@@ -72,10 +71,10 @@ export default function FormularioLoja({
             const resposta = await apiClient.post("/lojas", {
                 name: name.trim(),
                 category_id: Number(category_id),
+                sticker_url,
                 logo_url,
                 banner_url,
             });
-
             console.log("Loja cadastrada:", resposta.data);
             onSaved?.();
         }
