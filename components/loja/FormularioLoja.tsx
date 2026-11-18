@@ -23,6 +23,7 @@ export default function FormularioLoja({
     const [logo, setLogo] = useState<File | null>(null);
     const [banner, setBanner] = useState<File | null>(null);
     const [enviando, setEnviando] = useState(false);
+    const [erro, setErro] = useState("");
     async function enviarImagem(arquivo: File): Promise<string> {
         const formData = new FormData();
 
@@ -43,12 +44,15 @@ export default function FormularioLoja({
     async function adicionarLoja(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
+        setErro("");
+
         if (!name.trim() || !category_id) {
-            alert("Preencha o nome e a categoria da loja.");
+            setErro("Preencha o nome e a categoria da loja.");
             return;
         }
+
         if (logo) {
-            alert("O upload de logo SVG ainda não está disponível.");
+            setErro("O upload de logo SVG ainda não está disponível.");
             return;
         }
 
@@ -77,10 +81,12 @@ export default function FormularioLoja({
         }
         catch (error) {
             console.error("Erro ao cadastrar loja:", error);
+            setErro("Não foi possível cadastrar a loja. Tente novamente.");
         }
         finally {
             setEnviando(false);
         }
+
     }
 
     return (
@@ -148,6 +154,11 @@ export default function FormularioLoja({
                 arquivo={banner}
                 aoSelecionar={setBanner}
             />
+            {erro && (
+                <p role="alert" className="text-center text-sm text-red-600">
+                    {erro}
+                </p>
+            )}
             <div className="mt-2 flex justify-center pt-6">
                 <button
                     type="submit"
