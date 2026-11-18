@@ -11,6 +11,7 @@ type Categoria = {
 type FormularioLojaProps = {
     categorias: Categoria[];
     onSaved?: () => void;
+    onDeleted?: () => void;
     loja?: DadosLoja;
 };
 export type DadosLoja = {
@@ -26,6 +27,7 @@ export type DadosLoja = {
 export default function FormularioLoja({
     categorias,
     onSaved,
+    onDeleted,
     loja
 }: FormularioLojaProps) {
     const [name, setName] = useState(loja?.name ?? "");
@@ -111,11 +113,33 @@ export default function FormularioLoja({
         }
 
     }
+    async function deletarLoja() {
+        if (!loja || enviando) return;
 
+        const confirmou = window.confirm(
+            `Tem certeza que deseja excluir a loja "${loja.name}"? Esta ação não poderá ser desfeita.`
+        );
+
+        if (!confirmou) return;
+
+        setErro("");
+        setEnviando(true);
+
+        try {
+            await apiClient.delete(`/lojas/${loja.id}`);
+
+            onDeleted?.();
+        } catch (error) {
+            console.error("Erro ao excluir loja:", error);
+            setErro("Não foi possível excluir a loja. Tente novamente.");
+        } finally {
+            setEnviando(false);
+        }
+    }
     return (
         <form
             onSubmit={salvarLoja}
-            className="flex min-h-full flex-col gap-4"
+            className="flex flex-col gap-3"
         >
 
             <div>
@@ -182,7 +206,18 @@ export default function FormularioLoja({
                     {erro}
                 </p>
             )}
-            <div className="mt-2 flex justify-center pt-6">
+            {loja && (
+                <button
+                    type="button"
+                    onClick={deletarLoja}
+                    disabled={enviando}
+                    className="mt-2 w-full cursor-pointer rounded-full bg-red-600 py-3 text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+                    
+                >
+                    {enviando ? "Excluindo..." : "DELETAR"}
+                </button>
+            )}
+            <div className="mt-1 flex justify-center pt-2 pb-2">
                 <button
                     type="submit"
                     disabled={enviando}

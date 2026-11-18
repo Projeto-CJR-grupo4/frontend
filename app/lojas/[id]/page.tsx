@@ -1,6 +1,6 @@
 'use client';
 import { Suspense, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import BannerLoja from "@/components/loja/BannerLoja";
 import ReviewsStore from "@/components/loja/AvaliacoesLoja"
@@ -9,6 +9,7 @@ import { userViewer } from "@/hooks/userViewer";
 import { apiClient } from "@/lib/axios";
 import type { Loja } from "@/types/loja"
 import ModalLoja from "@/components/loja/ModalLoja";
+import toast from "react-hot-toast";
 type Categoria = {
     id: number;
     name: string;
@@ -21,6 +22,7 @@ type State =
 function ContentStore() {
     const [categorias, setCategorias] = useState<Categoria[]>([]);
     const { id } = useParams<{ id: string }>();
+    const router = useRouter();
     const { viewer } = userViewer();
     const [state, setState] = useState<State>({ status: "carregando" });
     const [modalEditarAberto, setModalEditarAberto] = useState(false);
@@ -71,6 +73,13 @@ function ContentStore() {
             console.error("Erro ao atualizar dados da loja:", error);
         }
     }
+    function aoDeletarLoja() {
+        setModalEditarAberto(false);
+
+        toast.success("Loja excluída com sucesso!");
+
+        router.replace(`/perfil/${loja.user_id}`);
+    }
 
     return (
         <>
@@ -90,6 +99,7 @@ function ContentStore() {
                     categorias={categorias}
                     onClose={() => setModalEditarAberto(false)}
                     onSaved={atualizarLojaAposSalvar}
+                    onDeleted={aoDeletarLoja}
                 />
             )}
         </>

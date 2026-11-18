@@ -12,6 +12,7 @@ type Categoria = {
 type ModalLojaProps = {
     onClose: () => void;
     onSaved: () => void;
+    onDeleted?: () => void;
     categorias: Categoria[];
     loja?: DadosLoja;
 };
@@ -19,6 +20,7 @@ type ModalLojaProps = {
 export default function ModalLoja({
     onClose,
     onSaved,
+    onDeleted,
     categorias,
     loja
 }: ModalLojaProps) {
@@ -33,10 +35,11 @@ export default function ModalLoja({
                     {loja ? "Editar loja" : "Adicionar loja"}
                 </h2>
 
-                <div className="min-h-0 flex-1 overflow-y-auto px-2 pt-2">
+                <div className="min-h-0 flex-1 overflow-y-auto px-2 pt-2 pb-4">
                     <FormularioLoja
                         categorias={categorias}
                         onSaved={onSaved}
+                        onDeleted={onDeleted}
                         loja={loja}
                     />
                 </div>
