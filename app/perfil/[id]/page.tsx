@@ -12,6 +12,7 @@ import ModalEditarPerfil from "@/components/ModalEditarPerfil";
 import ModalConfirmarDelete from "@/components/ModalConfirmarDelete";
 import ModalLoja from "@/components/loja/ModalLoja";
 import { apiClient } from "@/lib/axios";
+import toast from "react-hot-toast";
 
 type Categoria = {
     id: number;
@@ -74,11 +75,14 @@ export default function Perfil() {
     async function aoSalvarLoja() {
         setModal('nenhum');
 
+        toast.success("Loja cadastrada com sucesso!");
+
         try {
             const lojasAtualizadas = await getStores(profileId);
             setStores(lojasAtualizadas);
         } catch (error) {
             console.error("Erro ao atualizar lojas:", error);
+            toast.error("Loja criada, mas não foi possível atualizar a lista.");
         }
     }
 
