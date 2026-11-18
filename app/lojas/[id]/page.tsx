@@ -1,6 +1,6 @@
 'use client';
 import { Suspense, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import BannerLoja from "@/components/loja/BannerLoja";
 import ReviewsStore from "@/components/loja/AvaliacoesLoja"
@@ -8,16 +8,24 @@ import ProductsStore from "@/components/loja/ProdutosLoja"
 import { userViewer } from "@/hooks/userViewer";
 import { apiClient } from "@/lib/axios";
 import type { Loja } from "@/types/loja"
-
-type State = 
+import ModalLoja from "@/components/loja/ModalLoja";
+import toast from "react-hot-toast";
+type Categoria = {
+    id: number;
+    name: string;
+};
+type State =
     | { status: "carregando" }
     | { status: "erro" }
     | { status: "ok"; loja: Loja };
 
 function ContentStore() {
+    const [categorias, setCategorias] = useState<Categoria[]>([]);
     const { id } = useParams<{ id: string }>();
+    const router = useRouter();
     const { viewer } = userViewer();
     const [state, setState] = useState<State>({ status: "carregando" });
+    const [modalEditarAberto, setModalEditarAberto] = useState(false);
 
     useEffect(() => {
         let cancelado = false;
@@ -27,6 +35,15 @@ function ContentStore() {
             .catch(() => { if (!cancelado) setState({ status: "erro" }); })
         return () => { cancelado = true; };
     }, [id]);
+    useEffect(() => {
+        if (!modalEditarAberto) return;
+
+        apiClient
+            .get<Categoria[]>("/categorias")
+            .then((res) => setCategorias(res.data))
+            .catch((error) => console.error("Erro ao buscar categorias:", error));
+
+    }, [modalEditarAberto]);
 
     if (state.status === "carregando") {
         return <div className="h-80 bg-[#2a1f3d] md:h-[630px]" />;
@@ -42,19 +59,57 @@ function ContentStore() {
 
     const loja = state.loja;
     const ehDono = viewer?.id === loja.user_id;
+    async function atualizarLojaAposSalvar() {
+        setModalEditarAberto(false);
+
+        toast.success("Loja atualizada com sucesso!");
+        try {
+            const resposta = await apiClient.get<Loja>(`/lojas/${id}`);
+
+            setState({
+                status: "ok",
+                loja: resposta.data,
+            });
+        } catch (error) {
+            console.error("Erro ao atualizar dados da loja:", error);
+        }
+    }
+    function aoDeletarLoja() {
+        setModalEditarAberto(false);
+
+        toast.success("Loja excluída com sucesso!");
+
+        router.replace(`/perfil/${loja.user_id}`);
+    }
 
     return (
         <>
-            <BannerLoja loja={loja} ehDono={ehDono} />
+            <BannerLoja
+                loja={loja}
+                ehDono={ehDono}
+                onEditar={() => setModalEditarAberto(true)}
+            />
+
             <ReviewsStore lojaId={loja.id} />
+
             <ProductsStore lojaId={loja.id} nomeLoja={loja.name} />
+
+            {ehDono && modalEditarAberto && (
+                <ModalLoja
+                    loja={loja}
+                    categorias={categorias}
+                    onClose={() => setModalEditarAberto(false)}
+                    onSaved={atualizarLojaAposSalvar}
+                    onDeleted={aoDeletarLoja}
+                />
+            )}
         </>
     );
 }
 
 export default function LojaPage() {
     return (
-      <div className="min-h-screen bg-black">
+        <div className="min-h-screen bg-black">
             <Suspense fallback={<div className="min-h-23 bg-black" />}>
                 <Navbar />
             </Suspense>
@@ -63,6 +118,6 @@ export default function LojaPage() {
                     <ContentStore />
                 </Suspense>
             </main>
-        </div>  
+        </div>
     );
 }

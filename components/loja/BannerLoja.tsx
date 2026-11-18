@@ -4,15 +4,27 @@ import { IconeLapis, IconeMais } from "@/components/icones";
 import type { Loja } from "@/types/loja";
 
 type BannerLojaProps = {
-    loja: Loja;
-    ehDono: boolean;
+  loja: Loja;
+  ehDono: boolean;
+  onEditar?: () => void;
 };
 
-export default function BannerLoja({ loja, ehDono }: BannerLojaProps) {
-    return (
-      <section className="relative flex h-80 items-center justify-center overflow-hidden bg-[#2a1f3d] md:h-[630px]">
+export default function BannerLoja({
+  loja,
+  ehDono,
+  onEditar
+}: BannerLojaProps) {
+  return (
+    <section className="relative flex h-80 items-center justify-center overflow-hidden bg-[#2a1f3d] md:h-[630px]">
       {loja.banner_url && (
-        <Image src={loja.banner_url} alt="" fill priority className="object-cover" />
+        <Image
+          src={loja.banner_url}
+          alt=""
+          fill
+          priority
+          unoptimized
+          className="object-cover"
+        />
       )}
       <div className="absolute inset-0 bg-linear-to-b from-black via-black/40 to-black/40" />
 
@@ -27,13 +39,14 @@ export default function BannerLoja({ loja, ehDono }: BannerLojaProps) {
 
       {ehDono && (
         <div className="absolute right-4 top-6 flex flex-col gap-3 md:right-28 md:top-14">
-          <Link
-            href={`/lojas/${loja.id}/editar`}
+          <button
+            type="button"
+            onClick={onEditar}
             aria-label="Editar loja"
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-[#6938EF] text-white hover:bg-[#5428CF]"
+            className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-[#6938EF] text-white hover:bg-[#5428CF]"
           >
             <IconeLapis className="h-5 w-5" />
-          </Link>
+          </button>
           <Link
             href={`/lojas/${loja.id}/produtos/novo`}
             aria-label="Adicionar produto"

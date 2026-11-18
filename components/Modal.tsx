@@ -8,9 +8,16 @@ type Props = {
     onClose: () => void;
     onBack?: () => void;
     children: React.ReactNode;
+    tamanho?: "padrao" | "loja";
 };
 
-export default function Modal({ label, onClose, onBack, children }: Props) {
+export default function Modal({
+    label,
+    onClose,
+    onBack,
+    children,
+    tamanho = "padrao"
+}: Props) {
     useEffect(() => {
         const aoApertar = (e: KeyboardEvent) => {
             if (e.key === 'Escape') onClose();
@@ -36,7 +43,10 @@ export default function Modal({ label, onClose, onBack, children }: Props) {
                 aria-modal="true"
                 aria-label={label}
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-[500px] h-[570px] rounded-3xl bg-[#EDEDED] px-8 pb-10 pt-11 shadow-xl"
+                className={`relative w-full rounded-3xl bg-[#EDEDED] px-8 pb-10 pt-11 shadow-xl ${tamanho === "loja"
+                        ? "max-w-[750px] h-[750px] max-h-[calc(100dvh-2rem)]"
+                        : "max-w-[500px] h-[570px]"
+                    }`}
             >
                 {onBack && (
                     <button
