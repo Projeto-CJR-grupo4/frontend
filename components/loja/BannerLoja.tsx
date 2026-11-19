@@ -7,12 +7,14 @@ type BannerLojaProps = {
   loja: Loja;
   ehDono: boolean;
   onEditar?: () => void;
+  onAdicionarProduto?: () => void;
 };
 
 export default function BannerLoja({
   loja,
   ehDono,
-  onEditar
+  onEditar,
+  onAdicionarProduto
 }: BannerLojaProps) {
   return (
     <section className="relative flex h-80 items-center justify-center overflow-hidden bg-[#2a1f3d] md:h-[630px]">
@@ -47,13 +49,14 @@ export default function BannerLoja({
           >
             <IconeLapis className="h-5 w-5" />
           </button>
-          <Link
-            href={`/lojas/${loja.id}/produtos/novo`}
+          <button
+            type="button"
+            onClick={onAdicionarProduto}
             aria-label="Adicionar produto"
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-[#6938EF] text-white hover:bg-[#5428CF]"
+            className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-[#6938EF] text-white hover:bg-[#5428CF]"
           >
             <IconeMais className="h-6 w-6" />
-          </Link>
+          </button>
         </div>
       )}
     </section>

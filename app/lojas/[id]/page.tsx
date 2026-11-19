@@ -9,11 +9,20 @@ import { userViewer } from "@/hooks/userViewer";
 import { apiClient } from "@/lib/axios";
 import type { Loja } from "@/types/loja"
 import ModalLoja from "@/components/loja/ModalLoja";
+import ModalProduto from "@/components/loja/ModalProduto";
+import type { ProductStore } from "@/lib/loja";
 import toast from "react-hot-toast";
+
 type Categoria = {
     id: number;
     name: string;
 };
+
+type ModalProdutoAberto =
+    | null
+    | { tipo: "novo" }
+    | { tipo: "editar"; produto: ProductStore };
+
 type State =
     | { status: "carregando" }
     | { status: "erro" }
@@ -26,7 +35,9 @@ function ContentStore() {
     const { viewer } = userViewer();
     const [state, setState] = useState<State>({ status: "carregando" });
     const [modalEditarAberto, setModalEditarAberto] = useState(false);
-
+    const [modalProduto, setModalProduto] = useState<ModalProdutoAberto>(null);
+    const [atualizacaoProdutos, setAtualizacaoProdutos] = useState(0);
+ 
     useEffect(() => {
         let cancelado = false;
         apiClient
@@ -88,11 +99,18 @@ function ContentStore() {
                 loja={loja}
                 ehDono={ehDono}
                 onEditar={() => setModalEditarAberto(true)}
+                onAdicionarProduto={() => setModalProduto({ tipo: "novo" })}
             />
 
             <ReviewsStore lojaId={loja.id} />
 
-            <ProductsStore lojaId={loja.id} nomeLoja={loja.name} />
+            <ProductsStore 
+                lojaId={loja.id} 
+                nomeLoja={loja.name}
+                ehDono={ehDono}
+                atualizacao={atualizacaoProdutos}
+                onEditar={(produto) => setModalProduto({ tipo: "editar", produto })}
+            />
 
             {ehDono && modalEditarAberto && (
                 <ModalLoja
@@ -101,6 +119,16 @@ function ContentStore() {
                     onClose={() => setModalEditarAberto(false)}
                     onSaved={atualizarLojaAposSalvar}
                     onDeleted={aoDeletarLoja}
+                />
+            )}
+
+            {ehDono && modalProduto && (
+                <ModalProduto
+                    lojaId={loja.id}
+                    categoriaLojaId={loja.category_id}
+                    produto={modalProduto.tipo === "editar" ? modalProduto.produto : undefined}
+                    onClose={() => setModalProduto(null)}
+                    onSalvo={() => setAtualizacaoProdutos((n) => n + 1)}
                 />
             )}
         </>
