@@ -20,7 +20,14 @@ const nextConfig: NextConfig = {
             port: "3001",
             pathname: "/uploads/lojas/**",
         },
+        {
+            protocol: "http",
+            hostname: "localhost",
+            port: "3001",
+            pathname: "/uploads/produtos/**",
+        },
     ],
+    dangerouslyAllowLocalIP: process.env.NODE_ENV === "development",
 },
 };
 

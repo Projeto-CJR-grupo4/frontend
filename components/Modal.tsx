@@ -8,7 +8,13 @@ type Props = {
     onClose: () => void;
     onBack?: () => void;
     children: React.ReactNode;
-    tamanho?: "padrao" | "loja";
+    tamanho?: "padrao" | "loja" | "produto";
+};
+
+const TAMANHOS = {
+    padrao: "max-w-[500px] h-[570px]",
+    loja: "max-w-[750px] h-[750px] max-h-[calc(100dvh-2rem)]",
+    produto: "max-w-[620px] max-h-[calc(100dvh-2rem)] overflow-y-auto",
 };
 
 export default function Modal({
@@ -43,10 +49,7 @@ export default function Modal({
                 aria-modal="true"
                 aria-label={label}
                 onClick={(e) => e.stopPropagation()}
-                className={`relative w-full rounded-3xl bg-[#EDEDED] px-8 pb-10 pt-11 shadow-xl ${tamanho === "loja"
-                        ? "max-w-[750px] h-[750px] max-h-[calc(100dvh-2rem)]"
-                        : "max-w-[500px] h-[570px]"
-                    }`}
+                className={`relative w-full rounded-3xl bg-[#EDEDED] px-8 pb-10 pt-11 shadow-xl ${TAMANHOS[tamanho]}`}
             >
                 {onBack && (
                     <button
