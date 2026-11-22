@@ -115,71 +115,76 @@ function ConteudoProduto() {
                     <>
                         <div className="flex flex-col gap-8 lg:flex-row">
                             <div className="w-full lg:w-1/2">
-                                {produto.images.length > 0 ? (
-                                    <div className=" flex flex-col gap-4 md:flex-row">
-                                        <button
-                                            type="button"
-                                            onClick={() => router.back()}
-                                            aria-label="Voltar"
-                                            className="flex h-10 w-10 shrink-0 items-center justify-center text-black hover:text-[#6A38F3]"
-                                        >
-                                            <ChevronLeft size={36} strokeWidth={2} />
-                                        </button>
+                                <div className="flex flex-col gap-4 md:flex-row">
 
-                                        <div className="flex gap-3 overflow-x-auto md:w-28 md:shrink-0 md:flex-col md:overflow-visible">
-                                            {produto.images.map((imagem, indice) => (
-                                                <button
-                                                    key={imagem.id}
-                                                    type="button"
-                                                    onClick={() => setImagemSelecionada(indice)}
-                                                    aria-label={`Visualizar imagem ${indice + 1} de ${produto.name}`}
-                                                    aria-pressed={imagemSelecionada === indice}
-                                                    className={`flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 bg-white md:h-28 md:w-28 ${imagemSelecionada === indice
-                                                        ? "border-[#6A38F3]"
-                                                        : "border-transparent"
-                                                        }`}
-                                                >
-                                                    <Image
-                                                        src={imagem.image_url}
-                                                        alt={`${produto.name} - imagem ${indice + 1}`}
-                                                        width={112}
-                                                        height={112}
-                                                        className="h-full w-full object-contain p-2"
-                                                    />
-                                                </button>
-                                            ))}
-                                        </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => router.back()}
+                                        aria-label="Voltar"
+                                        className="flex h-10 w-10 shrink-0 items-center justify-center text-black hover:text-[#6A38F3]"
+                                    >
+                                        <ChevronLeft size={36} strokeWidth={2} />
+                                    </button>
+
+                                    {produto.images.length > 0 ? (
+                                        <div className="flex min-w-0 flex-1 flex-col gap-4 md:flex-row">
 
 
-                                        <div className="relative flex h-80 min-w-0 flex-1 items-center justify-center rounded-3xl bg-white md:h-[520px]">
+                                            <div className="flex gap-3 overflow-x-auto md:w-28 md:shrink-0 md:flex-col md:overflow-visible">
+                                                {produto.images.map((imagem, indice) => (
+                                                    <button
+                                                        key={imagem.id}
+                                                        type="button"
+                                                        onClick={() => setImagemSelecionada(indice)}
+                                                        aria-label={`Visualizar imagem ${indice + 1} de ${produto.name}`}
+                                                        aria-pressed={imagemSelecionada === indice}
+                                                        className={`flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 bg-white md:h-28 md:w-28 ${imagemSelecionada === indice
+                                                            ? "border-[#6A38F3]"
+                                                            : "border-transparent"
+                                                            }`}
+                                                    >
+                                                        <Image
+                                                            src={imagem.image_url}
+                                                            alt={`${produto.name} - imagem ${indice + 1}`}
+                                                            width={112}
+                                                            height={112}
+                                                            className="h-full w-full object-contain p-2"
+                                                        />
+                                                    </button>
+                                                ))}
+                                            </div>
 
-                                            <Image
-                                                src={
-                                                    produto.images[imagemSelecionada]?.image_url ??
-                                                    produto.images[0].image_url
-                                                }
-                                                alt={produto.name}
-                                                width={480}
-                                                height={480}
-                                                className="h-full w-full object-contain p-6"
-                                            />
 
+                                            <div className="relative flex h-80 min-w-0 flex-1 items-center justify-center rounded-3xl bg-white md:h-[520px]">
 
-                                            {produto.store.logo_url && (
                                                 <Image
-                                                    src={produto.store.logo_url}
-                                                    alt={`Logo da loja ${produto.store.name}`}
-                                                    width={64}
-                                                    height={64}
-                                                    className="absolute right-4 top-4 h-16 w-16 rounded-full object-contain"
+                                                    src={
+                                                        produto.images[imagemSelecionada]?.image_url ??
+                                                        produto.images[0].image_url
+                                                    }
+                                                    alt={produto.name}
+                                                    width={480}
+                                                    height={480}
+                                                    className="h-full w-full object-contain p-6"
                                                 />
-                                            )}
 
+
+                                                {produto.store.logo_url && (
+                                                    <Image
+                                                        src={produto.store.logo_url}
+                                                        alt={`Logo da loja ${produto.store.name}`}
+                                                        width={64}
+                                                        height={64}
+                                                        className="absolute right-4 top-4 h-16 w-16 rounded-full object-contain"
+                                                    />
+                                                )}
+
+                                            </div>
                                         </div>
-                                    </div>
-                                ) : (
-                                    <p>Produto sem imagem.</p>
-                                )}
+                                    ) : (
+                                        <p>Produto sem imagem.</p>
+                                    )}
+                                </div>
                             </div>
                             <div className="w-full lg:w-1/2">
                                 <div className="flex items-center gap-4">
