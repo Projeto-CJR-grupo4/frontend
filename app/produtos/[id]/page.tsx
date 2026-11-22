@@ -25,6 +25,9 @@ type Produto = {
         name: string;
         logo_url: string | null;
     };
+    productRatings: {
+        rating: number;
+    }[];
 };
 
 export default function ProdutoPage() {
@@ -64,7 +67,13 @@ export default function ProdutoPage() {
             cancelado = true;
         };
     }, [id]);
+    const avaliacoes = produto?.productRatings ?? [];
 
+    const quantidadeAvaliacoes = avaliacoes.length;
+
+    const notaMedia = quantidadeAvaliacoes > 0
+        ? avaliacoes.reduce((soma, avaliacao) => soma + avaliacao.rating, 0) / quantidadeAvaliacoes
+        : 0;
     return (
         <main className="min-h-screen bg-[#F6F3E4]">
             <Navbar />
@@ -140,7 +149,29 @@ export default function ProdutoPage() {
                             <h1 className="text-3xl font-semibold">
                                 {produto.name}
                             </h1>
-                            <p>Categoria: {produto.category.name}</p>
+
+                            <div className="mt-2 flex flex-wrap items-center gap-6 text-sm">
+
+                                {quantidadeAvaliacoes > 0 ? (
+                                    <span className="flex items-center gap-1">
+                                        <span className="text-yellow-400">★</span>
+                                        {notaMedia.toFixed(1)} | {quantidadeAvaliacoes} reviews
+                                    </span>
+                                ) : (
+                                    <span className="text-gray-500">Sem avaliações</span>
+                                )}
+
+                                <span className="text-[#6A38F3]">
+                                    {produto.category.name}
+                                </span>
+
+                                <span className="text-[#6A38F3]">
+                                    {produto.stock > 0
+                                        ? `${produto.stock} disponíveis`
+                                        : "Indisponível"}
+                                </span>
+
+                            </div>
 
                             <p>
                                 Preço: {Number(produto.price).toLocaleString("pt-BR", {
