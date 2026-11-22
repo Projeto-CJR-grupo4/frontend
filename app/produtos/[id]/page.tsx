@@ -75,83 +75,85 @@ export default function ProdutoPage() {
                 ) : erro || !produto ? (
                     <p>Não foi possível carregar o produto.</p>
                 ) : (
-                    <>
-                        <h1 className="text-3xl font-semibold">
-                            {produto.name}
-                        </h1>
+                    <div className="flex flex-col gap-8 lg:flex-row">
+                        <div className="w-full lg:w-1/2">
+                            {produto.images.length > 0 ? (
+                                <div className=" flex flex-col gap-4 md:flex-row">
 
-                        {produto.images.length > 0 ? (
-                            <div className="mt-6 flex flex-col gap-4 md:flex-row">
 
-                                {/* Miniaturas das imagens */}
-                                <div className="flex gap-3 overflow-x-auto md:flex-col">
-                                    {produto.images.map((imagem, indice) => (
-                                        <button
-                                            key={imagem.id}
-                                            type="button"
-                                            onClick={() => setImagemSelecionada(indice)}
-                                            aria-label={`Visualizar imagem ${indice + 1} de ${produto.name}`}
-                                            aria-pressed={imagemSelecionada === indice}
-                                            className={`flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 bg-white md:h-28 md:w-28 ${imagemSelecionada === indice
+                                    <div className="flex gap-3 overflow-x-auto md:w-28 md:shrink-0 md:flex-col md:overflow-visible">
+                                        {produto.images.map((imagem, indice) => (
+                                            <button
+                                                key={imagem.id}
+                                                type="button"
+                                                onClick={() => setImagemSelecionada(indice)}
+                                                aria-label={`Visualizar imagem ${indice + 1} de ${produto.name}`}
+                                                aria-pressed={imagemSelecionada === indice}
+                                                className={`flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 bg-white md:h-28 md:w-28 ${imagemSelecionada === indice
                                                     ? "border-[#6A38F3]"
                                                     : "border-transparent"
-                                                }`}
-                                        >
-                                            <Image
-                                                src={imagem.image_url}
-                                                alt={`${produto.name} - imagem ${indice + 1}`}
-                                                width={112}
-                                                height={112}
-                                                className="h-full w-full object-contain p-2"
-                                            />
-                                        </button>
-                                    ))}
-                                </div>
+                                                    }`}
+                                            >
+                                                <Image
+                                                    src={imagem.image_url}
+                                                    alt={`${produto.name} - imagem ${indice + 1}`}
+                                                    width={112}
+                                                    height={112}
+                                                    className="h-full w-full object-contain p-2"
+                                                />
+                                            </button>
+                                        ))}
+                                    </div>
 
-                                {/* Imagem principal */}
-                                <div className="relative flex h-80 w-full max-w-xl items-center justify-center rounded-3xl bg-white md:h-[520px]">
 
-                                    <Image
-                                        src={
-                                            produto.images[imagemSelecionada]?.image_url ??
-                                            produto.images[0].image_url
-                                        }
-                                        alt={produto.name}
-                                        width={480}
-                                        height={480}
-                                        className="h-full w-full object-contain p-6"
-                                    />
+                                    <div className="relative flex h-80 min-w-0 flex-1 items-center justify-center rounded-3xl bg-white md:h-[520px]">
 
-                                    {/* Logo da loja */}
-                                    {produto.store.logo_url && (
                                         <Image
-                                            src={produto.store.logo_url}
-                                            alt={`Logo da loja ${produto.store.name}`}
-                                            width={64}
-                                            height={64}
-                                            className="absolute right-4 top-4 h-16 w-16 rounded-full object-contain"
+                                            src={
+                                                produto.images[imagemSelecionada]?.image_url ??
+                                                produto.images[0].image_url
+                                            }
+                                            alt={produto.name}
+                                            width={480}
+                                            height={480}
+                                            className="h-full w-full object-contain p-6"
                                         />
-                                    )}
 
+
+                                        {produto.store.logo_url && (
+                                            <Image
+                                                src={produto.store.logo_url}
+                                                alt={`Logo da loja ${produto.store.name}`}
+                                                width={64}
+                                                height={64}
+                                                className="absolute right-4 top-4 h-16 w-16 rounded-full object-contain"
+                                            />
+                                        )}
+
+                                    </div>
                                 </div>
-                            </div>
-                        ) : (
-                            <p>Produto sem imagem.</p>
-                        )}
+                            ) : (
+                                <p>Produto sem imagem.</p>
+                            )}
+                        </div>
+                        <div className="w-full lg:w-1/2">
+                            <h1 className="text-3xl font-semibold">
+                                {produto.name}
+                            </h1>
+                            <p>Categoria: {produto.category.name}</p>
 
-                        <p>Categoria: {produto.category.name}</p>
+                            <p>
+                                Preço: {Number(produto.price).toLocaleString("pt-BR", {
+                                    style: "currency",
+                                    currency: "BRL"
+                                })}
+                            </p>
 
-                        <p>
-                            Preço: {Number(produto.price).toLocaleString("pt-BR", {
-                                style: "currency",
-                                currency: "BRL"
-                            })}
-                        </p>
+                            <p>Estoque: {produto.stock} disponíveis</p>
 
-                        <p>Estoque: {produto.stock} disponíveis</p>
-
-                        <p>Descrição: {produto.description ?? "Sem descrição"}</p>
-                    </>
+                            <p>Descrição: {produto.description ?? "Sem descrição"}</p>
+                        </div>
+                    </div>
                 )}
             </section>
         </main>
