@@ -1,14 +1,17 @@
 "use client";
-
+import { userViewer } from "@/hooks/userViewer";
 import { Suspense, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Pencil } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { apiClient } from "@/lib/axios";
 import Image from "next/image";
 import ProdutosMesmaLoja from "@/components/ProdutosMesmaLoja";
+import ModalProduto from "@/components/loja/ModalProduto";
+import axios from "axios";
 type Produto = {
     id: number;
+    category_id: number;
     name: string;
     description: string | null;
     price: string;
@@ -26,6 +29,8 @@ type Produto = {
         id: number;
         name: string;
         logo_url: string | null;
+        user_id: number;
+        category_id: number;
     };
     productRatings: {
         rating: number;
@@ -35,10 +40,12 @@ type Produto = {
 function ConteudoProduto() {
     const { id } = useParams<{ id: string }>();
     const router = useRouter();
+    const { viewer } = userViewer();
     const [produto, setProduto] = useState<Produto | null>(null);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState(false);
     const [imagemSelecionada, setImagemSelecionada] = useState(0);
+    const [modalEditarAberto, setModalEditarAberto] = useState(false);
 
     useEffect(() => {
         let cancelado = false;
@@ -76,6 +83,25 @@ function ConteudoProduto() {
     const notaMedia = quantidadeAvaliacoes > 0
         ? avaliacoes.reduce((soma, avaliacao) => soma + avaliacao.rating, 0) / quantidadeAvaliacoes
         : 0;
+    const ehDono = produto !== null &&
+        viewer !== null &&
+        viewer.id === produto.store.user_id;
+    async function atualizarAposSalvar() {
+        if (!produto) return;
+
+        try {
+            const resposta = await apiClient.get<Produto>(`/produtos/${produto.id}`);
+
+            setProduto(resposta.data);
+            setImagemSelecionada(0);
+        } catch (erro) {
+            if (axios.isAxiosError(erro) && erro.response?.status === 404) {
+                router.replace(`/lojas/${produto.store.id}`);
+            } else {
+                console.error("Erro ao atualizar produto:", erro);
+            }
+        }
+    }
     return (
         <main className="min-h-screen bg-[#F6F3E4]">
             <Navbar />
@@ -156,9 +182,22 @@ function ConteudoProduto() {
                                 )}
                             </div>
                             <div className="w-full lg:w-1/2">
-                                <h1 className="text-3xl font-semibold">
-                                    {produto.name}
-                                </h1>
+                                <div className="flex items-center gap-4">
+                                    <h1 className="text-3xl font-semibold">
+                                        {produto.name}
+                                    </h1>
+
+                                    {ehDono && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setModalEditarAberto(true)}
+                                            aria-label="Editar produto"
+                                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#6A38F3] text-white hover:brightness-110"
+                                        >
+                                            <Pencil size={18} />
+                                        </button>
+                                    )}
+                                </div>
 
                                 <div className="mt-2 flex flex-wrap items-center gap-6 text-sm">
 
@@ -205,7 +244,17 @@ function ConteudoProduto() {
                             lojaId={produto.store.id}
                             produtoAtualId={produto.id}
                             logoLoja={produto.store.logo_url}
+
                         />
+                        {ehDono && modalEditarAberto && (
+                            <ModalProduto
+                                lojaId={produto.store.id}
+                                categoriaLojaId={produto.store.category_id}
+                                produto={produto}
+                                onClose={() => setModalEditarAberto(false)}
+                                onSalvo={atualizarAposSalvar}
+                            />
+                        )}
                     </>
                 )}
             </section>
