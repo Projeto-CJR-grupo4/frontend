@@ -26,6 +26,7 @@ type CardProps = {
 function Card({ produto, ehDono, onEditar }: CardProps) {
     const card = (
         <ProdutoCard
+            id={produto.id}
             name={produto.name}
             image_url={produto.images[0]?.image_url ?? null}
             logo_url={null}
