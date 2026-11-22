@@ -1,6 +1,7 @@
 import Image from "next/image";
-
+import Link from "next/link";
 type ProdutoCardProps = {
+    id: number;
     name: string;
     image_url: string | null;
     logo_url: string | null;
@@ -10,6 +11,7 @@ type ProdutoCardProps = {
 };
 
 export default function ProdutoCard({
+    id,
     name,
     image_url,
     logo_url,
@@ -26,7 +28,10 @@ export default function ProdutoCard({
     });
 
     return (
-        <div className="h-77.5 w-57.25 shrink-0 rounded-4xl bg-white">
+        <Link
+            href={`/produtos/${id}`}
+            className="block h-77.5 w-57.25 shrink-0 rounded-4xl bg-white"
+        >
 
             <div className="relative flex justify-center pt-4">
 
@@ -84,6 +89,6 @@ export default function ProdutoCard({
 
             </div>
 
-        </div>
+        </Link>
     );
 }

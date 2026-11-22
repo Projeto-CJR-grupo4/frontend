@@ -48,6 +48,7 @@ export default function SecaoProdutos({
                 {produtos.map((produto) => (
                     <ProdutoCard
                         key={produto.id}
+                        id={produto.id}
                         name={produto.name}
                         image_url={produto.image_url}
                         logo_url={produto.logo_url}
