@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { ChevronLeft } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { apiClient } from "@/lib/axios";
 import Image from "next/image";
@@ -30,9 +31,9 @@ type Produto = {
     }[];
 };
 
-export default function ProdutoPage() {
+function ConteudoProduto() {
     const { id } = useParams<{ id: string }>();
-
+    const router = useRouter();
     const [produto, setProduto] = useState<Produto | null>(null);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState(false);
@@ -88,7 +89,14 @@ export default function ProdutoPage() {
                         <div className="w-full lg:w-1/2">
                             {produto.images.length > 0 ? (
                                 <div className=" flex flex-col gap-4 md:flex-row">
-
+                                    <button
+                                        type="button"
+                                        onClick={() => router.back()}
+                                        aria-label="Voltar"
+                                        className="flex h-10 w-10 shrink-0 items-center justify-center text-black hover:text-[#6A38F3]"
+                                    >
+                                        <ChevronLeft size={36} strokeWidth={2} />
+                                    </button>
 
                                     <div className="flex gap-3 overflow-x-auto md:w-28 md:shrink-0 md:flex-col md:overflow-visible">
                                         {produto.images.map((imagem, indice) => (
@@ -172,21 +180,33 @@ export default function ProdutoPage() {
                                 </span>
 
                             </div>
-
-                            <p>
-                                Preço: {Number(produto.price).toLocaleString("pt-BR", {
+                            <p className="mt-4 text-4xl font-semibold">
+                                {Number(produto.price).toLocaleString("pt-BR", {
                                     style: "currency",
                                     currency: "BRL"
                                 })}
                             </p>
 
-                            <p>Estoque: {produto.stock} disponíveis</p>
+                            <div className="mt-8">
+                                <h2 className="text-xl font-medium">
+                                    Descrição
+                                </h2>
 
-                            <p>Descrição: {produto.description ?? "Sem descrição"}</p>
+                                <p className="mt-3 whitespace-pre-line text-sm">
+                                    {produto.description ?? "Sem descrição"}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 )}
             </section>
         </main>
+    );
+}
+export default function ProdutoPage() {
+    return (
+        <Suspense fallback={<p>Carregando página...</p>}>
+            <ConteudoProduto />
+        </Suspense>
     );
 }
