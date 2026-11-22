@@ -6,6 +6,7 @@ import { ChevronLeft } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { apiClient } from "@/lib/axios";
 import Image from "next/image";
+import ProdutosMesmaLoja from "@/components/ProdutosMesmaLoja";
 type Produto = {
     id: number;
     name: string;
@@ -85,119 +86,127 @@ function ConteudoProduto() {
                 ) : erro || !produto ? (
                     <p>Não foi possível carregar o produto.</p>
                 ) : (
-                    <div className="flex flex-col gap-8 lg:flex-row">
-                        <div className="w-full lg:w-1/2">
-                            {produto.images.length > 0 ? (
-                                <div className=" flex flex-col gap-4 md:flex-row">
-                                    <button
-                                        type="button"
-                                        onClick={() => router.back()}
-                                        aria-label="Voltar"
-                                        className="flex h-10 w-10 shrink-0 items-center justify-center text-black hover:text-[#6A38F3]"
-                                    >
-                                        <ChevronLeft size={36} strokeWidth={2} />
-                                    </button>
+                    <>
+                        <div className="flex flex-col gap-8 lg:flex-row">
+                            <div className="w-full lg:w-1/2">
+                                {produto.images.length > 0 ? (
+                                    <div className=" flex flex-col gap-4 md:flex-row">
+                                        <button
+                                            type="button"
+                                            onClick={() => router.back()}
+                                            aria-label="Voltar"
+                                            className="flex h-10 w-10 shrink-0 items-center justify-center text-black hover:text-[#6A38F3]"
+                                        >
+                                            <ChevronLeft size={36} strokeWidth={2} />
+                                        </button>
 
-                                    <div className="flex gap-3 overflow-x-auto md:w-28 md:shrink-0 md:flex-col md:overflow-visible">
-                                        {produto.images.map((imagem, indice) => (
-                                            <button
-                                                key={imagem.id}
-                                                type="button"
-                                                onClick={() => setImagemSelecionada(indice)}
-                                                aria-label={`Visualizar imagem ${indice + 1} de ${produto.name}`}
-                                                aria-pressed={imagemSelecionada === indice}
-                                                className={`flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 bg-white md:h-28 md:w-28 ${imagemSelecionada === indice
-                                                    ? "border-[#6A38F3]"
-                                                    : "border-transparent"
-                                                    }`}
-                                            >
-                                                <Image
-                                                    src={imagem.image_url}
-                                                    alt={`${produto.name} - imagem ${indice + 1}`}
-                                                    width={112}
-                                                    height={112}
-                                                    className="h-full w-full object-contain p-2"
-                                                />
-                                            </button>
-                                        ))}
-                                    </div>
-
-
-                                    <div className="relative flex h-80 min-w-0 flex-1 items-center justify-center rounded-3xl bg-white md:h-[520px]">
-
-                                        <Image
-                                            src={
-                                                produto.images[imagemSelecionada]?.image_url ??
-                                                produto.images[0].image_url
-                                            }
-                                            alt={produto.name}
-                                            width={480}
-                                            height={480}
-                                            className="h-full w-full object-contain p-6"
-                                        />
+                                        <div className="flex gap-3 overflow-x-auto md:w-28 md:shrink-0 md:flex-col md:overflow-visible">
+                                            {produto.images.map((imagem, indice) => (
+                                                <button
+                                                    key={imagem.id}
+                                                    type="button"
+                                                    onClick={() => setImagemSelecionada(indice)}
+                                                    aria-label={`Visualizar imagem ${indice + 1} de ${produto.name}`}
+                                                    aria-pressed={imagemSelecionada === indice}
+                                                    className={`flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 bg-white md:h-28 md:w-28 ${imagemSelecionada === indice
+                                                        ? "border-[#6A38F3]"
+                                                        : "border-transparent"
+                                                        }`}
+                                                >
+                                                    <Image
+                                                        src={imagem.image_url}
+                                                        alt={`${produto.name} - imagem ${indice + 1}`}
+                                                        width={112}
+                                                        height={112}
+                                                        className="h-full w-full object-contain p-2"
+                                                    />
+                                                </button>
+                                            ))}
+                                        </div>
 
 
-                                        {produto.store.logo_url && (
+                                        <div className="relative flex h-80 min-w-0 flex-1 items-center justify-center rounded-3xl bg-white md:h-[520px]">
+
                                             <Image
-                                                src={produto.store.logo_url}
-                                                alt={`Logo da loja ${produto.store.name}`}
-                                                width={64}
-                                                height={64}
-                                                className="absolute right-4 top-4 h-16 w-16 rounded-full object-contain"
+                                                src={
+                                                    produto.images[imagemSelecionada]?.image_url ??
+                                                    produto.images[0].image_url
+                                                }
+                                                alt={produto.name}
+                                                width={480}
+                                                height={480}
+                                                className="h-full w-full object-contain p-6"
                                             />
-                                        )}
 
+
+                                            {produto.store.logo_url && (
+                                                <Image
+                                                    src={produto.store.logo_url}
+                                                    alt={`Logo da loja ${produto.store.name}`}
+                                                    width={64}
+                                                    height={64}
+                                                    className="absolute right-4 top-4 h-16 w-16 rounded-full object-contain"
+                                                />
+                                            )}
+
+                                        </div>
                                     </div>
-                                </div>
-                            ) : (
-                                <p>Produto sem imagem.</p>
-                            )}
-                        </div>
-                        <div className="w-full lg:w-1/2">
-                            <h1 className="text-3xl font-semibold">
-                                {produto.name}
-                            </h1>
-
-                            <div className="mt-2 flex flex-wrap items-center gap-6 text-sm">
-
-                                {quantidadeAvaliacoes > 0 ? (
-                                    <span className="flex items-center gap-1">
-                                        <span className="text-yellow-400">★</span>
-                                        {notaMedia.toFixed(1)} | {quantidadeAvaliacoes} reviews
-                                    </span>
                                 ) : (
-                                    <span className="text-gray-500">Sem avaliações</span>
+                                    <p>Produto sem imagem.</p>
                                 )}
-
-                                <span className="text-[#6A38F3]">
-                                    {produto.category.name}
-                                </span>
-
-                                <span className="text-[#6A38F3]">
-                                    {produto.stock > 0
-                                        ? `${produto.stock} disponíveis`
-                                        : "Indisponível"}
-                                </span>
-
                             </div>
-                            <p className="mt-4 text-4xl font-semibold">
-                                {Number(produto.price).toLocaleString("pt-BR", {
-                                    style: "currency",
-                                    currency: "BRL"
-                                })}
-                            </p>
+                            <div className="w-full lg:w-1/2">
+                                <h1 className="text-3xl font-semibold">
+                                    {produto.name}
+                                </h1>
 
-                            <div className="mt-8">
-                                <h2 className="text-xl font-medium">
-                                    Descrição
-                                </h2>
+                                <div className="mt-2 flex flex-wrap items-center gap-6 text-sm">
 
-                                <p className="mt-3 whitespace-pre-line text-sm">
-                                    {produto.description ?? "Sem descrição"}
+                                    {quantidadeAvaliacoes > 0 ? (
+                                        <span className="flex items-center gap-1">
+                                            <span className="text-yellow-400">★</span>
+                                            {notaMedia.toFixed(1)} | {quantidadeAvaliacoes} reviews
+                                        </span>
+                                    ) : (
+                                        <span className="text-gray-500">Sem avaliações</span>
+                                    )}
+
+                                    <span className="text-[#6A38F3]">
+                                        {produto.category.name}
+                                    </span>
+
+                                    <span className="text-[#6A38F3]">
+                                        {produto.stock > 0
+                                            ? `${produto.stock} disponíveis`
+                                            : "Indisponível"}
+                                    </span>
+
+                                </div>
+                                <p className="mt-4 text-4xl font-semibold">
+                                    {Number(produto.price).toLocaleString("pt-BR", {
+                                        style: "currency",
+                                        currency: "BRL"
+                                    })}
                                 </p>
+
+                                <div className="mt-8">
+                                    <h2 className="text-xl font-medium">
+                                        Descrição
+                                    </h2>
+
+                                    <p className="mt-3 whitespace-pre-line text-sm">
+                                        {produto.description ?? "Sem descrição"}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+
+                        <ProdutosMesmaLoja
+                            lojaId={produto.store.id}
+                            produtoAtualId={produto.id}
+                            logoLoja={produto.store.logo_url}
+                        />
+                    </>
                 )}
             </section>
         </main>
