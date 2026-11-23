@@ -23,9 +23,10 @@ type CardProps = {
     onEditar: (produto: ProductStore) => void;
 };
 
-function Card({ produto, ehDono, onEditar }: CardProps) {
+function Card({ produto }: CardProps) {
     const card = (
         <ProdutoCard
+            id={produto.id}
             name={produto.name}
             image_url={produto.images[0]?.image_url ?? null}
             logo_url={null}
@@ -34,17 +35,7 @@ function Card({ produto, ehDono, onEditar }: CardProps) {
         />
     );
 
-    if (!ehDono) return card;
-    return (
-        <button
-            type="button"
-            onClick={() => onEditar(produto)}
-            aria-label={`Editar ${produto.name}`}
-            className="shrink-0 cursor-pointer rounded-4xl text-left transition hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-[#6A38F3]"
-        >
-            {card}
-        </button>
-    )
+        return card;
 }
 
 type ProdutosLojaProps = { 
