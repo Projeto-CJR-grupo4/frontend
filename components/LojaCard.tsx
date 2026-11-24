@@ -23,6 +23,7 @@ export default function LojaCard({
                     alt={`Logo da loja ${name}`}
                     width={136}
                     height={136}
+                    unoptimized
                     className="h-34 w-34 rounded-full object-contain"
                 />
             ) : (
