@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
 import ProdutoCard from "@/components/ProdutoCard";
+import Paginacao from "../Paginacao";
 import { getProductsStore, media, type ProductStore } from "@/lib/loja";
 
 const POR_PAGINA = 15;
@@ -48,7 +49,7 @@ type ProdutosLojaProps = {
 
 export default function ProductsStore({ lojaId, nomeLoja, ehDono, atualizacao, onEditar }: ProdutosLojaProps) {
     const [products, setProducts] = useState<ProductStore[]>([]);
-    const [page, setPage] = useState(1);
+    const [pagina, setPagina] = useState(1);
 
     useEffect(() => {
         let cancelado = false;
@@ -64,8 +65,8 @@ export default function ProductsStore({ lojaId, nomeLoja, ehDono, atualizacao, o
         .sort((a, b) => notaDe(b) - notaDe(a))
         .slice(0,10);
 
-    const totalPages = Math.max(1, Math.ceil(products.length / POR_PAGINA));
-    const paginaAtual = Math.min(page, totalPages);
+    const totalPaginas = Math.max(1, Math.ceil(products.length / POR_PAGINA));
+    const paginaAtual = Math.min(pagina, totalPaginas);
     const daPagina = products.slice((paginaAtual - 1) * POR_PAGINA, paginaAtual * POR_PAGINA);
 
     return (
@@ -89,19 +90,7 @@ export default function ProductsStore({ lojaId, nomeLoja, ehDono, atualizacao, o
                 </div>
             )}
 
-            {totalPages > 1 && (
-                <nav className="mt-10 flex items-center justify-center gap-6 text-3xl text-black" aria-label="Paginação">
-                    <button type="button" aria-label="Página anterior" disabled={paginaAtual === 1}
-                        onClick={() => setPage(paginaAtual - 1)} className="disabled:opacity-30">&lt;</button>
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
-                        <button key={n} type="button" onClick={() => setPage(n)}
-                            aria-current={n === paginaAtual ? "page" : undefined}
-                            className={n === paginaAtual ? "font-bold" : "font-light"}>{n}</button>
-                    ))}
-                    <button type="button" aria-label="Próxima página" disabled={paginaAtual === totalPages}
-                        onClick={() => setPage(paginaAtual + 1)} className="disabled:opacity-30">&gt;</button>
-                </nav>
-            )}
+            <Paginacao paginaAtual={paginaAtual} totalPaginas={totalPaginas} onMudar={setPagina} />
         </section>
     );
 }
