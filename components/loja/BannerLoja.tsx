@@ -36,7 +36,7 @@ export default function BannerLoja({
       </div>
 
       <p className="absolute bottom-4 right-4 text-sm text-[#F6F3E4] md:bottom-6 md:right-28 md:text-lg">
-        by <Link href="/" className="underline">{loja.user.name}</Link>
+        by <Link href={`/perfil/${loja.user_id}`} className="underline">{loja.user.name}</Link>
       </p>
 
       {ehDono && (
