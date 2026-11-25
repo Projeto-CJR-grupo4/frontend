@@ -2,27 +2,47 @@
 import { useEffect, useState } from "react";
 import { Estrelas } from "./Estrelas";
 import { getReviewsStore, media, type ReviewStore } from "@/lib/loja";
-
+import ModalAvaliacao from "./ModalAvaliacao";
 function fotoDe(url: string | null) {
     return url && (url.startsWith("http") || url.startsWith("/")) ? url : "/images/foto_de_perfil.png";
 }
 
-export default function ReviewsStore({ lojaId }: { lojaId: number }) {
+type ReviewsStoreProps = {
+    lojaId: number;
+    nomeLoja: string;
+    logado: boolean;
+};
+
+export default function ReviewsStore({
+    lojaId,
+    nomeLoja,
+    logado
+}: ReviewsStoreProps) {
     const [reviews, setReviews] = useState<ReviewStore[]>([]);
+    const [modalAberto, setModalAberto] = useState(false);
 
     useEffect(() => {
         let cancelado = false;
         getReviewsStore(lojaId)
-        .then((dados) => { if (!cancelado) setReviews(dados); })
-        .catch(console.error);
-    return () => { cancelado = true; };
-}, [lojaId]);
+            .then((dados) => { if (!cancelado) setReviews(dados); })
+            .catch(console.error);
+        return () => { cancelado = true; };
+    }, [lojaId]);
 
     const notaMedia = media(reviews.map((r) => r.rating));
 
     return (
-         <section className="mx-auto max-w-6xl px-4 py-12 text-center text-[#F6F3E4]">
+        <section className="mx-auto max-w-6xl px-4 py-12 text-center text-[#F6F3E4]">
             <h2 className="text-3xl md:text-5xl">Reviews e Comentários</h2>
+            {logado && (
+                <button
+                    type="button"
+                    onClick={() => setModalAberto(true)}
+                    className="mt-12 w-full max-w-4xl cursor-pointer rounded-full bg-[#6A38F3] py-3 text-2xl text-white hover:brightness-110 md:text-4xl"
+                >
+                    Adicionar Review
+                </button>
+            )}
 
             {reviews.length === 0 ? (
                 <p className="mt-6 text-gray-400">Esta loja ainda não tem avaliações.</p>
@@ -60,6 +80,12 @@ export default function ReviewsStore({ lojaId }: { lojaId: number }) {
                         ))}
                     </div>
                 </>
+            )}
+            {logado && modalAberto && (
+                <ModalAvaliacao
+                    nomeLoja={nomeLoja}
+                    onClose={() => setModalAberto(false)}
+                />
             )}
         </section>
     );
