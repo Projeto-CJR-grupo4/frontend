@@ -35,9 +35,9 @@ export default function CommentItem({ comment, canEdit, onEdit }: Props) {
                     type="button"
                     aria-label="Editar comentário"
                     onClick={() => onEdit(comment)}
-                    className="cursor-pointer text-gray-600 transition hover:opacity-70"
+                    className="cursor-pointer text-gray-900 transition hover:opacity-70"
                 >
-                    <Pencil size={16} />
+                    <Pencil size={18} />
                 </button>
             )}
         </article>
