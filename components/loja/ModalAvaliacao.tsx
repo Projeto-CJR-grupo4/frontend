@@ -3,19 +3,37 @@
 import { useState } from "react";
 import { Star } from "lucide-react";
 import Modal from "@/components/Modal";
-
+import { createStoreRating, mensagemDeErro } from "@/lib/loja";
+import toast from "react-hot-toast";
 type ModalAvaliacaoProps = {
+    lojaId: number;
     nomeLoja: string;
     onClose: () => void;
 };
 
 export default function ModalAvaliacao({
+    lojaId,
     nomeLoja,
     onClose
 }: ModalAvaliacaoProps) {
     const [nota, setNota] = useState(0);
     const [comentario, setComentario] = useState("");
+    const [enviando, setEnviando] = useState(false);
+    async function enviarAvaliacao() {
+        if (nota === 0 || enviando) return;
 
+        setEnviando(true);
+
+        try {
+            await createStoreRating(lojaId, nota, comentario);
+            toast.success("Avaliação cadastrada com sucesso!");
+            onClose();
+        } catch (erro) {
+            toast.error(mensagemDeErro(erro, "Erro ao cadastrar avaliação."));
+        } finally {
+            setEnviando(false);
+        }
+    }
     return (
         <Modal
             label="Avaliar loja"
@@ -43,11 +61,10 @@ export default function ModalAvaliacao({
                         >
                             <Star
                                 strokeWidth={1}
-                                className={`h-9 w-9 md:h-16 md:w-16 ${
-                                    valor <= nota
-                                        ? "fill-[#6A38F3]"
-                                        : "fill-transparent"
-                                }`}
+                                className={`h-9 w-9 md:h-16 md:w-16 ${valor <= nota
+                                    ? "fill-[#6A38F3]"
+                                    : "fill-transparent"
+                                    }`}
                             />
                         </button>
                     ))}
@@ -63,10 +80,11 @@ export default function ModalAvaliacao({
 
                 <button
                     type="button"
-                    disabled={nota === 0}
+                    onClick={enviarAvaliacao}
+                    disabled={nota === 0 || enviando}
                     className="mx-auto h-12 w-full max-w-[480px] cursor-pointer rounded-full bg-[#6A38F3] text-lg text-white shadow-md hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                    Avaliar
+                    {enviando ? "Enviando..." : "Avaliar"}
                 </button>
 
             </div>

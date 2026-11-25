@@ -83,6 +83,7 @@ export default function ReviewsStore({
             )}
             {logado && modalAberto && (
                 <ModalAvaliacao
+                    lojaId={lojaId}
                     nomeLoja={nomeLoja}
                     onClose={() => setModalAberto(false)}
                 />
