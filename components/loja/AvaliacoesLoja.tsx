@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Estrelas } from "./Estrelas";
 import { getReviewsStore, media, type ReviewStore } from "@/lib/loja";
 import ModalAvaliacao from "./ModalAvaliacao";
-import Link from "next/link";
 function fotoDe(url: string | null) {
     return url && (url.startsWith("http") || url.startsWith("/")) ? url : "/images/foto_de_perfil.png";
 }
