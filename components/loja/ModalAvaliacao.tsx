@@ -9,12 +9,14 @@ type ModalAvaliacaoProps = {
     lojaId: number;
     nomeLoja: string;
     onClose: () => void;
+    onSalvo: () => void;
 };
 
 export default function ModalAvaliacao({
     lojaId,
     nomeLoja,
-    onClose
+    onClose,
+    onSalvo
 }: ModalAvaliacaoProps) {
     const [nota, setNota] = useState(0);
     const [comentario, setComentario] = useState("");
@@ -28,6 +30,7 @@ export default function ModalAvaliacao({
             await createStoreRating(lojaId, nota, comentario);
             toast.success("Avaliação cadastrada com sucesso!");
             onClose();
+            onSalvo();
         } catch (erro) {
             toast.error(mensagemDeErro(erro, "Erro ao cadastrar avaliação."));
         } finally {

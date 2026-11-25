@@ -28,6 +28,14 @@ export default function ReviewsStore({
             .catch(console.error);
         return () => { cancelado = true; };
     }, [lojaId]);
+    async function atualizarAvaliacoes() {
+    try {
+        const dados = await getReviewsStore(lojaId);
+        setReviews(dados);
+    } catch (erro) {
+        console.error(erro);
+    }
+}
 
     const notaMedia = media(reviews.map((r) => r.rating));
 
@@ -86,6 +94,7 @@ export default function ReviewsStore({
                     lojaId={lojaId}
                     nomeLoja={nomeLoja}
                     onClose={() => setModalAberto(false)}
+                    onSalvo={atualizarAvaliacoes}
                 />
             )}
         </section>
