@@ -59,22 +59,20 @@ export default function ReviewsStore({
                     Adicionar Review
                 </button>
             )}
-
+            {!paginaCompleta && (
+                <div className="mt-6 flex justify-end">
+                    <Link
+                        href={`/lojas/${lojaId}/avaliacoes`}
+                        className="text-[#6A38F3] hover:underline"
+                    >
+                        {reviews.length === 0 ? "ver avaliações" : "ver mais"}
+                    </Link>
+                </div>
+            )}
             {reviews.length === 0 ? (
                 <p className="mt-6 text-gray-400">Esta loja ainda não tem avaliações.</p>
             ) : (
                 <>
-
-                    {!paginaCompleta && (
-                        <div className="mt-6 flex justify-end">
-                            <Link
-                                href={`/lojas/${lojaId}/avaliacoes`}
-                                className="text-[#6A38F3] hover:underline"
-                            >
-                                ver mais
-                            </Link>
-                        </div>
-                    )}
 
                     <div className={`mt-4 flex gap-6 pb-4 text-left ${paginaCompleta
                         ? "flex-col items-center"
