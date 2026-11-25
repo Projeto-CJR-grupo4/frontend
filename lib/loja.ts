@@ -43,6 +43,17 @@ export async function getReviewsStore(lojaId: number) {
     const res = await apiClient.get<ReviewStore[]>("/store-ratings", {params: { storeId: lojaId}});
     return res.data;
 }
+export async function createStoreRating(
+    lojaId: number,
+    nota: number,
+    comentario: string
+) {
+    await apiClient.post("/store-ratings", {
+        store_id: lojaId,
+        rating: nota,
+        comment: comentario
+    });
+}
 
 export async function getCategorias() {
     const res = await apiClient.get<Categoria[]>("/categorias");

@@ -37,7 +37,7 @@ function ContentStore() {
     const [modalEditarAberto, setModalEditarAberto] = useState(false);
     const [modalProduto, setModalProduto] = useState<ModalProdutoAberto>(null);
     const [atualizacaoProdutos, setAtualizacaoProdutos] = useState(0);
- 
+
     useEffect(() => {
         let cancelado = false;
         apiClient
@@ -102,10 +102,14 @@ function ContentStore() {
                 onAdicionarProduto={() => setModalProduto({ tipo: "novo" })}
             />
 
-            <ReviewsStore lojaId={loja.id} />
+            <ReviewsStore
+                lojaId={loja.id}
+                nomeLoja={loja.name}
+                logado={viewer !== null}
+            />
 
-            <ProductsStore 
-                lojaId={loja.id} 
+            <ProductsStore
+                lojaId={loja.id}
                 nomeLoja={loja.name}
                 ehDono={ehDono}
                 atualizacao={atualizacaoProdutos}
