@@ -227,6 +227,7 @@ export default function Perfil() {
             <div className="pb-20">
                 <ReviewsCarousel
                     title="Avaliações de lojas"
+                    type="loja"
                     avatar={avatar}
                     userName={profile.name}
                     prefix="avaliou a loja"
@@ -241,6 +242,7 @@ export default function Perfil() {
 
                 <ReviewsCarousel
                     title="Avaliações de produtos"
+                    type="produto"
                     avatar={avatar}
                     userName={profile.name}
                     prefix="avaliou o produto"
