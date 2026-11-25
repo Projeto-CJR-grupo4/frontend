@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Estrelas } from "./Estrelas";
 import { getReviewsStore, media, type ReviewStore } from "@/lib/loja";
 
@@ -13,15 +14,15 @@ export default function ReviewsStore({ lojaId }: { lojaId: number }) {
     useEffect(() => {
         let cancelado = false;
         getReviewsStore(lojaId)
-        .then((dados) => { if (!cancelado) setReviews(dados); })
-        .catch(console.error);
-    return () => { cancelado = true; };
-}, [lojaId]);
+            .then((dados) => { if (!cancelado) setReviews(dados); })
+            .catch(console.error);
+        return () => { cancelado = true; };
+    }, [lojaId]);
 
     const notaMedia = media(reviews.map((r) => r.rating));
 
     return (
-         <section className="mx-auto max-w-6xl px-4 py-12 text-center text-[#F6F3E4]">
+        <section className="mx-auto max-w-6xl px-4 py-12 text-center text-[#F6F3E4]">
             <h2 className="text-3xl md:text-5xl">Reviews e Comentários</h2>
 
             {reviews.length === 0 ? (
@@ -54,7 +55,12 @@ export default function ReviewsStore({ lojaId }: { lojaId: number }) {
                                         <Estrelas nota={a.rating} />
                                     </div>
                                     <p className="mt-2 line-clamp-3 text-lg">{a.comment}</p>
-                                    <a href="#" className="mt-auto self-end text-[#6A38F3] hover:underline">ver mais</a>
+                                    <Link
+                                        href={`/avaliacoes/loja/${a.id}`}
+                                        className="mt-auto self-end pt-3 text-sm text-[#6A38F3] hover:underline"
+                                    >
+                                        ver mais
+                                    </Link>
                                 </div>
                             </article>
                         ))}
