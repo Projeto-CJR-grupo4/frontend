@@ -1,20 +1,26 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import Navbar from '@/components/Navbar';
 import ReviewHeader from '@/components/avaliacao/ReviewHeader';
 import CommentItem from '@/components/avaliacao/CommentItem';
 import CommentInput from '@/components/avaliacao/CommentInput';
+import ModalAvaliacao from '@/components/loja/ModalAvaliacao';
 import { userViewer } from '@/hooks/userViewer';
-import { getReview, createComment, type ReviewDetail, type ReviewType } from '@/lib/reviews';
+import {
+    getReview, createComment,
+    type ReviewDetail, type ReviewType,
+} from '@/lib/reviews';
 
 export default function AvaliacaoPage() {
     const { type, id } = useParams<{ type: ReviewType; id: string }>();
+    const router = useRouter();
     const { viewer } = userViewer();
 
     const [review, setReview] = useState<ReviewDetail | null>(null);
     const [error, setError] = useState('');
+    const [editandoAvaliacao, setEditandoAvaliacao] = useState(false);
 
     const load = useCallback(async () => {
         try {
@@ -45,6 +51,9 @@ export default function AvaliacaoPage() {
     if (error) return <p>{error}</p>;
     if (!review) return <p>Carregando...</p>;
 
+    const nomeAlvo =
+        (type === 'loja' ? review.store?.name : review.product?.name) ?? '';
+
     return (
         <main className="min-h-screen bg-[#F6F3E4]">
             <Navbar />
@@ -52,8 +61,7 @@ export default function AvaliacaoPage() {
             <ReviewHeader
                 review={review}
                 canEdit={viewer?.id === review.user_id}
-                onEdit={() => {
-                }}
+                onEdit={() => setEditandoAvaliacao(true)}
             />
 
             <section className="px-20 py-10">
@@ -63,9 +71,7 @@ export default function AvaliacaoPage() {
                             key={c.id}
                             comment={c}
                             canEdit={viewer?.id === c.user_id}
-                            onEdit={() => {
-
-                            }}
+                            onEdit={() => { }}
                         />
                     ))}
                 </div>
@@ -81,6 +87,21 @@ export default function AvaliacaoPage() {
                     />
                 )}
             </section>
+
+            {editandoAvaliacao && (
+                <ModalAvaliacao
+                    type={type}
+                    nomeLoja={nomeAlvo}
+                    avaliacao={{
+                        id: review.id,
+                        nota: review.rating,
+                        comentario: review.comment ?? '',
+                    }}
+                    onClose={() => setEditandoAvaliacao(false)}
+                    onSalvo={load}
+                    onDeletado={() => router.back()}
+                />
+            )}
         </main>
     );
 }
