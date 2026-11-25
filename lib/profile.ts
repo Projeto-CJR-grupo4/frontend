@@ -32,7 +32,7 @@ export type ProductReview = {
     product: { id: number; name: string; store: { id: number; name: string } };
 };
 
-async function get<T>(path: string): Promise <T> {
+export async function get<T>(path: string): Promise <T> {
     const token = localStorage.getItem('token');
     const res = await fetch(`${API}${path}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -56,7 +56,7 @@ export type User = {
     updatedAt: string;
 };
 
-async function send<T>(method:'PATCH' | 'DELETE', path: string, body?: unknown): Promise<T> {
+export async function send<T>(method:'POST' | 'PATCH' | 'DELETE', path: string, body?: unknown): Promise<T> {
     const token = localStorage.getItem('token');
     const ehArquivo = body instanceof FormData
     const res = await fetch(`${API}${path}`, {
