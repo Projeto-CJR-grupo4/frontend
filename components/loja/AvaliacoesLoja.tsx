@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Estrelas } from "./Estrelas";
 import { getReviewsStore, media, type ReviewStore } from "@/lib/loja";
 import ModalAvaliacao from "./ModalAvaliacao";
+import Link from "next/link";
 function fotoDe(url: string | null) {
     return url && (url.startsWith("http") || url.startsWith("/")) ? url : "/images/foto_de_perfil.png";
 }
@@ -66,7 +67,12 @@ export default function ReviewsStore({
 
                     {!paginaCompleta && (
                         <div className="mt-6 flex justify-end">
-                            <a href="#" className="text-[#6A38F3] hover:underline">ver mais</a>
+                            <Link
+                                href={`/lojas/${lojaId}/avaliacoes`}
+                                className="text-[#6A38F3] hover:underline"
+                            >
+                                ver mais
+                            </Link>
                         </div>
                     )}
 
