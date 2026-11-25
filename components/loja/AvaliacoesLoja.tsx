@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Estrelas } from "./Estrelas";
 import { getReviewsStore, media, type ReviewStore } from "@/lib/loja";
 import ModalAvaliacao from "./ModalAvaliacao";
@@ -97,7 +98,12 @@ export default function ReviewsStore({
                                         <Estrelas nota={a.rating} />
                                     </div>
                                     <p className="mt-2 line-clamp-3 text-lg">{a.comment}</p>
-                                    <a href="#" className="mt-auto self-end text-[#6A38F3] hover:underline">ver mais</a>
+                                    <Link
+                                        href={`/avaliacoes/loja/${a.id}`}
+                                        className="mt-auto self-end pt-3 text-sm text-[#6A38F3] hover:underline"
+                                    >
+                                        ver mais
+                                    </Link>
                                 </div>
                             </article>
                         ))}
