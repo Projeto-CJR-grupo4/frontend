@@ -26,6 +26,12 @@ export type ReviewDetail = {
     createdAt: string;
     user: ReviewUser;
     comments: ReviewComment[];
+    store?: { id: number; name: string; user_id: number };
+    product?: {
+        id: number;
+        name: string;
+        store: { id: number; name: string; user_id: number };
+    };
 };
 
 const base = (type: ReviewType) =>
@@ -39,6 +45,9 @@ export const updateReview = (
     id: number,
     data: { rating?: number; comment?: string },
 ) => send<unknown>('PATCH', `${base(type)}/${id}`, data);
+
+export const deleteReview = (type: ReviewType, id: number) =>
+    send<unknown>('DELETE', `${base(type)}/${id}`);
 
 export const createComment = (type: ReviewType, ratingId: number, content: string) =>
     send<unknown>('POST', '/rating-comments', {
