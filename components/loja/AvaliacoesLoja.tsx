@@ -11,12 +11,14 @@ type ReviewsStoreProps = {
     lojaId: number;
     nomeLoja: string;
     logado: boolean;
+    paginaCompleta?: boolean;
 };
 
 export default function ReviewsStore({
     lojaId,
     nomeLoja,
-    logado
+    logado,
+    paginaCompleta = false
 }: ReviewsStoreProps) {
     const [reviews, setReviews] = useState<ReviewStore[]>([]);
     const [modalAberto, setModalAberto] = useState(false);
@@ -29,25 +31,25 @@ export default function ReviewsStore({
         return () => { cancelado = true; };
     }, [lojaId]);
     async function atualizarAvaliacoes() {
-    try {
-        const dados = await getReviewsStore(lojaId);
-        setReviews(dados);
-    } catch (erro) {
-        console.error(erro);
+        try {
+            const dados = await getReviewsStore(lojaId);
+            setReviews(dados);
+        } catch (erro) {
+            console.error(erro);
+        }
     }
-}
 
     const notaMedia = media(reviews.map((r) => r.rating));
 
     return (
         <section className="mx-auto max-w-6xl px-4 py-12 text-center text-[#F6F3E4]">
             <h2 className="text-3xl md:text-5xl">Reviews e Comentários</h2>
-             <p className="mt-6 text-5xl md:text-6xl">{notaMedia.toFixed(2)}</p>
-                    <div className="mt-4 flex justify-center">
-                        <Estrelas nota={notaMedia} className="h-10 w-10" />
-                    </div>
+            <p className="mt-6 text-5xl md:text-6xl">{notaMedia.toFixed(2)}</p>
+            <div className="mt-4 flex justify-center">
+                <Estrelas nota={notaMedia} className="h-10 w-10" />
+            </div>
 
-            {logado && (
+            {paginaCompleta && logado && (
                 <button
                     type="button"
                     onClick={() => setModalAberto(true)}
@@ -62,15 +64,23 @@ export default function ReviewsStore({
             ) : (
                 <>
 
-                    <div className="mt-6 flex justify-end">
-                        <a href="#" className="text-[#6A38F3] hover:underline">ver mais</a>
-                    </div>
+                    {!paginaCompleta && (
+                        <div className="mt-6 flex justify-end">
+                            <a href="#" className="text-[#6A38F3] hover:underline">ver mais</a>
+                        </div>
+                    )}
 
-                    <div className="mt-4 flex snap-x gap-6 overflow-x-auto pb-4 text-left [scrollbar-width:none]">
+                    <div className={`mt-4 flex gap-6 pb-4 text-left ${paginaCompleta
+                        ? "flex-col items-center"
+                        : "snap-x overflow-x-auto [scrollbar-width:none]"
+                        }`}>
                         {reviews.map((a) => (
                             <article
                                 key={a.id}
-                                className="flex w-[85%] shrink-0 snap-start gap-6 rounded-[35px] bg-[#F6F3E4] p-6 text-black md:w-[720px]"
+                                className={`flex gap-6 rounded-[35px] bg-[#F6F3E4] p-6 text-black ${paginaCompleta
+                                    ? "w-full max-w-4xl"
+                                    : "w-[85%] shrink-0 snap-start md:w-[720px]"
+                                    }`}
                             >
                                 <img
                                     src={fotoDe(a.user.profile_picture_url)}
@@ -90,7 +100,7 @@ export default function ReviewsStore({
                     </div>
                 </>
             )}
-            {logado && modalAberto && (
+            {paginaCompleta && logado && modalAberto && (
                 <ModalAvaliacao
                     lojaId={lojaId}
                     nomeLoja={nomeLoja}
