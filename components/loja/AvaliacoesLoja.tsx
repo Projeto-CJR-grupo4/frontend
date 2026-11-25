@@ -42,6 +42,11 @@ export default function ReviewsStore({
     return (
         <section className="mx-auto max-w-6xl px-4 py-12 text-center text-[#F6F3E4]">
             <h2 className="text-3xl md:text-5xl">Reviews e Comentários</h2>
+             <p className="mt-6 text-5xl md:text-6xl">{notaMedia.toFixed(2)}</p>
+                    <div className="mt-4 flex justify-center">
+                        <Estrelas nota={notaMedia} className="h-10 w-10" />
+                    </div>
+
             {logado && (
                 <button
                     type="button"
@@ -56,10 +61,6 @@ export default function ReviewsStore({
                 <p className="mt-6 text-gray-400">Esta loja ainda não tem avaliações.</p>
             ) : (
                 <>
-                    <p className="mt-6 text-5xl md:text-6xl">{notaMedia.toFixed(2)}</p>
-                    <div className="mt-4 flex justify-center">
-                        <Estrelas nota={notaMedia} className="h-10 w-10" />
-                    </div>
 
                     <div className="mt-6 flex justify-end">
                         <a href="#" className="text-[#6A38F3] hover:underline">ver mais</a>
