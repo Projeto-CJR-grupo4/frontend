@@ -59,3 +59,6 @@ export const createComment = (type: ReviewType, ratingId: number, content: strin
 
 export const updateComment = (id: number, content: string) =>
     send<unknown>('PATCH', `/rating-comments/${id}`, { content });
+
+export const deleteComment = (id: number) =>
+    send<unknown>('DELETE', `/rating-comments/${id}`);
