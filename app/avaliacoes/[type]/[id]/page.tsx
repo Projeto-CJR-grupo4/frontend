@@ -11,7 +11,9 @@ import { userViewer } from '@/hooks/userViewer';
 import {
     getReview, createComment,
     type ReviewDetail, type ReviewType,
+    ReviewComment,
 } from '@/lib/reviews';
+import ModalEditarComentario from '@/components/avaliacao/ModalEditarComentario';
 
 export default function AvaliacaoPage() {
     const { type, id } = useParams<{ type: ReviewType; id: string }>();
@@ -21,6 +23,7 @@ export default function AvaliacaoPage() {
     const [review, setReview] = useState<ReviewDetail | null>(null);
     const [error, setError] = useState('');
     const [editandoAvaliacao, setEditandoAvaliacao] = useState(false);
+    const [editandoComentario, setEditandoComentario] = useState<ReviewComment | null>(null);
 
     const load = useCallback(async () => {
         try {
@@ -71,7 +74,7 @@ export default function AvaliacaoPage() {
                             key={c.id}
                             comment={c}
                             canEdit={viewer?.id === c.user_id}
-                            onEdit={() => { }}
+                            onEdit={setEditandoComentario}
                         />
                     ))}
                 </div>
@@ -100,6 +103,16 @@ export default function AvaliacaoPage() {
                     onClose={() => setEditandoAvaliacao(false)}
                     onSalvo={load}
                     onDeletado={() => router.back()}
+                />
+            )}
+
+            {editandoComentario && (
+                <ModalEditarComentario
+                    comentarioId={editandoComentario.id}
+                    conteudoInicial={editandoComentario.content}
+                    onClose={() => setEditandoComentario(null)}
+                    onSave={load}
+                    onDelete={load}
                 />
             )}
         </main>
