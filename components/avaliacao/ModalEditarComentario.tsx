@@ -29,7 +29,7 @@ export default function ModalEditarComentario({
     const ocupado = salvando || deletando;
 
     async function salvarComentario() {
-        if(!texto || salvando) return;
+        if(!texto || ocupado) return;
 
         setSalvando(true);
 
@@ -85,15 +85,15 @@ export default function ModalEditarComentario({
                             disabled={ocupado}
                             className="h-12 w-full max-w-[480px] cursor-pointer rounded-full bg-red-600 text-lg uppercase text-white shadow-md hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                            {deletando ? "Deletando" : "Deletar"}
+                            {deletando ? "Deletando..." : "Deletar"}
                         </button>
                     )}
 
                     <button
                         type="button"
                         onClick={salvarComentario}
-                        disabled={!texto || salvando}
-                        className="mx-auto h-12 w-full max-w-[480px] cursor-pointer rounded-full bg-[#6A38F3] text-lg text-white shadow-md hover-brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+                        disabled={!texto || ocupado}
+                        className="h-12 w-full max-w-[480px] cursor-pointer rounded-full bg-[#6A38F3] text-lg text-white shadow-md hover-brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                         {salvando? "Salvando..." : "Salvar"}
                 </button>
