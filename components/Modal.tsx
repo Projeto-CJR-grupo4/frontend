@@ -8,14 +8,15 @@ type Props = {
     onClose: () => void;
     onBack?: () => void;
     children: React.ReactNode;
-    tamanho?: "padrao" | "loja" | "produto" | "avaliacao";
+    tamanho?: "padrao" | "loja" | "produto" | "avaliacao" | "comentario";
 };
 
 const TAMANHOS = {
     padrao: "max-w-[500px] h-[570px]",
-    loja: "max-w-[750px] h-[750px] max-h-[calc(100dvh-2rem)]",
+    loja: "max-w-[70px] h-[750px] max-h-[calc(100dvh-2rem)]",
     produto: "max-w-[620px] max-h-[calc(100dvh-2rem)] overflow-y-auto",
     avaliacao: "max-w-[850px] max-h-[calc(100dvh-2rem)] overflow-y-auto",
+    comentario: "max-w-[825px] max-h-[calc(100dvh-2rem)] overflow-y-auto",
 };
 
 export default function Modal({
