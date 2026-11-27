@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import CategoriaCard from "@/components/CategoriaCard";
 import { apiClient } from "@/lib/axios";
 
@@ -40,12 +41,14 @@ export default function CategoriasFeed() {
     }
     return (
         <>
-            {categorias.map((categoria) => (
-                <CategoriaCard
+            {categorias.filter((categoria) => categoria.parent_category_id === null).map((categoria) => (
+                <Link
                     key={categoria.id}
-                    name={categoria.name}
-                    icon_url={categoria.icon_url}
-                />
+                    href={`/categorias/${categoria.id}`}
+                    className="shrink-0 rounded-4xl transition hover:scale-105"
+                >
+                    <CategoriaCard name={categoria.name} icon_url={categoria.icon_url} />
+                </Link>
             ))}
         </>
     );
