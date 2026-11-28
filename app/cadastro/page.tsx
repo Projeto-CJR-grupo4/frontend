@@ -13,8 +13,7 @@ export default function Cadastro() {
 
     const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
 
-    const [erroSenha, setErroSenha] = useState("");
-
+    const [setErroSenha] = useState("");
     const [enviando, setEnviando] = useState(false);
 
     async function validarCadastro(evento: SubmitEvent<HTMLFormElement>) {
@@ -22,17 +21,32 @@ export default function Cadastro() {
 
         if (enviando) return;
 
+        const campoInvalido = evento.currentTarget.querySelector<HTMLInputElement>("input:invalid");
+
+        if (campoInvalido) {
+
+            if (campoInvalido.validity.valueMissing) {
+                toast.error("Preencha todos os campos obrigatórios.");
+            } else if (campoInvalido.validity.typeMismatch) {
+                toast.error("Informe um e-mail válido.");
+            } else {
+                toast.error("Verifique os dados informados.");
+            }
+
+            campoInvalido.focus();
+            return;
+        }
+
         const dados = new FormData(evento.currentTarget);
 
         const senha = dados.get("password");
         const confirmarSenha = dados.get("confirmarSenha");
 
         if (senha !== confirmarSenha) {
-            setErroSenha("As senhas não coincidem.");
+            toast.error("As senhas não coincidem.");
             return;
         }
 
-        setErroSenha("");
         setEnviando(true);
 
         try {
@@ -52,7 +66,7 @@ export default function Cadastro() {
             if (axios.isAxiosError(error)) {
                 if (!error.response) {
                     toast.error("Não foi possível conectar ao servidor.");
-                } else if (error.response.status === 400) { 
+                } else if (error.response.status === 400) {
                     const mensagem = error.response.data.message;
                     toast.error(Array.isArray(mensagem) ? mensagem[0] : mensagem ?? "Dados inválidos.");
                 } else if (error.response.status === 409) {
@@ -98,6 +112,7 @@ export default function Cadastro() {
                     </h1>
                     <form className="mt-8 flex flex-col gap-4"
                         onSubmit={validarCadastro}
+                        noValidate
                     >
                         <div className="flex flex-col gap-2">
                             <label htmlFor="nome" className="text-white">
@@ -196,11 +211,7 @@ export default function Cadastro() {
                                 </button>
                             </div>
                         </div>
-                        {erroSenha && (
-                            <p className="text-sm text-red-300" role="alert">
-                                {erroSenha}
-                            </p>
-                        )}
+                    
                         <button
                             type="submit"
                             disabled={enviando}
