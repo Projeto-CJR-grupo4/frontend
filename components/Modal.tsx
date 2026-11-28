@@ -13,7 +13,7 @@ type Props = {
 
 const TAMANHOS = {
     padrao: "max-w-[500px] h-[570px]",
-    loja: "max-w-[70px] h-[750px] max-h-[calc(100dvh-2rem)]",
+    loja: "max-w-[700px] h-[750px] max-h-[calc(100dvh-2rem)]",
     produto: "max-w-[620px] max-h-[calc(100dvh-2rem)] overflow-y-auto",
     avaliacao: "max-w-[850px] max-h-[calc(100dvh-2rem)] overflow-y-auto",
     comentario: "max-w-[825px] max-h-[calc(100dvh-2rem)] overflow-y-auto",
