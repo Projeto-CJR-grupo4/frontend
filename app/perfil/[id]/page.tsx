@@ -14,6 +14,7 @@ import ModalLoja from "@/components/loja/ModalLoja";
 import { apiClient } from "@/lib/axios";
 import toast from "react-hot-toast";
 import ModalAlterarSenha from "@/components/ModalAlterarSenha";
+import Link from "next/link";
 
 type Categoria = {
     id: number;
@@ -210,15 +211,25 @@ export default function Perfil() {
                                 <p className="ml-3 font-sans text-3xl text-[#6C3BFF] font-semibold">{loja.category.name}</p>
                             </div>
 
-                            {loja.logo_url && (
+                            <Link
+                            href={`/lojas/${loja.id}`}
+                            aria-label={`Ver loja ${loja.name}`}
+                            className="mr-5 shrink-0 cursor-pointer rounded-full transition hover:opacity-80 active:scale-95"
+                        >
+                            {loja.logo_url ? (
                                 <img
                                     src={loja.logo_url}
                                     alt={loja.name}
                                     width={90}
                                     height={90}
-                                    className="h-[90px] w-[90px] mr-5 shrink-0 rounded-full object-contain scale-125"
+                                    className="h-[90px] w-[90px] rounded-full object-contain scale-125"
                                 />
+                            ) : (
+                                <div className="flex h-[90px] w-[90px] items-center justify-center rounded-full bg-[#EDEDED] text-4xl font-semibold text-[#6C3BFF]">
+                                    {loja.name.charAt(0).toUpperCase()}
+                                </div>
                             )}
+                        </Link>
                         </article>
                     ))}
                 </div>
