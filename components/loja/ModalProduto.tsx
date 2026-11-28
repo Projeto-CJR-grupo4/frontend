@@ -1,9 +1,9 @@
 'use client';
-import { useEffect, useMemo,useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Camera, ChevronDown, Minus, Plus, X } from "lucide-react";
 import toast from "react-hot-toast";
 import Modal from "@/components/Modal";
-import { createProduct, deleteProduct, deleteProductImage, getCategorias, 
+import { createProduct, deleteProduct, deleteProductImage, getCategorias,
     mensagemDeErro, updateProduct, uploadProductImage, type Categoria, type ProductStore
 } from "@/lib/loja";
 
@@ -23,13 +23,31 @@ type ModalProdutoProps = {
     onSalvo: () => void;
 };
 
+function lerPreco(texto: string): number | null {
+    const t = texto.trim();
+    let normalizado: string;
+
+    if (/^\d+(,\d{1,2})?$/.test(t)) {
+        normalizado = t.replace(",", ".");
+    } else if (/^\d{1,3}(\.\d{3})+(,\d{1,2})?$/.test(t)) {
+        normalizado = t.replace(/\./g, "").replace(",", ".");
+    } else if (/^\d+\.\d{1,2}$/.test(t)) {
+        normalizado = t;
+    } else {
+        return null;
+    }
+
+    const valor = Number(normalizado);
+    return Number.isFinite(valor) && valor > 0 ? valor : null;
+}
+
 export default function ModalProduto({ lojaId, categoriaLojaId, produto, onClose, onSalvo }: ModalProdutoProps) {
     const editando = produto !== undefined;
 
     const [nome, setNome] = useState(produto?.name ?? "");
-    const [categoriaId, setCategoriaId] = useState(produto ? String(produto.category_id): "");
+    const [categoriaId, setCategoriaId] = useState(produto ? String(produto.category_id) : "");
     const [descricao, setDescricao] = useState(produto?.description ?? "");
-    const [preco, setPreco] = useState(produto ? Number(produto.price).toFixed(2).replace(".", ","): "");
+    const [preco, setPreco] = useState(produto ? Number(produto.price).toFixed(2).replace(".", ",") : "");
     const [estoque, setEstoque] = useState(produto?.stock ?? 1);
     const [categorias, setCategorias] = useState<Categoria[]>([]);
 
@@ -39,12 +57,15 @@ export default function ModalProduto({ lojaId, categoriaLojaId, produto, onClose
     const [erro, setErro] = useState("");
     const [salvando, setSalvando] = useState(false);
     const [confirmandoExclusao, setConfirmandoExclusao] = useState(false);
+
     const inputFotos = useRef<HTMLInputElement>(null);
+    const produtoIdSalvo = useRef<number | null>(produto?.id ?? null);
+    const imagensJaRemovidas = useRef(new Set<number>());
 
     useEffect(() => {
         let cancelado = false;
         getCategorias()
-            .then((dados) => { if (!cancelado) setCategorias(dados);})
+            .then((dados) => { if (!cancelado) setCategorias(dados); })
             .catch(console.error);
         return () => { cancelado = true; };
     }, []);
@@ -53,7 +74,7 @@ export default function ModalProduto({ lojaId, categoriaLojaId, produto, onClose
     const opcoes = subcategorias.length > 0
         ? subcategorias
         : categorias.filter((c) => c.id === categoriaLojaId);
-    
+
     const previas = useMemo(() => novasFotos.map((f) => URL.createObjectURL(f)), [novasFotos]);
     useEffect(() => () => previas.forEach((url) => URL.revokeObjectURL(url)), [previas]);
 
@@ -68,10 +89,10 @@ export default function ModalProduto({ lojaId, categoriaLojaId, produto, onClose
         ...previas.map((url, i) => ({
             chave: `nova-${url}`,
             url,
-            remover: () => setNovasFotos((arquivos) => arquivos.filter((_, j) => j !== i)), 
+            remover: () => setNovasFotos((arquivos) => arquivos.filter((_, j) => j !== i)),
         }))
     ];
-    const vagas = MAX_FOTOS- fotos.length;
+    const vagas = MAX_FOTOS - fotos.length;
 
     function escolherFotos(e: React.ChangeEvent<HTMLInputElement>) {
         const escolhidas = Array.from(e.target.files ?? []);
@@ -84,18 +105,26 @@ export default function ModalProduto({ lojaId, categoriaLojaId, produto, onClose
             setErro("Cada imagem deve ter no máximo 5 MB.");
             return;
         }
-        setErro("");
-        setNovasFotos((atuais) => [...atuais, ...escolhidas].slice(0,atuais.length + vagas));
+        setErro(escolhidas.length > vagas ? `Máximo de ${MAX_FOTOS} fotos por produto.` : "");
+        setNovasFotos((atuais) => [...atuais, ...escolhidas].slice(0, atuais.length + vagas));
     }
 
-    const precoNumero = Number(preco.replace(/[^\d,.]/g, "").replace(",", "."));
-    const valido = nome.trim().length > 0 && categoriaId !== "" && preco.trim() !== "" && precoNumero >=0;
+    const precoNumero = lerPreco(preco);
 
     async function salvar() {
-        if (!valido) {
-            setErro("Preencha nome, subcategoria e um preço válido.");
+        if (nome.trim().length === 0) {
+            setErro("Informe o nome do produto.");
             return;
         }
+        if (categoriaId === "") {
+            setErro("Selecione uma subcategoria.");
+            return;
+        }
+        if (precoNumero === null) {
+            setErro("Informe um preço válido, ou seja um número com duas casas decimais.");
+            return;
+        }
+
         setSalvando(true);
         setErro("");
         try {
@@ -107,16 +136,18 @@ export default function ModalProduto({ lojaId, categoriaLojaId, produto, onClose
                 category_id: Number(categoriaId),
             };
 
-            let produtoId: number;
-            if (produto) {
-                await updateProduct(produto.id, dados);
-                produtoId = produto.id;
+            let produtoId = produtoIdSalvo.current;
+            if (produtoId !== null) {
+                await updateProduct(produtoId, dados);
             } else {
                 produtoId = (await createProduct(lojaId, dados)).id;
+                produtoIdSalvo.current = produtoId;
             }
 
             for (const imagemId of imagensRemovidas) {
+                if (imagensJaRemovidas.current.has(imagemId)) continue;
                 await deleteProductImage(produtoId, imagemId);
+                imagensJaRemovidas.current.add(imagemId);
             }
             if (novasFotos.length > 0) {
                 await uploadProductImage(produtoId, novasFotos);
@@ -145,7 +176,7 @@ export default function ModalProduto({ lojaId, categoriaLojaId, produto, onClose
             setSalvando(false);
         }
     }
-    
+
     function slot(indice: number, grande: boolean) {
         const foto = fotos[indice];
         const tamanho = grande ? "h-36 col-span-3" : "h-24";
@@ -247,7 +278,7 @@ export default function ModalProduto({ lojaId, categoriaLojaId, produto, onClose
 
                 <input
                     value={preco}
-                    onChange={(e) => setPreco(e.target.value)}
+                    onChange={(e) => setPreco(e.target.value.replace(/[^\d.,]/g, ""))}
                     placeholder="Preço do produto"
                     aria-label="Preço do produto"
                     inputMode="decimal"
