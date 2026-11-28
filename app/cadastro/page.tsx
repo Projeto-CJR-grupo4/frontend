@@ -13,8 +13,7 @@ export default function Cadastro() {
 
     const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
 
-    const [erroSenha, setErroSenha] = useState("");
-
+    const [setErroSenha] = useState("");
     const [enviando, setEnviando] = useState(false);
 
     async function validarCadastro(evento: SubmitEvent<HTMLFormElement>) {
@@ -25,7 +24,6 @@ export default function Cadastro() {
         const campoInvalido = evento.currentTarget.querySelector<HTMLInputElement>("input:invalid");
 
         if (campoInvalido) {
-            setErroSenha("");
 
             if (campoInvalido.validity.valueMissing) {
                 toast.error("Preencha todos os campos obrigatórios.");
@@ -45,11 +43,10 @@ export default function Cadastro() {
         const confirmarSenha = dados.get("confirmarSenha");
 
         if (senha !== confirmarSenha) {
-            setErroSenha("As senhas não coincidem.");
+            toast.error("As senhas não coincidem.");
             return;
         }
 
-        setErroSenha("");
         setEnviando(true);
 
         try {
@@ -214,11 +211,7 @@ export default function Cadastro() {
                                 </button>
                             </div>
                         </div>
-                        {erroSenha && (
-                            <p className="text-sm text-red-300" role="alert">
-                                {erroSenha}
-                            </p>
-                        )}
+                    
                         <button
                             type="submit"
                             disabled={enviando}
